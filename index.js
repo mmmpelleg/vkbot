@@ -5,13 +5,9 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
-//const VkBot = require('node-vk-bot-api');
+
 let roles = 0;
-/*const vkint = new VkBot({
-    token: process.env.tokenvk,
-    confirmation: process.env.confim,
-  })
-*/
+
 function getRandomInt(min, max)
 {
 
@@ -216,11 +212,11 @@ vkint.on((ctx) => {
         let channel = server.channels.find(c => c.name == "all");
         channel.send(`Пользователь с ID - ${ctx.message.action.member_id} был кикнут из беседы`);
     }
-  })*/
+  })
   vkint.startPolling(() => {
     console.log('ВК интеграция успешно запущена!')
   })
-*/
+/*
 
 
 bot.login(process.env.token);
