@@ -223,7 +223,6 @@ vkint.on((ctx) => {
   })
 
 
-
 bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("Бот был успешно запущен!");
@@ -412,4 +411,4 @@ function lvltotext(lvlmod) {
     if(lvlmod == 3) text = "Системный модератор";
     return text;
 }
-*/
+
