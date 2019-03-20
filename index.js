@@ -5,7 +5,7 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
-
+const VkBot = require('node-vk-bot-api');
 let roles = 0;
 
 function getRandomInt(min, max)
@@ -14,7 +14,7 @@ function getRandomInt(min, max)
   return Math.floor(Math.random() * (max - min + 1)) + min;
 
 }
-/*
+
 vkint.command('/ban', async (ctx) => {
 
     let from = ctx.message.from_id;
@@ -204,7 +204,7 @@ vkint.command('/unauth', (ctx) => {
 });
 
 
-/*
+
 vkint.on((ctx) => {
     console.log(ctx);
     if(ctx.message.action.type == "chat_kick_user") {
@@ -218,7 +218,7 @@ vkint.on((ctx) => {
   })
 
 
-*/
+
 bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("Бот был успешно запущен!");
@@ -233,9 +233,9 @@ bot.on('message', async message => {
     if (message.member.id == bot.user.id) return
 });
 
-/*
+
 bot.on('guildMemberUpdate', async (oldMember, newMember) => {
-    if (newMember.guild.id != "555102426261356553") return // Сервер не 03!
+    if (newMember.guild.id != "528635749206196232") return // Сервер не 03!
     if (oldMember.roles.size == newMember.roles.size) return // Сменил ник или еще чет!
     if (newMember.user.bot) return // Бот не принимается!
     if (oldMember.roles.size < newMember.roles.size){
