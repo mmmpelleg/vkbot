@@ -6,6 +6,11 @@ const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
 const VkBot = require('node-vk-bot-api');
+const vkint = new VkBot({
+    token: process.env.tokenvk,
+    confirmation: process.env.confim,
+  })
+
 let roles = 0;
 
 function getRandomInt(min, max)
