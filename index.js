@@ -216,9 +216,9 @@ vkint.on((ctx) => {
   vkint.startPolling(() => {
     console.log('ВК интеграция успешно запущена!')
   })
-/*
 
 
+*/
 bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("Бот был успешно запущен!");
