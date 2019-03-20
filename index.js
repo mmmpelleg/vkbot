@@ -12,12 +12,6 @@ const vkint = new VkBot({
     confirmation: process.env.confim,
   })
 
-vkint.command('/peer_id', (ctx) => {
-
-ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
-
-});
-
 function getRandomInt(min, max)
 {
 
