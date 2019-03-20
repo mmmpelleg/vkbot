@@ -5,20 +5,20 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
-const VkBot = require('node-vk-bot-api');
+//const VkBot = require('node-vk-bot-api');
 let roles = 0;
-const vkint = new VkBot({
+/*const vkint = new VkBot({
     token: process.env.tokenvk,
     confirmation: process.env.confim,
   })
-
+*/
 function getRandomInt(min, max)
 {
 
   return Math.floor(Math.random() * (max - min + 1)) + min;
 
 }
-
+/*
 vkint.command('/ban', async (ctx) => {
 
     let from = ctx.message.from_id;
@@ -220,7 +220,7 @@ vkint.on((ctx) => {
   vkint.startPolling(() => {
     console.log('ВК интеграция успешно запущена!')
   })
-
+*/
 
 
 bot.login(process.env.token);
@@ -237,7 +237,7 @@ bot.on('message', async message => {
     if (message.member.id == bot.user.id) return
 });
 
-
+/*
 bot.on('guildMemberUpdate', async (oldMember, newMember) => {
     if (newMember.guild.id != "555102426261356553") return // Сервер не 03!
     if (oldMember.roles.size == newMember.roles.size) return // Сменил ник или еще чет!
@@ -390,7 +390,7 @@ bot.on('roleDelete', async (role) => {
 }); 
 
 
-/*
+
 bot.on('roleUpdate', async (oldRole, newRole) => {
 
 let server = bot.guilds.get(serverid);
@@ -400,7 +400,7 @@ let member = await server.members.get(entry.executor.id);
 vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) обновил роль (${oldRole.name}\n\nНазвание роли до изменения: ${oldRole.name}\nПосле изменения: ${newRole.name})`);
 
 
-});*/
+});
 
 
 
@@ -411,3 +411,4 @@ function lvltotext(lvlmod) {
     if(lvlmod == 3) text = "Системный модератор";
     return text;
 }
+*/
