@@ -6,7 +6,7 @@ const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
 
-const VkBot = require('/tmp/build_84d73cfb4478b4e3a124d2c8e478db29/node_modules/node-vk-bot-api');
+const VkBot = require(process.env.vkbotmodule);
 const vkint = new VkBot({
     token: process.env.tokenvk,
     confirmation: process.env.confim,
