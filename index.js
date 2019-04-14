@@ -64,7 +64,7 @@ vkint.command('отказ', (ctx) => {
     form_send[args[1]] = false;
     let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
     let spchat = yuma.channels.find(c => c.name == "spectator-chat");
-    form_channel[args[1]].send(`${form_moderator[args[1]}\n**Форма №${args[1]} была отказана модератором ${mods[from][0].name} по причине: ${args.slice(2).join(" ")}**`)
+    form_channel[args[1]].send(`${form_moderator[args[1]}\n**Форма №${args[1]} была отказана модератором ${mods[from][0].name} по причине: ${args.slice(2).join(" ")} **`)
     ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
     return;
 });
