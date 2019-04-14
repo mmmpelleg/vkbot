@@ -1,10 +1,15 @@
 const Discord = require('discord.js'); // by YukiFlores
 const bot = new Discord.Client();
+const yuki = new Discord.Client();
 let serverid = '528635749206196232';
 const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
+var form_send = new Array();
+var form_forma = new Array();
+var form_sender = new Array();
+var mods = JSON.parse(fs.readFileSync("./moderators.json"));
 
 const VkBot = require(`./modules/node-vk-bot-api`);
 const vkint = new VkBot({
@@ -26,6 +31,39 @@ function getRandomInt(min, max)
 ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
 });
 
+vkint.command('ацепт', (ctx) => {
+let from = ctx.message.from_id
+if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор системы ацепта, если вы таким являетесь, попросите Юки внести вас в базу`);
+if(mods[from][0].rank != "Discord Master" && mods[from][0].rank != "Support Team") return ctx.reply(`Ошибка: ваши права слишком низки для выполнения данной команды`);
+let text = ctx.message.text;
+const args = text.slice(`ацепт`).split(/ +/);
+if(!args[1]) return ctx.reply(`используйте: ацепт номер формы`)
+if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
+form_send[args[1]] = false;
+let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
+let spchat = yuma.channels.find(c => c.name == "spectator-chat");
+spchat.send(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
+spchat.send(`**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
+ctx.reply(`Форма от ${form_sender[args[1]]} была принята`)
+return;
+});
+
+vkint.command('отказ', (ctx) => {
+    let from = ctx.message.from_id
+    if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор системы ацепта, если вы таким являетесь, попросите Юки внести вас в базу`);
+    if(mods[from][0].rank != "Discord Master" && mods[from][0].rank != "Support Team") return ctx.reply(`Ошибка: ваши права слишком низки для выполнения данной команды`);
+    let text = ctx.message.text;
+    const args = text.slice(`отказ`).split(/ +/);
+    if(!args[1]) return ctx.reply(`используйте: отказ номер формы`)
+    if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
+    form_send[args[1]] = false;
+    let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
+    let spchat = yuma.channels.find(c => c.name == "spectator-chat");
+    spchat.send(`**Форма №${args[1]} была отказана модератором ${mods[from][0].name}**`)
+    ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
+    return;
+});
+
 
 
 
@@ -41,6 +79,15 @@ bot.on('ready', () => {
     bot.user.setPresence({ game: { name: 'защиту Discord' }, status: 'idle' })
 });
 
+yuki.login(process.env.token_yuki);
+yuki.on('ready', () => {
+    console.log("ПОЛЬЗОВАТЕЛЬ ЮКИ был успешно запущен!");
+    yuki.user.setPresence({ game: { name: 'смотрит за модераторами Юмы' }, status: 'idle' })
+     vkint.sendMessage(2000000007, `Бот был перезагружен, все ранее формы не действительны, принимайте их в дискорде`);
+});
+
+
+
 bot.on('message', async message => {
     if (message.channel.type == "dm") return // Если в ЛС, то выход.
     if (message.guild.id != serverid && message.guild.id != "493459379878625320") return
@@ -48,6 +95,27 @@ bot.on('message', async message => {
     if (message.content == "/ping") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
     if (message.member.id == bot.user.id) return
 });
+
+
+
+yuki.on('message', async message => {
+    if (message.channel.type == "dm") return // Если в ЛС, то выход.
+    if (message.guild.id != serverid) return
+    //if (message.type === "PINS_ADD") if (message.channel.name == "requests-for-roles") message.delete();
+    if (message.content == "/ping1") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
+    if(message.content.startsWith(`-+ban`) || message.content.startsWith(`-+unban`))
+    {
+        if(message.member.hasPermission("ADMINISTRATOR")) return false;
+        if(message.member.roles.some(r => ["Support Team"].includes(r.name))) return false;
+        if(!message.member.hasPermission("MANAGE_ROLES")) return false;
+        form_created = form_created + 1;
+        form_forma[form_created] = message.content;
+        form_send[form_created] = true; 
+        form_sender[form_created] = message.member.displayName;
+        vkint.sendMessage(2000000007, `[Запрос на выполнение действия]\n Запросил форму: ${form_sender[form_created]}\nКоманда для выполнения:\n ${form_forma[form_created]}\n\nДля подтверждения выполнения команды введите: ацепт ${form_created}\nДля отказа: отказ ${form_created}`);
+    }
+});
+
 
 /*
 bot.on('guildMemberUpdate', async (oldMember, newMember) => {
