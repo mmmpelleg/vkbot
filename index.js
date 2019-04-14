@@ -46,8 +46,8 @@ if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма был
 form_send[args[1]] = false;
 let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
 let spchat = yuma.channels.find(c => c.name == "spectator-chat");
-form_channel[args[1]].(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
-form_channel[args[1]].(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
+form_channel[args[1]].send(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
+form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
 ctx.reply(`Форма от ${form_sender[args[1]]} была принята`)
 return;
 });
@@ -98,7 +98,6 @@ bot.on('message', async message => {
     if (message.guild.id != serverid && message.guild.id != "493459379878625320") return
     //if (message.type === "PINS_ADD") if (message.channel.name == "requests-for-roles") message.delete();
     if (message.content == "/ping") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
-    if (message.member.id == bot.user.id) return
 });
 
 
