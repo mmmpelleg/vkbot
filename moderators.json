@@ -1,0 +1,87 @@
+{
+  "372446394": [
+    {
+      "name":"Samuel Karleone",
+      "rank":"Support Team", 
+      "vigs":1,
+      "naznachen":"26.01.2019",
+      "uped":"02.03.2019",
+      "noactive":"0 из 60 использованных дней",
+      "vig_1":"ловля репорта в #general"
+    }
+  ],
+  "398115725": [
+    {
+      "name":"Yuki Flores",
+      "rank":"Discord Master", 
+      "vigs":0,
+      "naznachen":"26.01.2019",
+      "uped":"02.03.2019",
+      "noactive":"0 из 60 использованных дней"
+    }
+  ],
+  "169973209": [
+    {
+      "name":"Gustav Corrigan",
+      "rank":"Support Team", 
+      "vigs":0,
+      "naznachen":"17.02.2019",
+      "uped":"04.04.2019",
+      "noactive":"0 из 60 использованных дней"
+    }
+  ],
+  "360929393": [
+    {
+      "name":"Amateo Corrigan",
+      "rank":"Spectator", 
+      "vigs":1,
+      "naznachen":"27.01.2019",
+      "uped":"Не был повышен",
+      "noactive":"0 из 7 использованных дней",
+      "vig_1":"Перенос варна с перевода 03"
+    }
+  ],
+  "241248075": [
+    {
+      "name":"Antonio Hesoy",
+      "rank":"Spectator", 
+      "vigs":1,
+      "naznachen":"26.03.2019",
+      "uped":"Не был повышен",
+      "noactive":"0 из 7 использованных дней",
+      "vig_1":"забыл выдать мут нарушителю"
+    }
+  ],
+  "95193157": [
+    {
+      "name":"Elmo Ingannamorte",
+      "rank":"Support Team", 
+      "vigs":0,
+      "naznachen":"26.03.2019",
+      "uped":"03.03.2019",
+      "noactive":"14 из 60 использованных дней"
+    }
+  ],
+  "247438392": [
+    {
+      "name":"Anthony Hesoy",
+      "rank":"Spectator", 
+      "vigs":0,
+      "naznachen":"04.04.2019",
+      "uped":"Не был повышен",
+      "noactive":"0 из 7 использованных дней"
+    }
+  ],
+  "467901904": [
+    {
+      "name":"Matthew White",
+      "rank":"Support Team", 
+      "vigs":2,
+      "naznachen":"14.10.2018",
+      "uped":"02.02.2019",
+      "noactive":"62 из 60 использованных дней (по ув.причине)",
+      "vig_1":"жалоба",
+      "vig_2":"плохая активность"
+    }
+  ]
+}
