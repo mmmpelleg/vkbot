@@ -11,6 +11,8 @@ var form_created = 0;
 var form_send = new Array();
 var form_forma = new Array();
 var form_sender = new Array();
+var form_channel = new Array();
+var form_moderator = new Array();
 var mods = JSON.parse(fs.readFileSync("./moderators.json"));
 
 const VkBot = require(`./modules/node-vk-bot-api`);
@@ -44,8 +46,8 @@ if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма был
 form_send[args[1]] = false;
 let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
 let spchat = yuma.channels.find(c => c.name == "spectator-chat");
-spchat.send(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
-spchat.send(`**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
+form_channel[args[1]].(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
+form_channel[args[1]].(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
 ctx.reply(`Форма от ${form_sender[args[1]]} была принята`)
 return;
 });
@@ -56,12 +58,13 @@ vkint.command('отказ', (ctx) => {
     if(mods[from][0].rank != "Discord Master" && mods[from][0].rank != "Support Team") return ctx.reply(`Ошибка: ваши права слишком низки для выполнения данной команды`);
     let text = ctx.message.text;
     const args = text.slice(`отказ`).split(/ +/);
-    if(!args[1]) return ctx.reply(`используйте: отказ номер формы`)
+    let reason = args.slice(2).join(" ");
+    if(!args[1] && !args[2]) return ctx.reply(`используйте: отказ номер формы & причина`)
     if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
     form_send[args[1]] = false;
     let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
     let spchat = yuma.channels.find(c => c.name == "spectator-chat");
-    spchat.send(`**Форма №${args[1]} была отказана модератором ${mods[from][0].name}**`)
+    form_channel[args[1]].send(`${form_moderator[args[1]}\n**Форма №${args[1]} была отказана модератором ${mods[from][0].name} по причине: ${args.slice(2).join(" ")}**`)
     ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
     return;
 });
@@ -114,6 +117,8 @@ yuki.on('message', async message => {
         form_forma[form_created] = message.content;
         form_send[form_created] = true; 
         form_sender[form_created] = message.member.displayName;
+        form_moderator[form_created] = message.member;
+        form_channel[form_created] = message.channel;
         vkint.sendMessage(2000000007, `[Запрос на выполнение действия]\n Запросил форму: ${form_sender[form_created]}\nКоманда для выполнения:\n ${form_forma[form_created]}\n\nДля подтверждения выполнения команды введите: ацепт ${form_created}\nДля отказа: отказ ${form_created}`);
     }
 });
