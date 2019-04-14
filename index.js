@@ -1,6 +1,7 @@
 const Discord = require('discord.js'); // by YukiFlores
 const bot = new Discord.Client();
 const yuki = new Discord.Client();
+const fs = require( 'fs' );
 let serverid = '528635749206196232';
 const authed = new Set();
 const stmod = new Set();
