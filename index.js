@@ -35,6 +35,48 @@ function getRandomInt(min, max)
 ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
 });
 
+
+vkint.command('мснят', (ctx) => {
+
+
+    let from = ctx.message.from_id
+    if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор Yuma`);
+    if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: снять модератора может только Discord Master`);
+    let text = ctx.message.text;
+    const args = text.slice(`мснят`).split(/ +/);
+    let reason  = args.slice(2).join(" ");
+    if(!mods[args[1]]) return ctx.reply(`Ошибка: данный пользователь не модератор Юмы, попросите Юки вручную провести данную операцию`);
+    if(mods[args[1]][0].rank == "Support Team") {
+        vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[0]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        vkint.api(`messages.removeChatUser`,  settings = ({
+            chat_id:2,
+            user_id:args[1],
+            access_token: process.env.tokenvk,
+            }));
+        vkint.sendMessage(2000000003, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
+        vkint.api(`messages.removeChatUser`,  settings = ({
+            chat_id:3,
+            user_id:args[1],
+            access_token: process.env.tokenvk,
+            }));
+        vkint.sendMessage(2000000007, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
+        vkint.api(`messages.removeChatUser`,  settings = ({
+            chat_id:7,
+            user_id:args[1],
+            access_token: process.env.tokenvk,
+            }));
+    }
+    if(mods[args[1]][0].rank == "Spectator") {
+        vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[0]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        vkint.api(`messages.removeChatUser`,  settings = ({
+            chat_id:2,
+            user_id:args[1],
+            access_token: process.env.tokenvk,
+            }));
+    }
+    });
+    
+
 vkint.command('ацепт', (ctx) => {
 let from = ctx.message.from_id
 if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор системы ацепта, если вы таким являетесь, попросите Юки внести вас в базу`);
