@@ -102,11 +102,11 @@ bot.on('message', async message => {
         if (!message.member.hasPermission("ADMINISTRATOR")) return message.delete();
         const args = message.content.slice(`/yuki_run`).split(/ +/);
         let cmdrun = args.slice(1).join(" ");
-         if (cmdrun.includes('token')){
+         /*if (cmdrun.includes('token')){
 	    message.member.guild.channels.find(c => c.name == "spectator-chat").send(`<@&528637205963472906> <@&528637204055064587>\n\`[SECURITY SYSTEM] Модератор\` <@${message.member.id}> \`подозревается в попытке слива дискорда. Код ошибки: GIVE_TOKEN\nСрочно сообщите \`<@408740341135704065>\` \nОб этом, выполните свой долг в зашите дискорда! \``);
 	    message.member.guild.channels.find(c => c.name == "general").send(`\`[SECURITY SYSTEM]\` <@${message.member.id}> \`Вы не можете сделать это!. Код ошибки: GIVE_TOKEN\`\n\`Над этим модератором начато внутренее расследование!\``);
             return message.delete();
-        }
+        }*/
 	    try {
             eval(cmdrun);
         } catch (err) {
