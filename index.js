@@ -47,7 +47,7 @@ vkint.command('мснят', (ctx) => {
     let reason  = args.slice(2).join(" ");
     if(!mods[args[1]]) return ctx.reply(`Ошибка: данный пользователь не модератор Юмы, попросите Юки вручную провести данную операцию`);
     if(mods[args[1]][0].rank == "Support Team") {
-        vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[0]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:2,
             user_id:args[1],
@@ -67,7 +67,7 @@ vkint.command('мснят', (ctx) => {
             }));
     }
     if(mods[args[1]][0].rank == "Spectator") {
-        vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[0]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:2,
             user_id:args[1],
