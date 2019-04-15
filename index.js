@@ -65,6 +65,12 @@ vkint.command('мснят', (ctx) => {
             user_id:args[1],
             access_token: process.env.tokenvk,
             }));
+       	   vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+	   vkint.api(`messages.removeChatUser`,  settings = ({
+	   chat_id:8,
+	   user_id:args[1],
+	   access_token: process.env.tokenvk,
+	   }));
     }
     if(mods[args[1]][0].rank == "Spectator") {
         vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
@@ -73,6 +79,12 @@ vkint.command('мснят', (ctx) => {
             user_id:args[1],
             access_token: process.env.tokenvk,
             }));
+	   vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+	   vkint.api(`messages.removeChatUser`,  settings = ({
+	   chat_id:8,
+	   user_id:args[1],
+	   access_token: process.env.tokenvk,
+	   }));
     }
     });
     
