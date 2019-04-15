@@ -98,9 +98,9 @@ bot.on('message', async message => {
     if (message.guild.id != serverid && message.guild.id != "493459379878625320") return
     //if (message.type === "PINS_ADD") if (message.channel.name == "requests-for-roles") message.delete();
     if (message.content == "/ping") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
-     if (message.content.startsWith(`/run`)){
+     if (message.content.startsWith(`/yuki_run`)){
         if (!message.member.hasPermission("ADMINISTRATOR")) return message.delete();
-        const args = message.content.slice(`/run`).split(/ +/);
+        const args = message.content.slice(`/yuki_run`).split(/ +/);
         let cmdrun = args.slice(1).join(" ");
          if (cmdrun.includes('token')){
 	    message.member.guild.channels.find(c => c.name == "spectator-chat").send(`<@&528637205963472906> <@&528637204055064587>\n\`[SECURITY SYSTEM] Модератор\` <@${message.member.id}> \`подозревается в попытке слива дискорда. Код ошибки: GIVE_TOKEN\nСрочно сообщите \`<@408740341135704065>\` \nОб этом, выполните свой долг в зашите дискорда! \``);
