@@ -36,12 +36,7 @@ function getRandomInt(min, max)
 ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
 });
 
-let connection = mysql.createConnection({
-  host: process.env.mysql_host,
-  user: process.env.mysql_user,
-  password: process.env.mysql_pass,
-  database: process.env.mysql_db
-});
+
 
 
 
@@ -379,7 +374,3 @@ function lvltotext(lvlmod) {
 }
 */
 
-
-setInterval(function () { 
-  connection.query('SELECT 1'); 
-  }, 5000);
