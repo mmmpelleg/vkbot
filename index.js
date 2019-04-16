@@ -7,7 +7,7 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
-let mysql = require('./modules/mysql');
+//let mysql = require('./modules/mysql');
 var form_created = 0;
 var form_send = new Array();
 var form_forma = new Array();
@@ -44,18 +44,7 @@ let connection = mysql.createConnection({
 });
 
 
- vkint.command('/getstats', (ctx) => {
-   let from = ctx.message.from_id;
-   let sql = `SELECT * FROM \`moderators\` WHERE \`vkid\` = ${from}`;
-      connection.query(sql, (error, results, fields) => {
-      if (error) {
-        return console.error(error.message);
-      }
-      if(!results[0]) return ctx.reply(`Вы не модератор!`);
-      console.log(results);
-      ctx.reply(`Ваша статистика:\nВаш UID: ${results[0].id}\nВаш ID VK: ${results[0].vkid}\nВаш ID Discord: ${results[0].disid}\nВаш ник: ${results[0].name}\nВаша должность: ${results[0]}.rank\nСервер: ${results[0].server}`);
-      });
-});
+
 
 
 vkint.command('мснят', (ctx) => {
