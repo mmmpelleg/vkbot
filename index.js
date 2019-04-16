@@ -36,6 +36,27 @@ function getRandomInt(min, max)
 ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
 });
 
+let connection = mysql.createConnection({
+  host: process.env.mysql_host,
+  user: process.env.mysql_user,
+  password: process.env.mysql_pass,
+  database: process.env.mysql_db
+});
+
+
+ vkint.command('/getstats', (ctx) => {
+   let from = ctx.message.from_id;
+   let sql = `SELECT * FROM \`moderators\` WHERE \`vkid\` = ${from}`;
+      connection.query(sql, (error, results, fields) => {
+      if (error) {
+        return console.error(error.message);
+      }
+      if(!results[0]) return ctx.reply(`Вы не модератор!`);
+      console.log(results);
+      ctx.reply(`Ваша статистика:\nВаш UID: ${results[0].id}\nВаш ID VK: ${results[0].vkid}\nВаш ID Discord: ${results[0].disid}\nВаш ник: ${results[0].name}\nВаша должность: ${results[0]}.rank\nСервер: ${results[0].server}`);
+      });
+});
+
 
 vkint.command('мснят', (ctx) => {
 
@@ -368,3 +389,8 @@ function lvltotext(lvlmod) {
     return text;
 }
 */
+
+
+setInterval(function () { 
+  connection.query('SELECT 1'); 
+  }, 5000);
