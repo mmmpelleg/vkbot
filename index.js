@@ -7,6 +7,7 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
+let mysql = require('mysql');
 var form_created = 0;
 var form_send = new Array();
 var form_forma = new Array();
