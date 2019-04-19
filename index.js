@@ -447,7 +447,7 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         else if(role.name == "✯Управляющие сервером.✯") {
             vkint.sendMessage(398115725, `На пост управляющего администратора был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
-        else if(role.name == "✯Ministers✮") {
+        else if(role.name == "✮Ministers✮") {
             vkint.sendMessage(398115725, `На пост министра (указать структуру) был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✵Leader✵") {
@@ -482,7 +482,7 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         else if(role.name == "✯Управляющие сервером.✯") {
             vkint.sendMessage(398115725, `C поста управляющего администратора был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
-        else if(role.name == "✯Ministers✮") {
+        else if(role.name == "✮Ministers✮") {
             vkint.sendMessage(398115725, `C поста министра (указать структуру) был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✵Leader✵") {
