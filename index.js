@@ -135,7 +135,8 @@ vkint.command('getapi', (ctx) => {
        vkint.api(`users.get`, settings = ({
             users_ids: args[1],
             fields: `first_name`,
-            access_token: process.env.tokenvk
+            access_token: process.env.tokenvk,
+            name_case: `nom`
         })).then(data => {
             console.log(data)
         })
