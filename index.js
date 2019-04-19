@@ -132,8 +132,6 @@ const args = text.slice(`ацепт`).split(/ +/);
 if(!args[1]) return ctx.reply(`используйте: ацепт номер формы`)
 if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
 form_send[args[1]] = false;
-let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
-let spchat = yuma.channels.find(c => c.name == "spectator-chat");
 form_channel[args[1]].send(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
 form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
 ctx.reply(`Форма от ${form_sender[args[1]]} была принята`)
@@ -223,13 +221,12 @@ bot.on('message', async message => {
 yuki.on('message', async message => {
     if (message.channel.type == "dm") return // Если в ЛС, то выход.
     if (message.guild.id != serverid) return
-    //if (message.type === "PINS_ADD") if (message.channel.name == "requests-for-roles") message.delete();
     if (message.content == "/ping1") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
     if(message.content.startsWith(`-+ban`) || message.content.startsWith(`-+unban`))
     {
         if(message.member.hasPermission("ADMINISTRATOR")) return false;
-        if(message.member.roles.some(r => ["Support Team"].includes(r.name))) return false;
         if(!message.member.hasPermission("MANAGE_ROLES")) return false;
+        if(message.member.roles.some(r => ["Support Team"].includes(r.name))) return false;
         form_created = form_created + 1;
         form_forma[form_created] = message.content;
         form_send[form_created] = true; 
