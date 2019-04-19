@@ -82,7 +82,7 @@ vkint.command('мснят', (ctx) => {
                 vkint.sendMessage(from, "[Формы - КИК] ✅ Модератор был кикнут")
             }).catch(async data => {
                 let data2 = JSON.parse(data)
-                console.log(data2)
+                console.log(data2.error.error_code)
                 //vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
             })
        	   //vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
