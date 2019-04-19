@@ -137,9 +137,10 @@ vkint.command('getapi', (ctx) => {
             fields: `first_name`,
             access_token: process.env.tokenvk,
             name_case: `nom`
-        })).then(
-            console.log(data)
-        )
+        })).then(async data => {
+            ctx.reply(data)
+            ctx.reply(`ФИ: ${data.response[0].first_name}_${data.response[0].last_name}`)
+        })
         //ctx.reply(`ФИ: ${data.response[0].first_name}_${data.response[0].last_name}`)
     });
 
