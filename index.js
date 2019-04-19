@@ -95,7 +95,7 @@ vkint.command('мснят', (ctx) => {
         vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
         }).catch(async data => {
             let data2 = JSON.parse(data)
-            vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
+            vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
         })
     }
     if(mods[args[1]][0].rank == "Spectator") {
