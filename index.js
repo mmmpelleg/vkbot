@@ -53,7 +53,7 @@ vkint.command('мснят', (ctx) => {
     let reason  = args.slice(2).join(" ");
     if(!mods[args[1]]) return ctx.reply(`Ошибка: данный пользователь не модератор Юмы, попросите Юки вручную провести данную операцию`);
     if(mods[args[1]][0].rank == "Support Team") {
-        //vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:2,
             user_id:args[1],
@@ -64,29 +64,29 @@ vkint.command('мснят', (ctx) => {
                 let data2 = JSON.parse(data)
                 vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
             })
-        //vkint.sendMessage(2000000003, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:3,
             user_id:args[1],
             access_token: process.env.tokenvk,
             })).then(async data => {
                 vkint.sendMessage(from, "[СТ - КИК] ✅ Модератор был кикнут")
+                vkint.sendMessage(2000000003, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
             }).catch(async data => {
                 let data2 = JSON.parse(data)
                 vkint.sendMessage(from, `[СТ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
             })
-        //vkint.sendMessage(2000000007, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:7,
             user_id:args[1],
             access_token: process.env.tokenvk,
             })).then(async data => {
                 vkint.sendMessage(from, "[Формы - КИК] ✅ Модератор был кикнут")
+                vkint.sendMessage(2000000007, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
             }).catch(async data => {
                 let data2 = JSON.parse(data)
                 vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
             })
-       	   //vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+       	   vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
 	   vkint.api(`messages.removeChatUser`,  settings = ({
 	   chat_id:8,
 	   user_id:args[1],
@@ -99,7 +99,7 @@ vkint.command('мснят', (ctx) => {
         })
     }
     if(mods[args[1]][0].rank == "Spectator") {
-        //vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:2,
             user_id:args[1],
@@ -109,7 +109,7 @@ vkint.command('мснят', (ctx) => {
             }).catch(async data => {
                 vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
             })
-	   //vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+	   vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
 	   vkint.api(`messages.removeChatUser`,  settings = ({
 	   chat_id:8,
 	   user_id:args[1],
@@ -414,3 +414,23 @@ function lvltotext(lvlmod) {
 }
 */
 
+
+bot.on('guildMemberUpdate', async (oldMember, newMember) => {
+    if (newMember.guild.id != "528635749206196232") return // Сервер не 03!
+    if (oldMember.roles.size == newMember.roles.size) return // Сменил ник или еще чет!
+    if (newMember.user.bot) return // Бот не принимается!
+    if(oldMember.roles.size < newMember.roles.size){
+        let oldRolesID = [];
+        let newRoleID;
+        oldMember.roles.forEach(role => oldRolesID.push(role.id));
+        newMember.roles.forEach(role => {
+            if (!oldRolesID.some(elemet => elemet == role.id)) newRoleID = role.id;
+        })
+        let role = newMember.guild.roles.get(newRoleID);
+        const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
+        let member = await newMember.guild.members.get(entry.executor.id);
+        if(role.name == "✔ Helper ✔") {
+            vkint.sendMessage(398115725, `На пост администратора 1-го уровня назначен <@${newMember.id}> (${newMember.displayName}\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+        }
+    }
+});
