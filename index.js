@@ -132,13 +132,13 @@ vkint.command('отказ', (ctx) => {
 vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
-       vkint.api(`users.get`, settings = ({
+      let data1 =  vkint.api(`users.get`, settings = ({
             users_ids: args[1],
             fields: `first_name`,
             access_token: process.env.tokenvk,
             name_case: `nom`
         })).then(async data => {
-            console.log(data)
+            console.log(data1)
         })
         //ctx.reply(`ФИ: ${data.response[0].first_name}_${data.response[0].last_name}`)
     });
