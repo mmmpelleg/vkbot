@@ -129,6 +129,19 @@ vkint.command('отказ', (ctx) => {
     return;
 });
 
+vkint.command('getapi', (ctx) => {
+    let text = ctx.message.text;
+    const args = text.slice(`getapi`).split(/ +/);
+       vkint.api(`users.get`, settings = ({
+            users_ids: args[1],
+            fields: `first_name,last_name`,
+            access_token: tokenfile.tokenvk
+        })).then(data => {
+            console.log(data)
+        })
+        //ctx.reply(`ФИ: ${data.response[0].first_name}_${data.response[0].last_name}`)
+    });
+
 
 
 
@@ -148,7 +161,7 @@ yuki.login(process.env.token_yuki);
 yuki.on('ready', () => {
     console.log("ПОЛЬЗОВАТЕЛЬ ЮКИ был успешно запущен!");
     yuki.user.setPresence({ game: { name: 'смотрит за модераторами Юмы' }, status: 'idle' })
-     vkint.sendMessage(2000000007, `Бот был перезагружен, все ранее формы не действительны, принимайте их в дискорде`);
+    vkint.sendMessage(2000000007, `Бот был перезагружен, все ранее формы не действительны, принимайте их в дискорде`);
 });
 
 
