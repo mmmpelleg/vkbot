@@ -133,7 +133,7 @@ vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
       let data1 =  vkint.api(`users.get`, settings = ({
-            users_ids: args[1],
+            users_ids: 467901904,
             fields: `first_name`,
             access_token: process.env.tokenvk,
             name_case: `nom`
