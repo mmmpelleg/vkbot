@@ -455,13 +455,13 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         }
     }
     else{
-        let oldRolesID = [];
-        let newRoleID;
-        oldMember.roles.forEach(role => oldRolesID.push(role.id));
-        newMember.roles.forEach(role => {
-            if (!oldRolesID.some(elemet => elemet == role.id)) newRoleID = role.id;
+        let newRolesID = [];
+        let oldRoleID;
+        newMember.roles.forEach(role => newRolesID.push(role.id));
+        oldMember.roles.forEach(role => {
+            if (!newRolesID.some(elemet => elemet == role.id)) oldRoleID = role.id;
         })
-        let role = newMember.guild.roles.get(newRoleID);
+        let role = newMember.guild.roles.get(oldRoleID);
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
         if(role.name == "✔ Helper ✔") {
