@@ -132,8 +132,7 @@ vkint.command('отказ', (ctx) => {
 vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
-    vkint.api(`messages.removeChatUser`,  settings = ({
-        chat_id:8,
+    vkint.api(`users.get`,  settings = ({
         user_id:args[1],
         access_token: process.env.tokenvk,
         })).catch(async data => {
