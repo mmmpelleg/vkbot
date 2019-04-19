@@ -430,28 +430,28 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
         if(role.name == "✔ Helper ✔") {
-            vkint.sendMessage(398115725, `На пост администратора 1-го уровня назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост администратора 1-го уровня назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✔Jr.Administrator✔") {
-            vkint.sendMessage(398115725, `На пост администратора 3-го уровня был повышен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост администратора 3-го уровня был повышен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✔ Administrator ✔") {
-            vkint.sendMessage(398115725, `На пост администратора 4-го уровня был повышен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост администратора 4-го уровня был повышен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✯ Следящие за хелперами ✯") {
-            vkint.sendMessage(398115725, `На пост следящего за хелперами был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост следящего за хелперами был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "Тех.поддержка сервера") {
-            vkint.sendMessage(398115725, `На пост технического администратора был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост технического администратора был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✯Управляющие сервером.✯") {
-            vkint.sendMessage(398115725, `На пост управляющего администратора был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост управляющего администратора был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✮Ministers✮") {
-            vkint.sendMessage(398115725, `На пост министра (указать структуру) был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост министра (указать структуру) был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✵Leader✵") {
-            vkint.sendMessage(398115725, `На пост лидера (указать лидерку) был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `На пост лидера (указать лидерку) был назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
     }
     else{
@@ -465,28 +465,28 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
         if(role.name == "✔ Helper ✔") {
-            vkint.sendMessage(398115725, `C поста администратора 1-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста администратора 1-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✔Jr.Administrator✔") {
-            vkint.sendMessage(398115725, `C поста администратора 3-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста администратора 3-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✔ Administrator ✔") {
-            vkint.sendMessage(398115725, `C поста администратора 4-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста администратора 4-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✯ Следящие за хелперами ✯") {
-            vkint.sendMessage(398115725, `C поста следящего за хелперами был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста следящего за хелперами был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "Тех.поддержка сервера") {
-            vkint.sendMessage(398115725, `C поста технического администратора был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста технического администратора был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✯Управляющие сервером.✯") {
-            vkint.sendMessage(398115725, `C поста управляющего администратора был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста управляющего администратора был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✮Ministers✮") {
-            vkint.sendMessage(398115725, `C поста министра (указать структуру) был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста министра (указать структуру) был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
         else if(role.name == "✵Leader✵") {
-            vkint.sendMessage(398115725, `C поста лидера фракции (указать фракцию) был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
+            vkint.sendMessage(2000000010, `C поста лидера фракции (указать фракцию) был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
     }
 });
