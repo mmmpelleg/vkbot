@@ -4,7 +4,7 @@ const { stringify } = require('querystring');
 module.exports = async function (method, settings = {}) {
   try {
     const { data } = await axios.post(`https://api.vk.com/method/${method}`, stringify({
-      v: 5.80,
+      v: 5.8,
       ...settings,
     }));
 
