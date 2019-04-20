@@ -188,8 +188,7 @@ bot.on('ready', () => {
 yuki.login(process.env.token_yuki);
 yuki.on('ready', () => {
     console.log("ПОЛЬЗОВАТЕЛЬ ЮКИ был успешно запущен!");
-    yuki.user.setPresence({ game: { name: 'смотрит за модераторами Юмы' }, status: 'idle' })
-    //vkint.sendMessage(2000000007, `Бот был перезагружен, все ранее формы не действительны, принимайте их в дискорде`);
+    vkint.sendMessage(2000000007, `Бот был перезагружен, все формы обнулены, принимайте их в дискорде`);
 });
 
 
