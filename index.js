@@ -159,7 +159,7 @@ vkint.command('getapi', (ctx) => {
     let testnum = parseInt(args[1])
     ctx.reply(`1. ${testnum}`)
     if(testnum > 0) return ctx.reply(`Это ID`)
-    if(testnum == "NaN") return ctx.reply(`Это упоминание`)
+    else if(testnum == NaN) return ctx.reply(`Это упоминание`)
     });
 
 
