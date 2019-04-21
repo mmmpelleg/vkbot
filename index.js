@@ -47,7 +47,7 @@ vkint.command('мснят', (ctx) => {
 
     let from = ctx.message.from_id
     if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор Yuma`);
-    if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: снять модератора может только Discord Master`);
+    //if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: снять модератора может только Discord Master`);
     let text = ctx.message.text;
     const args = text.slice(`мснят`).split(/ +/);
     let reason  = args.slice(2).join(" ");
