@@ -90,7 +90,7 @@ vkint.command('мснят', (ctx) => {
                 let data2 = JSON.parse(data)
                 vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
             })
-       	   //vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+       	//    vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
 	   vkint.api(`messages.removeChatUser`,  settings = ({
 	   chat_id:8,
 	   user_id:args[1],
@@ -123,7 +123,7 @@ vkint.command('мснят', (ctx) => {
     }
     if(mods[args[1]][0].rank == "Spectator") {
         //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
-        vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        // vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:2,
             user_id:args[1],
@@ -158,6 +158,22 @@ vkint.command('мснят', (ctx) => {
    
     });
     
+
+    if (message.content.startsWith(`/sm`)){
+        if (!message.member.hasPermission("ADMINISTRATOR")) return message.delete();
+        const args = message.content.slice(`/sm`).split(/ +/);
+        if(!args[1]) return message.delete();
+        if(args[1] == 1) vkint.sendMessage(2000000002,args.slice(2).join(" "));
+        if(args[1] == 2) vkint.sendMessage(2000000003,args.slice(2).join(" "));
+        if(args[1] == 3) vkint.sendMessage(2000000001,args.slice(2).join(" "));
+        if(args[1] == 4) vkint.sendMessage(2000000004,args.slice(2).join(" "));
+        if(args[1] == 1) args[1] = "#Yuma | Moderation Team Discord";
+        if(args[1] == 2) args[1] = "#Yuma | Команда старших модераторов";
+        if(args[1] == 3) args[1] = "#Yuma | Event Log";
+        if(args[1] == 4) args[1] = "#Yuma | Item Log";
+        console.log(`Отправил сообщение в беседу ${args[1]}. Администратор: ${message.member.displayName}`)
+        return message.delete();
+    }
 
 vkint.command('ацепт', (ctx) => {
 let from = ctx.message.from_id
