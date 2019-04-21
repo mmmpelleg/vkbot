@@ -158,8 +158,8 @@ vkint.command('getapi', (ctx) => {
     const args = text.slice(`getapi`).split(/ +/);
     let testnum = parseInt(args[1])
     ctx.reply(`1. ${testnum}`)
-    if(testnum > 0) return ctx.reply(`2.1 ${testnum}`)
-    if(testnum == 0) return ctx.reply(`2.2 ${testnum}`)
+    if(testnum > 0) return ctx.reply(`Это ID`)
+    if(testnum == "NaN") return ctx.reply(`Это упоминание`)
     });
 
 
