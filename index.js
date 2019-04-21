@@ -49,6 +49,8 @@ vkint.command('мснят', (ctx) => {
     if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор Yuma`);
     if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: снять модератора может только Discord Master`);
     let text = ctx.message.text;
+    let yuma = yuki.guilds.get(serverid);
+    let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
     const args = text.slice(`мснят`).split(/ +/);
     let reason  = args.slice(2).join(" ");
     if(!mods[args[1]]) return ctx.reply(`Ошибка: данный пользователь не модератор Юмы, попросите Юки вручную провести данную операцию`);
@@ -102,7 +104,7 @@ vkint.command('мснят', (ctx) => {
          let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
          let role1 = yuma.roles.find(r => r.name == "Support Team");
          let role2 = yuma.roles.find(r => r.name == "Spectator™");
-         let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
+
          let r_send = `\n`;
          if(member.roles.some(r => ["Support Team"].includes(r.name))){
             member.removeRole(role1,"запрос ВК");
@@ -140,10 +142,10 @@ vkint.command('мснят', (ctx) => {
         }).catch(async data => {
             vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
         }) 
-        let yuma = yuki.guilds.get(serverid);
+
         let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
         let role2 = yuma.roles.find(r => r.name == "Spectator™");
-        let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
+        
         let r_send;
         if(member.roles.some(r => ["Spectator™"].includes(r.name))){
            member.removeRole(role2,"запрос ВК");
