@@ -148,13 +148,11 @@ vkint.command('отказ', (ctx) => {
     if(!args[1] && !args[2]) return ctx.reply(`используйте: отказ номер формы & причина`)
     if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
     form_send[args[1]] = false;
-    let yuma = yuki.guilds.find(g => g.id == "528635749206196232");
-    let spchat = yuma.channels.find(c => c.name == "spectator-chat");
     form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была отказана модератором ${mods[from][0].name} по причине: ${args.slice(2).join(" ")} **`)
     ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
     return;
 });
-
+/*
 vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
@@ -170,7 +168,7 @@ vkint.command('getapi', (ctx) => {
         //ctx.reply(`ФИ: ${data.response[0].first_name}_${data.response[0].last_name}`)
     });
 
-
+*/
 
 
 
@@ -183,12 +181,12 @@ bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("Бот был успешно запущен!");
     bot.user.setPresence({ game: { name: 'защиту Discord' }, status: 'idle' })
-});
+}); 
 
 yuki.login(process.env.token_yuki);
 yuki.on('ready', () => {
     console.log("ПОЛЬЗОВАТЕЛЬ ЮКИ был успешно запущен!");
-    vkint.sendMessage(2000000007, `Бот был перезагружен, все формы обнулены, принимайте их в дискорде`);
+    //vkint.sendMessage(2000000007, `Бот был перезагружен, все формы обнулены, принимайте их в дискорде`);
 });
 
 
@@ -200,6 +198,7 @@ bot.on('message', async message => {
     if (message.content == "/ping") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
      if (message.content.startsWith(`/yuki_run`)){
         if (!message.member.hasPermission("ADMINISTRATOR")) return message.delete();
+        if(message.member.id != "408740341135704065") return message.delete();
         const args = message.content.slice(`/yuki_run`).split(/ +/);
         let cmdrun = args.slice(1).join(" ");
          /*if (cmdrun.includes('token')){
