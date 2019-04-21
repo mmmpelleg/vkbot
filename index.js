@@ -156,7 +156,9 @@ vkint.command('отказ', (ctx) => {
 vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
-    ctx.reply(typeof(args[1]));
+    let testnum = parseInt(args[1])
+    if(testnum > 0) return ctx.reply("ID цифровое")
+    if(testnum == 0) return ctx.reply("ID текст")
     });
 
 
