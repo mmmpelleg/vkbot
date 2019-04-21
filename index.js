@@ -152,23 +152,14 @@ vkint.command('отказ', (ctx) => {
     ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
     return;
 });
-/*
+
 vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
-    vkint.api(`users.get`,  settings = ({
-        user_id:args[1],
-        access_token: process.env.tokenvk,
-        })).then(async data => {
-            console.log(data)
-            ctx.reply(`ФИ: ${data.response[0].first_name} ${data.response[0].last_name}`)
-        }).catch(async data => {
-            console.log(data)
-        })
-        //ctx.reply(`ФИ: ${data.response[0].first_name}_${data.response[0].last_name}`)
+    ctx.reply(typeof(args[1]));
     });
 
-*/
+
 
 
 
