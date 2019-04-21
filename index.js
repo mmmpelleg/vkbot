@@ -150,11 +150,12 @@ vkint.command('мснят', (ctx) => {
            member.removeRole(role2,"запрос ВК");
            r_send = `[1] Снята роль Spectator`;
         }
+        setTimeout(() => {
+            channel_sp.send(`по запросу через ВК`)
+        }, 3500);
+        vkint.sendMessage(from, r_send)
     }
-    setTimeout(() => {
-        channel_sp.send(`по запросу через ВК`)
-    }, 3500);
-    vkint.sendMessage(from, r_send)
+   
     });
     
 
