@@ -157,8 +157,9 @@ vkint.command('getapi', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`getapi`).split(/ +/);
     let testnum = parseInt(args[1])
-    if(testnum > 0) return ctx.reply("ID цифровое")
-    if(testnum == 0) return ctx.reply("ID текст")
+    ctx.reply(`1. ${testnum}`)
+    if(testnum > 0) return ctx.reply(`2.1 ${testnum}`)
+    if(testnum == 0) return ctx.reply(`2.2 ${testnum}`)
     });
 
 
