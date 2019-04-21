@@ -99,7 +99,7 @@ vkint.command('мснят', (ctx) => {
             vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
          })*/
          let yuma = yuki.guilds.get(serverid);
-         let member = yuma.members.find(m => m.id == mods[args[1][0]].discordid)
+         let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
          let role1 = yuma.roles.find(r => r.name == "Support Team");
          let role2 = yuma.roles.find(r => r.name == "Spectator™");
          let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
@@ -138,7 +138,7 @@ vkint.command('мснят', (ctx) => {
             vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
         }) */
         let yuma = yuki.guilds.get(serverid);
-        let member = yuma.members.find(m => m.id == mods[args[1][0]].discordid)
+        let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
         let role2 = yuma.roles.find(r => r.name == "Spectator™");
         let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
         let r_send;
