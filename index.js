@@ -50,6 +50,7 @@ vkint.command('мснят', (ctx) => {
     if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: снять модератора может только Discord Master`);
     let text = ctx.message.text;
     let yuma = yuki.guilds.get(serverid);
+    let r_send;
     let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
     const args = text.slice(`мснят`).split(/ +/);
     let reason  = args.slice(2).join(" ");
@@ -145,8 +146,6 @@ vkint.command('мснят', (ctx) => {
 
         let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
         let role2 = yuma.roles.find(r => r.name == "Spectator™");
-        
-        let r_send;
         if(member.roles.some(r => ["Spectator™"].includes(r.name))){
            member.removeRole(role2,"запрос ВК");
            r_send = `[1] Снята роль Spectator`;
