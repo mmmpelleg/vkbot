@@ -57,7 +57,7 @@ vkint.command('мснят', (ctx) => {
     if(!mods[args[1]]) return ctx.reply(`Ошибка: данный пользователь не модератор Юмы, попросите Юки вручную провести данную операцию`);
     if(mods[args[1]][0].rank == "Support Team") {
         //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
-        vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+        //vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
         vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:2,
             user_id:args[1],
@@ -90,7 +90,7 @@ vkint.command('мснят', (ctx) => {
                 let data2 = JSON.parse(data)
                 vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
             })
-       	   vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+       	   //vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
 	   vkint.api(`messages.removeChatUser`,  settings = ({
 	   chat_id:8,
 	   user_id:args[1],
