@@ -44,9 +44,10 @@ vkint.command('/stream', (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`/stream`).split(/ +/);
     let yuma = yuki.guilds.get(serverid);
-    let channel = yuma.channels.find(c => c.name == "spectator-chat");
+    let channel = yuma.channels.find(c => c.name == "info");
     let URL  = args.slice(1).join(" ");
-    channel.send(`Test info Stream: URL = ${URL}`)
+    channel.send(`**Не пропустите стрим на нашем ютуб канале! 
+    Ссылка на стрим: ${URL}\nБудут интерактивы, ответы на вопросы!**`)
     ctx.reply(`Информация опубликована.`)
     vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
     });
