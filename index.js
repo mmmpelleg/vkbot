@@ -46,7 +46,7 @@ vkint.command('/stream', (ctx) => {
     let yuma = yuki.guilds.get(serverid);
     let channel = yuma.channels.find(c => c.name == "info");
     let URL  = args.slice(1).join(" ");
-    channel.send(`**Не пропустите стрим на нашем ютуб канале!\nСсылка на стрим: ${URL}\nБудут интерактивы, ответы на вопросы!**`)
+    channel.send(`@everyone\n**Не пропустите стрим на нашем ютуб канале!\nСсылка на стрим: ${URL}\nЖдём вас всех!**`)
     ctx.reply(`Информация опубликована.`)
     vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
     });
