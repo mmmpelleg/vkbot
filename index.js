@@ -36,6 +36,21 @@ function getRandomInt(min, max)
 ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
 });
 
+vkint.command('/stream', (ctx) => {
+
+    let from = ctx.message.from_id
+    if(!mods[from]) return ctx.reply(`Ошибка: вашего профиля нет в базе данных`);
+    if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: недостаточно прав`);
+    let text = ctx.message.text;
+    const args = text.slice(`/stream`).split(/ +/);
+    let yuma = yuki.guilds.get(serverid);
+    let channel = yuma.channels.find(c => c.name == "spectator-chat");
+    let URL  = args.slice(1).join(" ");
+    channel.send(`Test info Stream: URL = ${URL}`)
+    ctx.reply(`Информация опубликована.`)
+    vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
+    });
+
 
 
 
