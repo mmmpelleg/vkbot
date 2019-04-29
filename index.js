@@ -170,20 +170,23 @@ vkint.command('/astats', (ctx) => {
 
 vkint.command('/addmod', (ctx) => {
     let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/addmod`).split(/ +/);
-    let nick  = args.slice(3).join(" ");
-    get_profile(1, from).then(nick,args,async value_f => {
+    get_profile(1, from).then(async value_f => {
         if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
         if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
         if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
+        let text = ctx.message.text;
+        const args = text.slice(`/addmod`).split(/ +/);
+        let nick  = args.slice(3).join(" ");
         get_profile(1, args[1]).then(async value => {
+            let text = ctx.message.text;
+            const args = text.slice(`/addmod`).split(/ +/);
+            let nick  = args.slice(3).join(" ");
             if(value != false) return ctx.reply(`Аккаунт уже существует в базе модераторов (используйте /setmod)`)
             add_profile(1, agrs[1], nick, args[2])
             return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${lvltotext(args[2])}`)
         });
         
-    })
+    });
 });
 
 function lvltotext(lvl) {
