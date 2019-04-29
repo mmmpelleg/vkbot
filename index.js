@@ -79,7 +79,6 @@ async function get_profile(gameserver, author_id){
             }
             let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
             if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
-            console.log(db_account);
             let account_info = [
                 db_account.вк, // Вывод ID пользователя.
                 db_account.ник, // Вывод ник
@@ -125,16 +124,18 @@ ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`   )
 vkint.command('/stream', (ctx) => {
 
     let from = ctx.message.from_id
-    if(!mods[from]) return ctx.reply(`Ошибка: вашего профиля нет в базе данных`);
-    if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: недостаточно прав`);
-    let text = ctx.message.text;
-    const args = text.slice(`/stream`).split(/ +/);
-    let yuma = yuki.guilds.get(serverid);
-    let channel = yuma.channels.find(c => c.name == "info");
-    let URL  = args.slice(1).join(" ");
-    channel.send(`@everyone\n**Не пропустите стрим на нашем ютуб канале!\nСсылка на стрим: ${URL}\nЖдём вас всех!**`)
-    ctx.reply(`Информация опубликована.`)
-    vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
+    get_profile(1, from).then(async value => {
+        if(value == false) return ctx.reply(`Вы не модератор (Обратитесь к разработчику @shixan18 за получением доступа)`)
+        if(value[2] < 4) return ctx.reply(`Ваши права слишком низки для данного действия`)
+        let text = ctx.message.text;
+        const args = text.slice(`/stream`).split(/ +/);
+        let yuma = yuki.guilds.get(serverid);
+        let channel = yuma.channels.find(c => c.name == "info");
+        let URL  = args.slice(1).join(" ");
+        channel.send(`\`@everyone\`\n**Не пропустите стрим на нашем ютуб канале!\nСсылка на стрим: ${URL}\nЖдём вас всех!**`)
+        ctx.reply(`Информация опубликована.`)
+        vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
+    });
     });
 
 vkint.command('/test', (ctx) => {
