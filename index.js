@@ -212,6 +212,7 @@ vkint.command('/help', (ctx) => {
         if(value_f >= 3 && value_f != 4) helpcmd = helpcmd + `Доступные команды руководителя группы модераторов:\n/astats IDВК - посмотреть статистику модератора\n/setmod idvk (0-2) (только для существующих аккаунтов в базе)\n\n`; 
         if(value_f >= 4) helpcmd = helpcmd + `Доступные команды стримера:\n/stream URL-Stream - отправить информацию о стриме в дискорд\n\n`;
         if(value_f >= 6) helpcmd = helpcmd + `Доступные команды разработчика:\n/addmod IDVK LVLMOD NICK - добавить модератора\n\n`;
+        return console.log(helpcmd);
         return ctx.reply(helpcmd);
     });
 });
