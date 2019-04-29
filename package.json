@@ -6,20 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Artemka076",
   "license": "ISC",
   "dependencies": {
-    "component-emitter": "^1.2.1",
-    "cookiejar": "^2.1.2",
-    "dependencies": "0.0.1",
     "discord.js": "^11.4.2",
-    "fs": "0.0.1-security",
-    "mime": "^2.4.0",
     "mongoose-paginate": "git://github.com/zerok78/mongoose-paginate.git#version-5.0.4",
-    "ms": "^2.1.1",
+    "query-string": "^6.4.2",
     "random-number": "0.0.9",
     "superagent": "^3.8.3",
-    "tweetnacl": "^1.0.0",
     "xmlhttprequest": "^1.8.0"
   }
 }
