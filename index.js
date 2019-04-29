@@ -201,6 +201,24 @@ vkint.command('/setmod', (ctx) => {
     });
 });
 
+vkint.command('/help', (ctx) => {
+    let from = ctx.message.from_id
+    get_profile(1, from).then(async value_f => {
+        if(value_f == false) return ctx.reply(`Для вас доступных команд нет!`)
+        if(value_f[2] == 0) return ctx.reply(`Для вас доступных команд нет!`)
+        let helpcmd = `\n`;
+        if(value_f >= 1 && value_f != 4) helpcmd = helpcmd + `Доступные команды младшего модератора:\n/stats - статистика модератора\n\n`;
+        if(value_f >= 2 && value_f != 4) helpcmd = helpcmd + `Доступные команды старшего модератора:\nацепт №формы - одобрить блокировку/разблокировку\nотказ №формы причина - отказать в действии\n\n`; 
+        if(value_f >= 3 && value_f != 4) helpcmd = helpcmd + `Доступные команды руководителя группы модераторов:\n/astats IDВК - посмотреть статистику модератора\n/setmod idvk (0-2) (только для существующих аккаунтов в базе)\n\n`; 
+        if(value_f >= 4) helpcmd = helpcmd + `Доступные команды стримера:\n/stream URL-Stream - отправить информацию о стриме в дискорд\n\n`;
+        if(value_f >= 6) helpcmd = helpcmd + `Доступные команды разработчика:\n/addmod IDVK LVLMOD NICK - добавить модератора\n\n`;
+        return ctx.reply(helpcmd);
+    });
+});
+
+
+
+
 function lvltotext(lvl) {
 let text;
 if(lvl == 0) text = 'Пользователь';
