@@ -81,9 +81,10 @@ async function get_profile(gameserver, author_id){
             if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
             let account_info = [
                 db_account.вк, // Вывод ID пользователя.
-                db_account.ник, // Вывод статуса разработчика.
+                db_account.ник, // Вывод ник
                 db_account.уровеньмодератора, // Вывод уровня модератора
-                db_account.неделя, // Вывод уровня модератора
+                db_account.неделя, // Вывод недели
+                db_account.сообщения, // Вывод сообщений
                 db_account.роливдс, // Вывод уровня модератора
                 db_account.ролиботом, // Вывод уровня модератора
                 db_account.тикеты, // Вывод уровня модератора
@@ -138,7 +139,7 @@ vkint.command('/stream', (ctx) => {
 vkint.command('/test', (ctx) => {
     let from = ctx.message.from_id
     get_profile(1, from).then(async value => {
-        if(value == false) return tx.reply(`ваш аккаунт в базе не найден`)
+        if(value == false) return ctx.reply(`ваш аккаунт в базе не найден`)
         if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
         ctx.reply(`Ваш ВК: ${from}\nВаш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
     })
