@@ -171,7 +171,7 @@ vkint.command('/astats', (ctx) => {
 vkint.command('/addmod', (ctx) => {
     let from = ctx.message.from_id
     let text = ctx.message.text;
-    const args = text.slice(`/astats`).split(/ +/);
+    const args = text.slice(`/addmod`).split(/ +/);
     let nick  = args.slice(3).join(" ");
     get_profile(1, from).then(async value_f => {
         if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
