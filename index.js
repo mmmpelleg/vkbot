@@ -20,12 +20,12 @@ doc.useServiceAccountAuth(creds_json, function (err) {
 });
 
 
-async function add_profile(gameserver, author_id){
+async function add_profile(gameserver, author_id, nick, moderlvl){
     return new Promise(async function(resolve, reject) {
         doc.addRow(gameserver, {
-            idпользователя: `${author_id}`,
-            статусразработчика: '0',
-            уровеньмодератора: '0'
+            вк: author_id, // Вывод ID пользователя.
+            ник: nick, // Вывод ник
+            уровеньмодератора: moderlvl, // Вывод уровня модератора
         }, async function(err){
             if (err){
                 console.error(`[DB] Ошибка добавления профиля на лист!`);
@@ -163,6 +163,24 @@ vkint.command('/astats', (ctx) => {
             if(value[2] == 0) return ctx.reply(`Пользователь не является модератором (возможно бывший модератор)`)
             if(value[2] >= 3) return ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}`)
             else return ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+        });
+        
+    })
+});
+
+vkint.command('/addmod', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    const args = text.slice(`/astats`).split(/ +/);
+    let nick  = args.slice(3).join(" ");
+    get_profile(1, from).then(async value_f => {
+        if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
+        if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
+        if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
+        get_profile(1, args[1]).then(async value => {
+            if(value != false) return ctx.reply(`Аккаунт уже существует в базе модераторов (используйте /setmod)`)
+            add_profile(1, agrs[1], nick, args[2])
+            return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${lvltotext(args[2])}`)
         });
         
     })
