@@ -77,13 +77,16 @@ async function get_profile(gameserver, author_id){
                 console.error(`[DB] При получении данных с листа произошла ошибка!`);
                 return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
             }
-            return resolve(rows);
-            let db_account = rows.find(row => row.idпользователя == author_id); // Поиск аккаунта в базе данных.
+            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
             if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
             let account_info = [
-                db_account.idпользователя, // Вывод ID пользователя.
-                db_account.статусразработчика, // Вывод статуса разработчика.
+                db_account.вк, // Вывод ID пользователя.
+                db_account.ник, // Вывод статуса разработчика.
                 db_account.уровеньмодератора, // Вывод уровня модератора
+                db_account.неделя, // Вывод уровня модератора
+                db_account.роливдс, // Вывод уровня модератора
+                db_account.ролиботом, // Вывод уровня модератора
+                db_account.тикеты, // Вывод уровня модератора
             ];
             resolve(account_info);
         });
@@ -135,10 +138,22 @@ vkint.command('/stream', (ctx) => {
 vkint.command('/test', (ctx) => {
     let from = ctx.message.from_id
     get_profile(1, from).then(async value => {
-        console.log(value);
+        if(value == false) ctx.reply(`ваш аккаунт в базе не найден`)
+        if(value[2] == 0) ctx.reply(`Вы не модератор!`)
+        ctx.reply(`Ваш ВК: ${from}\nВаш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\nСтатистика - \n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
     })
 });
 
+function lvltotext(lvl) {
+let text;
+if(lvl == 1) text = 'Spectator';
+if(lvl == 2) text = 'Support Team';
+if(lvl == 3) text = 'Discord Master';
+if(lvl == 4) text = 'Стример';
+if(lvl == 5) text = 'Главный администратор сервера';
+if(lvl == 6) text = 'Разработчик';
+return text;
+}
 
 
 
