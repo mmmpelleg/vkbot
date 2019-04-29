@@ -43,10 +43,9 @@ async function change_profile(gameserver, author_id, table, value){
                 console.error(`[DB] При получении данных с листа произошла ошибка!`);
                 return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
             }
-            let db_account = rows.find(row => row.idпользователя == author_id); // Поиск аккаунта в базе данных.
+            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
             if (!db_account) return resolve(false);
-            if (table == 'idпользователя') db_account.idпользователя = `${value}`;
-            else if (table == 'статусразработчика') db_account.статусразработчика = `${value}`;
+            if (table == 'вк') db_account.вк = `${value}`;
             else if (table == 'уровеньмодератора') db_account.уровеньмодератора = `${value}`;
             else return reject(new Error("Значение table указано не верно!"));
             db_account.save();
@@ -62,7 +61,7 @@ async function delete_profile(gameserver, author_id){
                 console.error(`[DB] При получении данных с листа произошла ошибка!`);
                 return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
             }
-            let db_account = rows.find(row => row.idпользователя == author_id); // Поиск аккаунта в базе данных.
+            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
             if (!db_account) return resolve(false);
             db_account.del();
             resolve(true);
@@ -186,8 +185,25 @@ vkint.command('/addmod', (ctx) => {
     });
 });
 
+vkint.command('/setmod', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    const args = text.slice(`/setmod`).split(/ +/);
+    get_profile(1, from).then(async value_f => {
+        if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
+        if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
+        if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
+        get_profile(1, args[1]).then(async value => {
+            if(value == false) return ctx.reply(`Аккаунт не существует в базе модераторов (используйте /addmod)`)
+            change_profile(1, args[1], `уровеньмодератора`, args[2]);
+            return ctx.reply(`Вы успешно изменили доступ модератора с ${lvltotext(value[2])} на ${lvltotext(args[2])}`)
+        });
+    });
+});
+
 function lvltotext(lvl) {
 let text;
+if(lvl == 0) text = 'Пользователь';
 if(lvl == 1) text = 'Spectator';
 if(lvl == 2) text = 'Support Team';
 if(lvl == 3) text = 'Discord Master';
