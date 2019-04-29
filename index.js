@@ -8,7 +8,7 @@ const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
 //let mysql = require('./modules/mysql');
-const GoogleSpreadsheet = require('../vkbot/google_module/google-spreadsheet');
+const GoogleSpreadsheet = require('../google_module/google-spreadsheet');
 const doc = new GoogleSpreadsheet(process.env.skey);
 const creds_json = {
     client_email: process.env.google_client_email,
