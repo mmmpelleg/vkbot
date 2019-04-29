@@ -84,7 +84,7 @@ async function get_profile(gameserver, author_id){
                 db_account.ник, // Вывод ник
                 db_account.уровеньмодератора, // Вывод уровня модератора
                 db_account.неделя, // Вывод недели
-                db_account.сообщения, // Вывод сообщений
+                db_account.Сообщения, // Вывод сообщений
                 db_account.роливдс, // Вывод уровня модератора
                 db_account.ролиботом, // Вывод уровня модератора
                 db_account.тикеты, // Вывод уровня модератора
@@ -118,7 +118,7 @@ function getRandomInt(min, max)
 
  vkint.command('/peer_id', (ctx) => {
 
-ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`)
+ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`   )
 });
 
 vkint.command('/stream', (ctx) => {
