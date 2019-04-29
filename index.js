@@ -139,12 +139,30 @@ vkint.command('/stream', (ctx) => {
     });
     });
 
-vkint.command('/test', (ctx) => {
+vkint.command('/stats', (ctx) => {
     let from = ctx.message.from_id
     get_profile(1, from).then(async value => {
         if(value == false) return ctx.reply(`ваш аккаунт в базе не найден`)
         if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
-        ctx.reply(`Ваш ВК: ${from}\nВаш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+        ctx.reply(`Ваш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+    })
+});
+
+vkint.command('/astats', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    const args = text.slice(`/astats`).split(/ +/);
+
+    get_profile(1, from).then(async value_f => {
+        if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
+        if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
+        if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
+        get_profile(1, args[1]).then(async value => {
+            if(value == false) return ctx.reply(`Аккаунт не найден в базе данных`)
+            if(value[2] == 0) return ctx.reply(`Пользователь не является модератором (возможно бывший модератор)`)
+            ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+        });
+        
     })
 });
 
