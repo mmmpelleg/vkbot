@@ -129,12 +129,13 @@ vkint.command('/stream', (ctx) => {
         if(value[2] < 4) return ctx.reply(`Ваши права слишком низки для данного действия`)
         let text = ctx.message.text;
         const args = text.slice(`/stream`).split(/ +/);
+        if(!args[1]) return ctx.reply(`/stream URL с HTTP`)
         let yuma = yuki.guilds.get(serverid);
         let channel = yuma.channels.find(c => c.name == "info");
         let URL  = args.slice(1).join(" ");
         channel.send(`\`@everyone\`\n**Не пропустите стрим на нашем ютуб канале!\nСсылка на стрим: ${URL}\nЖдём вас всех!**`)
-        ctx.reply(`Информация опубликована.`)
-        vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
+        vkint.sendMessage(398115725, `[INFO LOG] ${lvltotext(value[2])} ${mods[from][0].name} обьявил о трансляции`)
+        vkint.sendMessage(from, `${lvltotext(value[2])} ${mods[from][0].name} обьявил о трансляции`)
     });
     });
 
@@ -153,7 +154,7 @@ if(lvl == 1) text = 'Spectator';
 if(lvl == 2) text = 'Support Team';
 if(lvl == 3) text = 'Discord Master';
 if(lvl == 4) text = 'Стример';
-if(lvl == 5) text = 'Главный администратор сервера';
+if(lvl == 5) text = 'Главный администратор';
 if(lvl == 6) text = 'Разработчик';
 return text;
 }
