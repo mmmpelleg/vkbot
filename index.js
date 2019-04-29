@@ -8,6 +8,87 @@ const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
 //let mysql = require('./modules/mysql');
+const GoogleSpreadsheet = require('../vkbot/google_module/google-spreadsheet');
+const doc = new GoogleSpreadsheet(process.env.skey);
+const creds_json = {
+    client_email: process.env.google_client_email,
+    private_key: `-----BEGIN PRIVATE KEY-----\n${process.env.google_key1}\n${process.env.google_key2}\n${process.env.google_key3}\nAKRqbOrJ8KEL60Uzl8UmjjC7n/jyk3xr2UJ/Kntj42daNkWx3uA5WOowfFhY/MKF\nJWQg0pL8iEUYYxKp0ewrsqCWcJ0KgQOxmO+DPXFTXF3vCa6KOT+dkZ75uBiOARQd\n3IytarAAtV0ChdvkNL8AD9V4TJRymw4XqX+aI8kKQXDVOZ8e+1E+cNhvwazAxWL6\nA0egXQunAgMBAAECggEAFbNWEEaa9Ala+gwxMJL+bXkESKefvRkz/AsGmSqON2tj\n/zp5D4glG9WT0e94FqfH28LeammjvrXxsaNyj6B/8FthTGHhGRZq3W4NPdZ/8/CN\na8TL6GQPLaU5YpxBxDSaohHNlv5sUBcoMHXzziJqtkVwtFVljDxy0pPIMfg/6TZM\nBrh+rq3KiO5CkVI8V7WYxg3kn36JuYJMMoYhQX/zX1vcYx472/mYCkNQ8yt2NAP9\nZFzvD/BfA8eluVy31IqY4+uuOrPouep5FPZ6AnxlfM/M95IxIwFg1i6PmLd42wF4\nAXNz4xCwk9k6AcyvALBV+Nf7/UlONUAJ57VnMYo4cQKBgQDsUauZdFfjeuVwbH3x\nKMOtt3SWYyxvDNXbKtyDDOSNivNXWUkgpcykPJQDEFUzQanHR8n/Br4hUholPhO2\n+s7r8Ms4lBKKu+Z0LnEQIU4WQ8jTJ0NUMBkeza6AvTbPUz8QOVeU+wWgG74F5bXA\n0Oay/TuXq5OtyO5sVTbDVanwqwKBgQC+uBwfVt21zbZsEmSMwdXHVuXTufGfpWSl\nqbEmTYF7zL/YrDGeiPM3dZLBkqTILUuPjzGEQ/p/OEDXv4ZQQVCs1kWqlX7ot1Gb\n1VIKHLyT3llPHwq7QjGwDmX3Av1hqTR4/ZWhJTdFPxP/J1Uxm98KF/KcsYEbF5YW\nR4XA+10o9QKBgAoXxttr86D8i7YMfCiDlC/kKO+PVsN7adrNbtOOBmjhKVlur8fc\nLOxKxguHdAwXXtfrAf6JXC9yITm79/2VoqbDBvrooA4azlHh9eQ5d+tNg9M41xBO\naZQ+Npi6/A9Iv+XCfTIYsnnPFYOM9wFAKso0NIpawpjmfwBTd15KV1K3AoGBAIo+\niFwLKmDLQY0q8+m3449AJQ4JPeT8DW2sCHX8PnyPmQylHL6PBMXRmtRnyLw1YQ0p\nvbnjUKOBEjeRY/murpzqIMua28gygZxUz8f2tpb02IXquWuterjkZvLbHvH4pcmB\n/0E06dBu/b65Mx7nnpABdeIxJKWPvkJeC80sJ4Y1AoGARaAa/VTiQ1ZCjaKVD7sH\n5meB+/yXF+zOvCrlJPvDM5+ZcPt/ClfVQYkwusHkhXkH099F06l5k9b2qcV/3V7Y\nf4ZLlseBIFqt0hol4Imi/1fj2++1UDy+u2rV2Zp5khyoZl+ZELf1+b0MX0iBmM1K\ng8k2l9rhy4n/UlI+dXzjLyM=\n-----END PRIVATE KEY-----\n`,
+}
+
+doc.useServiceAccountAuth(creds_json, function (err) {
+    if (err) console.log(err);
+});
+
+
+async function add_profile(gameserver, author_id){
+    return new Promise(async function(resolve, reject) {
+        doc.addRow(gameserver, {
+            idпользователя: `${author_id}`,
+            статусразработчика: '0',
+            уровеньмодератора: '0'
+        }, async function(err){
+            if (err){
+                console.error(`[DB] Ошибка добавления профиля на лист!`);
+                return reject(new Error(`При использовании 'addRow' произошла ошибка.`));
+            }
+            resolve(true);
+        });
+    });
+}
+
+async function change_profile(gameserver, author_id, table, value){
+    return new Promise(async function(resolve, reject) {
+        await doc.getRows(gameserver, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
+            if (err){
+                console.error(`[DB] При получении данных с листа произошла ошибка!`);
+                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
+            }
+            let db_account = rows.find(row => row.idпользователя == author_id); // Поиск аккаунта в базе данных.
+            if (!db_account) return resolve(false);
+            if (table == 'idпользователя') db_account.idпользователя = `${value}`;
+            else if (table == 'статусразработчика') db_account.статусразработчика = `${value}`;
+            else if (table == 'уровеньмодератора') db_account.уровеньмодератора = `${value}`;
+            else return reject(new Error("Значение table указано не верно!"));
+            db_account.save();
+            resolve(true);
+        });
+    });
+}
+
+async function delete_profile(gameserver, author_id){
+    return new Promise(async function(resolve, reject) {
+        await doc.getRows(gameserver, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
+            if (err){
+                console.error(`[DB] При получении данных с листа произошла ошибка!`);
+                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
+            }
+            let db_account = rows.find(row => row.idпользователя == author_id); // Поиск аккаунта в базе данных.
+            if (!db_account) return resolve(false);
+            db_account.del();
+            resolve(true);
+        });
+    });
+}
+
+async function get_profile(gameserver, author_id){
+    return new Promise(async function(resolve, reject) {
+        await doc.getRows(gameserver, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
+            if (err){
+                console.error(`[DB] При получении данных с листа произошла ошибка!`);
+                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
+            }
+            return resolve(rows);
+            let db_account = rows.find(row => row.idпользователя == author_id); // Поиск аккаунта в базе данных.
+            if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
+            let account_info = [
+                db_account.idпользователя, // Вывод ID пользователя.
+                db_account.статусразработчика, // Вывод статуса разработчика.
+                db_account.уровеньмодератора, // Вывод уровня модератора
+            ];
+            resolve(account_info);
+        });
+    });
+}
 var form_created = 0;
 var form_send = new Array();
 var form_forma = new Array();
@@ -51,7 +132,12 @@ vkint.command('/stream', (ctx) => {
     vkint.sendMessage(398115725, `[INFO LOG] ${mods[from][0].name} обьявил о трансляции`)
     });
 
-
+vkint.command('/test', (ctx) => {
+    let from = ctx.message.from_id
+    get_profile(1, from).then(async value => {
+        console.log(value);
+    })
+});
 
 
 
@@ -232,7 +318,7 @@ bot.on('ready', () => {
 yuki.login(process.env.token_yuki);
 yuki.on('ready', () => {
     console.log("ПОЛЬЗОВАТЕЛЬ ЮКИ был успешно запущен!");
-    vkint.sendMessage(2000000007, `Бот был перезагружен, все формы обнулены, принимайте их в дискорде`);
+    //vkint.sendMessage(2000000007, `Бот был перезагружен, все формы обнулены, принимайте их в дискорде`);
 });
 
 
