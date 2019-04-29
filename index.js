@@ -79,12 +79,13 @@ async function get_profile(gameserver, author_id){
             }
             let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
             if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
+            console.log(db_account);
             let account_info = [
                 db_account.вк, // Вывод ID пользователя.
                 db_account.ник, // Вывод ник
                 db_account.уровеньмодератора, // Вывод уровня модератора
                 db_account.неделя, // Вывод недели
-                db_account.Сообщения, // Вывод сообщений
+                db_account.сообщения, // Вывод сообщений
                 db_account.роливдс, // Вывод уровня модератора
                 db_account.ролиботом, // Вывод уровня модератора
                 db_account.тикеты, // Вывод уровня модератора
