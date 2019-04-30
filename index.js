@@ -298,7 +298,7 @@ vkint.command('/cset', (ctx) => {
         if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
         if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
         let table;
-        if(args[2] != `dostup` || args[2] != `discordid`) return ctx.reply(`/cset idvk DOSTUP OR DISCORDID`)
+        if(args[2] != `dostup` && args[2] != `discordid`) return ctx.reply(`/cset idvk DOSTUP OR DISCORDID`)
         if(args[2] == `dostup`) table = 'уровеньдоступа';
         if(args[2] == `discordid`) table = 'discordid';
         get_checker(args[1]).then(async value => {
