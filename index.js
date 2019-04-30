@@ -37,7 +37,7 @@ async function add_profile(gameserver, author_id, nick, moderlvl){
     });
 }
 
-async function add_checker(nick, moderlvl, data2, did){
+async function add_checker(author_id,nick, moderlvl, data2, did){
     return new Promise(async function(resolve, reject) {
         doc.addRow(2, {
             вк: author_id, // Вывод ID пользователя.
@@ -282,8 +282,8 @@ vkint.command('/cadd', (ctx) => {
         if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
         get_checker(args[1]).then(async value => {
             if(value != false) return ctx.reply(`Аккаунт уже существует в базе проверяющих (используйте /cset)`)
-            add_checker(nick, args[2], args[3], args[4])
-            return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${lvltotext(args[2])}`)
+            add_checker(args[1],nick, args[2], args[3], args[4])
+            return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${ranktotext(args[2])}`)
         });
         
     });
@@ -304,7 +304,7 @@ vkint.command('/cset', (ctx) => {
         get_checker(args[1]).then(async value => {
             if(value == false) return ctx.reply(`Аккаунт не существует в базе проверяющих (используйте /cadd)`)
             change_checker(args[1], table, args[3]);
-            if(table == 'уровеньдоступа') return ctx.reply(`Вы успешно изменили доступ модератора с ${lvltotext(value[2])} на ${lvltotext(args[3])}`)
+            if(table == 'уровеньдоступа') return ctx.reply(`Вы успешно изменили доступ модератора с ${ranktotext(value[2])} на ${ranktotext(args[3])}`)
             else return ctx.reply(`Вы успешно изменили discordid с ${value[2]} на ${args[3]}`)
         });
     });
