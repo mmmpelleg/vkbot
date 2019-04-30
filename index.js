@@ -280,7 +280,6 @@ vkint.command('/cadd', (ctx) => {
         if(value_f == false) return;
         if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
         if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
-        if(!args[1] || !args[2] || !args[3] || !args[4] || !args[5]) return ctx.reply(`/cadd idvk clvl discord-id nick`)
         get_checker(args[1]).then(async value => {
             if(value != false) return ctx.reply(`Аккаунт уже существует в базе проверяющих (используйте /cset)`)
             add_checker(nick, args[2], args[3], args[4])
