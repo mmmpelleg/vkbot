@@ -213,7 +213,7 @@ vkint.command('/cinfo', (ctx) => {
     get_checker(from).then(async value => {
         if(value == false) return;
         if(value[2] == 0) return ctx.reply(`Вы не проверяющий!`)
-        ctx.reply(`Ваш ник: ${value[1]}\nЗвание: ${ranktotext(value[2])}`)
+        ctx.reply(`Ваш ник: ${value[1]}\nЗвание: ${ranktotext(value[2])}\nВ команде с: ${value[4]}`)
         return;
     })
 });
@@ -232,6 +232,24 @@ vkint.command('/astats', (ctx) => {
             if(value[2] == 0) return ctx.reply(`Пользователь не является модератором (возможно бывший модератор)`)
             if(value[2] >= 3) return ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}`)
             else return ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+        });
+        
+    })
+});
+
+vkint.command('/ainfo', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    const args = text.slice(`/ainfo`).split(/ +/);
+
+    get_checker(from).then(async value_f => {
+        if(value_f == false) return;
+        if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
+        if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
+        get_checker(args[1]).then(async value => {
+            if(value == false) return ctx.reply(`Аккаунт не найден в базе данных`)
+            if(value[2] == 0) return ctx.reply(`Пользователь не является проверяющим`)
+            ctx.reply(`Ник: ${value[1]}\nЗвание: ${ranktotext(value[2])}\nВ команде с: ${value[4]}`)
         });
         
     })
