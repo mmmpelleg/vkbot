@@ -275,17 +275,17 @@ vkint.command('/cadd', (ctx) => {
     let from = ctx.message.from_id
     let text = ctx.message.text;
     const args = text.slice(`/cadd`).split(/ +/);
-    let nick  = args.slice(4).join(" ");
+    let nick  = args.slice(5).join(" ");
     get_checker(from).then(async value_f => {
         if(value_f == false) return;
         if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
         if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
         get_checker(args[1]).then(async value => {
             if(value != false) return ctx.reply(`Аккаунт уже существует в базе проверяющих (используйте /cset)`)
-            add_checker(args[1],nick, args[2], args[3])
+            add_checker(args[1],nick,args[2],args[4], args[3])
             return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${ranktotext(args[2])}`)
         });
-        
+
     });
 });
 
