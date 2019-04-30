@@ -212,7 +212,7 @@ vkint.command('/cinfo', (ctx) => {
     get_checker(from).then(async value => {
         if(value == false) return;
         if(value[2] == 0) return ctx.reply(`Вы не проверяющий!`)
-        ctx.reply(`Ваш ник: ${value[1]}\nЗвание: ${lvltotext(value[2])}`)
+        ctx.reply(`Ваш ник: ${value[1]}\nЗвание: ${ranktotext(value[2])}`)
         return;
     })
 });
@@ -490,7 +490,7 @@ bot.on('ready', () => {
 checkbot.login(process.env.token_checkers);
 checkbot.on('ready', () => {
     console.log("Бот был успешно запущен!");
-    bot.user.setPresence({ game: { name: 'злого Юки' }, status: 'idle' })
+    checkbot.user.setPresence({ game: { name: 'злого Юки' }, status: 'idle' })
 }); 
 
 yuki.login(process.env.token_yuki);
