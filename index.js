@@ -275,7 +275,7 @@ vkint.command('/cadd', (ctx) => {
     let from = ctx.message.from_id
     let text = ctx.message.text;
     const args = text.slice(`/cadd`).split(/ +/);
-    let nick  = args.slice(5).join(" ");
+    let nick  = args.slice(4).join(" ");
     get_checker(from).then(async value_f => {
         if(value_f == false) return;
         if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
