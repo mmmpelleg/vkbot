@@ -282,7 +282,7 @@ vkint.command('/cadd', (ctx) => {
         if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
         get_checker(args[1]).then(async value => {
             if(value != false) return ctx.reply(`Аккаунт уже существует в базе проверяющих (используйте /cset)`)
-            add_checker(args[1],nick, args[2], args[3], args[4])
+            add_checker(args[1],nick, args[2], args[3])
             return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${ranktotext(args[2])}`)
         });
         
