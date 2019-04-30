@@ -1,6 +1,7 @@
 const Discord = require('discord.js'); // by YukiFlores
 const bot = new Discord.Client();
 const yuki = new Discord.Client();
+const checkbot = new Discord.Client();
 const fs = require( 'fs' );
 let serverid = '528635749206196232';
 const authed = new Set();
@@ -31,6 +32,42 @@ async function add_profile(gameserver, author_id, nick, moderlvl){
                 console.error(`[DB] Ошибка добавления профиля на лист!`);
                 return reject(new Error(`При использовании 'addRow' произошла ошибка.`));
             }
+            resolve(true);
+        });
+    });
+}
+
+async function add_checker(nick, moderlvl, data2){
+    return new Promise(async function(resolve, reject) {
+        doc.addRow(2, {
+            вк: author_id, // Вывод ID пользователя.
+            ник: nick, // Вывод ник
+            уровеньдоступа: moderlvl, // Вывод уровня модератора,
+            вкомандес: data2, // дата
+        }, async function(err){
+            if (err){
+                console.error(`[DB] Ошибка добавления профиля на лист!`);
+                return reject(new Error(`При использовании 'addRow' произошла ошибка.`));
+            }
+            resolve(true);
+        });
+    });
+}
+
+
+async function change_checker(author_id, table, value){
+    return new Promise(async function(resolve, reject) {
+        await doc.getRows(2, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
+            if (err){
+                console.error(`[DB] При получении данных с листа произошла ошибка!`);
+                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
+            }
+            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
+            if (!db_account) return resolve(false);
+            if (table == 'вк') db_account.вк = `${value}`;
+            else if (table == 'уровеньдоступа') db_account.уровеньдоступа = `${value}`;
+            else return reject(new Error("Значение table указано не верно!"));
+            db_account.save();
             resolve(true);
         });
     });
@@ -92,6 +129,28 @@ async function get_profile(gameserver, author_id){
         });
     });
 }
+
+async function get_checker(author_id){
+    return new Promise(async function(resolve, reject) {
+        await doc.getRows(2, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
+            if (err){
+                console.error(`[DB] При получении данных с листа произошла ошибка!`);
+                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
+            }
+            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
+            if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
+            let account_info = [
+                db_account.вк, // Вывод ID пользователя.
+                db_account.ник, // Вывод ник
+                db_account.уровеньдоступа, // Вывод уровня модератора
+                db_account.discordid, // Вывод недели
+                db_account.вкомандес, // Вывод сообщений
+            ];
+            resolve(account_info);
+        });
+    });
+}
+
 var form_created = 0;
 var form_send = new Array();
 var form_forma = new Array();
@@ -141,10 +200,20 @@ vkint.command('/stream', (ctx) => {
 vkint.command('/stats', (ctx) => {
     let from = ctx.message.from_id
     get_profile(1, from).then(async value => {
-        if(value == false) return ctx.reply(`ваш аккаунт в базе не найден`)
+        if(value == false) return;
         if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
         if(value[2] >= 3) return ctx.reply(`Ваш ник: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}`)
         else return ctx.reply(`Ваш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+    })
+});
+
+vkint.command('/cinfo', (ctx) => {
+    let from = ctx.message.from_id
+    get_checker(from).then(async value => {
+        if(value == false) return;
+        if(value[2] == 0) return ctx.reply(`Вы не проверяющий!`)
+        ctx.reply(`Ваш ник: ${value[1]}\nЗвание: ${lvltotext(value[2])}`)
+        return;
     })
 });
 
@@ -227,11 +296,22 @@ if(lvl == 1) text = 'Spectator';
 if(lvl == 2) text = 'Support Team';
 if(lvl == 3) text = 'Discord Master';
 if(lvl == 4) text = 'Стример';
-if(lvl == 5) text = 'Главный администратор';
+if(lvl == 5) text = 'Главный администратор';    
 if(lvl == 6) text = 'Разработчик';
 return text;
 }
 
+function ranktotext(lvl) {
+    let text;
+    if(lvl == 0) text = 'Игрок';
+    if(lvl == 1) text = 'Новый член команды';
+    if(lvl == 2) text = 'Член команды';
+    if(lvl == 3) text = 'Заместитель главы команды проверяющих';
+    if(lvl == 4) text = 'Глава команды проверяющих';
+    if(lvl == 5) text = 'Спец.администратор';
+    return text;
+    }
+    
 
 
 
@@ -405,6 +485,12 @@ bot.login(process.env.token);
 bot.on('ready', () => {
     console.log("Бот был успешно запущен!");
     bot.user.setPresence({ game: { name: 'защиту Discord' }, status: 'idle' })
+}); 
+
+checkbot.login(process.env.token_checkers);
+checkbot.on('ready', () => {
+    console.log("Бот был успешно запущен!");
+    bot.user.setPresence({ game: { name: 'злого Юки' }, status: 'idle' })
 }); 
 
 yuki.login(process.env.token_yuki);
