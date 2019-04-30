@@ -37,13 +37,14 @@ async function add_profile(gameserver, author_id, nick, moderlvl){
     });
 }
 
-async function add_checker(nick, moderlvl, data2){
+async function add_checker(nick, moderlvl, data2, did){
     return new Promise(async function(resolve, reject) {
         doc.addRow(2, {
             вк: author_id, // Вывод ID пользователя.
             ник: nick, // Вывод ник
             уровеньдоступа: moderlvl, // Вывод уровня модератора,
             вкомандес: data2, // дата
+            discordid: did
         }, async function(err){
             if (err){
                 console.error(`[DB] Ошибка добавления профиля на лист!`);
@@ -266,6 +267,46 @@ vkint.command('/setmod', (ctx) => {
             if(value == false) return ctx.reply(`Аккаунт не существует в базе модераторов (используйте /addmod)`)
             change_profile(1, args[1], `уровеньмодератора`, args[2]);
             return ctx.reply(`Вы успешно изменили доступ модератора с ${lvltotext(value[2])} на ${lvltotext(args[2])}`)
+        });
+    });
+});
+
+vkint.command('/cadd', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    const args = text.slice(`/cadd`).split(/ +/);
+    let nick  = args.slice(5).join(" ");
+    get_checker(from).then(async value_f => {
+        if(value_f == false) return;
+        if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
+        if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
+        if(!args[1] || !args[2] || !args[3] || !args[4] || !args[5]) return ctx.reply(`/cadd idvk clvl discord-id nick`)
+        get_checker(args[1]).then(async value => {
+            if(value != false) return ctx.reply(`Аккаунт уже существует в базе проверяющих (используйте /cset)`)
+            add_checker(nick, args[2], args[3], args[4])
+            return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${lvltotext(args[2])}`)
+        });
+        
+    });
+});
+
+vkint.command('/cset', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    const args = text.slice(`/cset`).split(/ +/);
+    get_checker(from).then(async value_f => {
+        if(value_f == false) return;
+        if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
+        if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
+        let table;
+        if(args[2] != `dostup` || args[2] != `discordid`) return ctx.reply(`/cset idvk DOSTUP OR DISCORDID`)
+        if(args[2] == `dostup`) table = 'уровеньдоступа';
+        if(args[2] == `discordid`) table = 'discordid';
+        get_checker(args[1]).then(async value => {
+            if(value == false) return ctx.reply(`Аккаунт не существует в базе проверяющих (используйте /cadd)`)
+            change_checker(args[1], table, args[3]);
+            if(table == 'уровеньдоступа') return ctx.reply(`Вы успешно изменили доступ модератора с ${lvltotext(value[2])} на ${lvltotext(args[3])}`)
+            else return ctx.reply(`Вы успешно изменили discordid с ${value[2]} на ${args[3]}`)
         });
     });
 });
