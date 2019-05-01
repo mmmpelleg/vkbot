@@ -653,8 +653,7 @@ yuki.on('message', async message => {
             return message.delete();
         }
         if (!message.member.hasPermission("ADMINISTRATOR")) return message.delete();
-        //let textforobz = "**  ╔┓┏╦━━╦┓╔┓╔━━╗ @everyone\n  ║┗┛║┗━╣┃║┃║╯╰║ @everyone\n  ║┏┓║┏━╣┗╣┗╣╰╯║ @everyone\n  ╚┛┗╩━━╩━╩━╩━━╝ @everyone**";
-        let textforobz = "типо нету упом для тестов\n";
+        let textforobz = "**  ╔┓┏╦━━╦┓╔┓╔━━╗ @everyone\n  ║┗┛║┗━╣┃║┃║╯╰║ @everyone\n  ║┏┓║┏━╣┗╣┗╣╰╯║ @everyone\n  ╚┛┗╩━━╩━╩━╩━━╝ @everyone**";
 	    
 	 const embed = new Discord.RichEmbed()
         .setTitle("**Заявления на пост модератора группы**")
