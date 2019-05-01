@@ -617,6 +617,59 @@ yuki.on('message', async message => {
         form_channel[form_created] = message.channel;
         vkint.sendMessage(2000000007, `[Запрос на выполнение действия]\n Запросил форму: ${form_sender[form_created]}\nКоманда для выполнения:\n ${form_forma[form_created]}\n\nДля подтверждения выполнения команды введите: ацепт ${form_created}\nДля отказа: отказ ${form_created}`);
     }
+    if (message.content.startsWith("/newsp")){
+        if (!message.member.hasPermission("ADMINISTRATOR")) return
+        const args = message.content.slice(`/newsp`).split(/ +/);
+        if (!args[1]){
+            message.reply(`\`укажите день! '/newsp [номер дня] [номер месяца] [url на заявку]\``).then(msg => msg.delete(30000));
+            return message.delete();
+        }
+        if (!args[2]){
+            message.reply(`\`укажите название месяца! '/newsp [номер дня] [номер месяца] [url на заявку]\``).then(msg => msg.delete(30000));
+            return message.delete();
+        }
+        if (!args[3]){
+            message.reply(`\`укажите ссылку на заявку! '/newsp [номер дня] [номер месяца] [url на заявку]\``).then(msg => msg.delete(30000));
+            return message.delete();
+        }
+        if (args[1] > 31 || args[1] < 1 || args[2] > 12 || args[2] < 1){
+            message.reply(`\`У нас всего 12 месяцев и 31 день. '/newsp [номер дня] [номер месяца] [url на заявку]\``).then(msg => msg.delete(30000));
+            return message.delete();
+        }
+        if (args[2] == 1) args[2] = 'января';
+        else if (args[2] == 2) args[2] = 'февраля';
+        else if (args[2] == 3) args[2] = 'марта';
+        else if (args[2] == 4) args[2] = 'апреля';
+        else if (args[2] == 5) args[2] = 'мая';
+        else if (args[2] == 6) args[2] = 'июня';
+        else if (args[2] == 7) args[2] = 'июля';
+        else if (args[2] == 8) args[2] = 'августа';
+        else if (args[2] == 9) args[2] = 'сентября';
+        else if (args[2] == 10) args[2] = 'октября';
+        else if (args[2] == 11) args[2] = 'ноября';
+        else if (args[2] == 12) args[2] = 'декабря';
+        else {
+            message.reply(`\`месяц указан не верно!\``).then(msg => msg.delete(7000));
+            return message.delete();
+        }
+        if (!message.member.hasPermission("ADMINISTRATOR")) return message.delete();
+        let textforobz = "**  ╔┓┏╦━━╦┓╔┓╔━━╗ @everyone\n  ║┗┛║┗━╣┃║┃║╯╰║ @everyone\n  ║┏┓║┏━╣┗╣┗╣╰╯║ @everyone\n  ╚┛┗╩━━╩━╩━╩━━╝ @everyone**";
+        const embed = new Discord.RichEmbed()
+        .setTitle("**Заявления на пост модератора группы**")
+        .setColor("#FF8E01")
+        .setDescription("**Мы вернулись, что бы обрадовать вас! Ведь " + args[1] + " " + args[2] + " пройдет набор на пост Spectator'a нашей группы Discord!\nВы сможете стать одним из нас, почуствовать себя в роли модератора группы, последить за игроками, а так же получить доступ к супер секретным функциям канала Scottdale Brotherhood. Все, что вам нужно будет делать, это наводить порядок в нашей группе и помогать игрокам!**")
+        .setFooter("Предоставил: Kory_McGregor", "https://cdn.discordapp.com/avatars/336207279412215809/211ab8ef6f7b4dfd9d3bfbf45999eea0.png?size=128")
+        .setImage("https://i.imgur.com/nFD61xf.gif")
+        .setTimestamp()
+        .addBlankField(false)
+        .addField("**Что нужно, что бы попасть к нам?**", `**1) Вам нужно будет знать правила нашего discord-сервера! Если вы хотите стать модератором, то вы должны знать за что идут наказания.\n2) Вам нужно понимать систему модерирования. Ведь просто ходить по каналам и кричать на нарушителя "Прекрати!" будет выглядить глупо.\n3) Вам будет необходимо выбрать себе специальность. Вы уникальны. Каждый из вас понимает где-то лучше, чем остальные. Кто-то может стать обычным модератором, другой DJ-ем канала, а третий создавать ботов и управлять командой модераторов discord-сервера.\n4) Быть дружелюбным и коммуникабельным! Одна из самых главных особенностей! Мы же помогаем игрокам! Вы должны понимать, что модератор, встав на пост не сможет устраивать конфликты с игроками и общаться неподобающе в ЛС!**`)
+        .addBlankField(false)
+        .addField("**Требования к участникам**", "**1) Не состоять в черном списке Scottdale\n2) Быть активным участником нашей группы.\n3) У вас не должно быть грубых нарушений.\n4) Быть адекватным, коммуникабельным, ответственным.\n5) Не быть действующим лидером, министром, администратором.**")
+        .addBlankField(false)
+        .addField("**Дополнительные ссылки**", "**Оставить заявление вы можете нажав на [выделенный текст](" + args[3] + ").\nУзнать подробности по поводу обзвона вы сможете в <#" + message.guild.channels.find(c => c.name == 'support').id + ">**");
+        message.channel.send(textforobz, {embed});
+        return message.delete()
+    }
 });
 
 
