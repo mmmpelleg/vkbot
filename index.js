@@ -851,7 +851,7 @@ function lvltotext(lvlmod) {
 */
 
 
-bot.on('guildMemberUpdate', async (oldMember, newMember) => {
+yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
     if (newMember.guild.id != "528635749206196232") return // Сервер не 03!
     if (oldMember.roles.size == newMember.roles.size) return // Сменил ник или еще чет!
     if (newMember.user.bot) return // Бот не принимается!
@@ -871,7 +871,7 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
                 let channel = yuma.channels.find(c => c.name == "general")
                 newMember.removeRole(role);
                 channel.send(`<@${member.id}> \`вы не можете выдать данную роль, эту роль может выдать только главный администратор сервера (Жук) или в крайнем случае - Yuki Flores\``)
-                return vkint.sendMessage(398115725, `${member.displayName} попытался выдать роль Manfredi - ${newMember.displayName}`);
+                vkint.sendMessage(398115725, `${member.displayName} попытался выдать роль Manfredi - ${newMember.displayName}`);
             }
         }
         if(role.name == "✔ Helper ✔") {
@@ -915,7 +915,7 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
                 let channel = yuma.channels.find(c => c.name == "general")
                 newMember.addRole(role);
                 channel.send(`<@${member.id}> \`вы не можете снять данную роль, эту роль может снять только главный администратор сервера (Жук) или в крайнем случае - Yuki Flores\``)
-                return vkint.sendMessage(398115725, `${member.displayName} попытался снять роль Manfredi - ${newMember.displayName}`);
+                vkint.sendMessage(398115725, `${member.displayName} попытался снять роль Manfredi - ${newMember.displayName}`);
             }
         }
         if(role.name == "✔ Helper ✔") {
