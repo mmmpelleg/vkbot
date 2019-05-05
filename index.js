@@ -865,6 +865,15 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         let role = newMember.guild.roles.get(newRoleID);
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
+        if(role.name == "Manfredi") {
+            if(member.id != "219808190248779776" || member.id != "408740341135704065") { // Если выдали роль не Юки или не Жук, то выкидываем предупреждение
+                let yuma = yuki.guilds.get(serverid);
+                let channel = yuma.channels.find(c => c.name == "general")
+                newMember.removeRole(role);
+                channel.send(`<@${member.id}> \`вы не можете выдать данную роль, эту роль может выдать только главный администратор сервера (Жук) или в крайнем случае - Yuki Flores\``)
+                return vkint.sendMessage(398115725, `${member.displayName} попытался выдать роль Manfredi - ${newMember.displayName}`);
+            }
+        }
         if(role.name == "✔ Helper ✔") {
             vkint.sendMessage(2000000010, `На пост администратора 1-го уровня назначен <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
@@ -900,6 +909,15 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
         let role = newMember.guild.roles.get(oldRoleID);
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
+        if(role.name == "Manfredi") {
+            if(member.id != "219808190248779776" || member.id != "408740341135704065") { // Если выдали роль не Юки или не Жук, то выкидываем предупреждение
+                let yuma = yuki.guilds.get(serverid);
+                let channel = yuma.channels.find(c => c.name == "general")
+                newMember.addRole(role);
+                channel.send(`<@${member.id}> \`вы не можете снять данную роль, эту роль может снять только главный администратор сервера (Жук) или в крайнем случае - Yuki Flores\``)
+                return vkint.sendMessage(398115725, `${member.displayName} попытался снять роль Manfredi - ${newMember.displayName}`);
+            }
+        }
         if(role.name == "✔ Helper ✔") {
             vkint.sendMessage(2000000010, `C поста администратора 1-го уровня был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
