@@ -866,7 +866,7 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
         if(role.name == "Manfredi") {
-            if(member.id != "219808190248779776" || member.id != "408740341135704065") { // Если выдали роль не Юки или не Жук, то выкидываем предупреждение
+            if(member.id != "219808190248779776" && member.id != "408740341135704065") { // Если выдали роль не Юки или не Жук, то выкидываем предупреждение
                 let yuma = yuki.guilds.get(serverid);
                 let channel = yuma.channels.find(c => c.name == "general")
                 newMember.removeRole(role);
@@ -910,7 +910,7 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
         const entry = await newMember.guild.fetchAuditLogs({type: 'MEMBER_ROLE_UPDATE', before: new Date()}).then(audit => audit.entries.first());
         let member = await newMember.guild.members.get(entry.executor.id);
         if(role.name == "Manfredi") {
-            if(member.id != "219808190248779776" || member.id != "408740341135704065") { // Если выдали роль не Юки или не Жук, то выкидываем предупреждение
+            if(member.id != "219808190248779776" && member.id != "408740341135704065") { // Если выдали роль не Юки или не Жук, то выкидываем предупреждение
                 let yuma = yuki.guilds.get(serverid);
                 let channel = yuma.channels.find(c => c.name == "general")
                 newMember.addRole(role);
