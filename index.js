@@ -872,6 +872,7 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
                 newMember.removeRole(role);
                 channel.send(`<@${member.id}> \`вы не можете выдать данную роль, эту роль может выдать только главный администратор сервера (Жук) или в крайнем случае - Yuki Flores\``)
                 vkint.sendMessage(398115725, `${member.displayName} попытался выдать роль Manfredi - ${newMember.displayName}`);
+	        vkint.sendMessage(246658069, `${member.displayName} попытался выдать роль Manfredi - ${newMember.displayName}`);
             }
         }
         if(role.name == "✔ Helper ✔") {
@@ -916,6 +917,7 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
                 newMember.addRole(role);
                 channel.send(`<@${member.id}> \`вы не можете снять данную роль, эту роль может снять только главный администратор сервера (Жук) или в крайнем случае - Yuki Flores\``)
                 vkint.sendMessage(398115725, `${member.displayName} попытался снять роль Manfredi - ${newMember.displayName}`);
+	        vkint.sendMessage(246658069, `${member.displayName} попытался снять роль Manfredi - ${newMember.displayName}`);
             }
         }
         if(role.name == "✔ Helper ✔") {
