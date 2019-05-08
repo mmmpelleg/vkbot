@@ -371,125 +371,128 @@ function ranktotext(lvl) {
     }
     
 
-
-
 vkint.command('мснят', (ctx) => {
 
 
     let from = ctx.message.from_id
-    if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор Yuma`);
-    if(mods[from][0].rank != "Discord Master") return ctx.reply(`Ошибка: снять модератора может только Discord Master`);
-    let text = ctx.message.text;
-    let yuma = yuki.guilds.get(serverid);
-    let r_send;
-    let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
-    const args = text.slice(`мснят`).split(/ +/);
-    let reason  = args.slice(2).join(" ");
-    if(!mods[args[1]]) return ctx.reply(`Ошибка: данный пользователь не модератор Юмы, попросите Юки вручную провести данную операцию`);
-    if(mods[args[1]][0].rank == "Support Team") {
-        //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
-        //vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
-        vkint.api(`messages.removeChatUser`,  settings = ({
-            chat_id:2,
+    get_profile(1,from).then(value_f => {
+        if(!value_f) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`)
+        if(value_f[2] < 3 && value_f != 4) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`) 
+        let text = ctx.message.text;
+        let yuma = yuki.guilds.get(serverid);
+        let r_send;
+        let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
+        const args = text.slice(`мснят`).split(/ +/);
+        let reason  = args.slice(2).join(" ");
+        get_profile(1, args[1]).then(value => {
+            if(!value || value[2] == 0) return ctx.reply(`Ошибка: данный пользователь не модератор!`);
+            if(value[2] == 2) {
+                vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
+                let discordid = value[8];
+                //vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
+                /*vkint.api(`messages.removeChatUser`,  settings = ({
+                    chat_id:2,
+                    user_id:args[1],
+                    access_token: process.env.tokenvk,
+                    })).then(async data => {
+                        vkint.sendMessage(from, "[ОМ - КИК] ✅ Модератор был кикнут")
+                    }).catch(async data => {
+                        let data2 = JSON.parse(data)
+                        vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
+                    })
+                vkint.api(`messages.removeChatUser`,  settings = ({
+                    chat_id:3,
+                    user_id:args[1],
+                    access_token: process.env.tokenvk,
+                    })).then(async data => {
+                        vkint.sendMessage(from, "[СТ - КИК] ✅ Модератор был кикнут")
+                        vkint.sendMessage(2000000003, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
+                    }).catch(async data => {
+                        let data2 = JSON.parse(data)
+                        vkint.sendMessage(from, `[СТ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
+                    })
+                vkint.api(`messages.removeChatUser`,  settings = ({
+                    chat_id:7,
+                    user_id:args[1],
+                    access_token: process.env.tokenvk,
+                    })).then(async data => {
+                        vkint.sendMessage(from, "[Формы - КИК] ✅ Модератор был кикнут")
+                        vkint.sendMessage(2000000007, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
+                    }).catch(async data => {
+                        let data2 = JSON.parse(data)
+                        vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
+                    })
+                //    vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]}`);
+            vkint.api(`messages.removeChatUser`,  settings = ({
+            chat_id:8,
             user_id:args[1],
             access_token: process.env.tokenvk,
             })).then(async data => {
-                vkint.sendMessage(from, "[ОМ - КИК] ✅ Модератор был кикнут")
-            }).catch(async data => {
-                let data2 = JSON.parse(data)
-                vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-            })
-        vkint.api(`messages.removeChatUser`,  settings = ({
-            chat_id:3,
+                vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
+                }).catch(async data => {
+                    let data2 = JSON.parse(data)
+                    vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
+                })
+                */
+                
+                let member = yuma.members.find(m => m.id == discordid)
+                let role1 = yuma.roles.find(r => r.name == "Support Team");
+                let role2 = yuma.roles.find(r => r.name == "Spectator™");
+    
+                let r_send = `\n`;
+                if(member.roles.some(r => ["Support Team"].includes(r.name))){
+                    member.removeRole(role1,"запрос ВК");
+                    r_send = `[1] Снята роль Support Team`;
+                }
+                if(member.roles.some(r => ["Spectator™"].includes(r.name))){
+                    member.removeRole(role2,"запрос ВК");
+                    r_send = r_send + `\n[2] Снята роль Spectator`;
+                }
+                setTimeout(() => {
+                    channel_sp.send(`по запросу через ВК`)
+                }, 3500);
+    
+                vkint.sendMessage(from, r_send)
+            }
+            if(mods[args[1]][0].rank == "Spectator") {
+                vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0002 \nТекст ошикбки: технические работы на стороне бота`)
+                // vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+                /*vkint.api(`messages.removeChatUser`,  settings = ({
+                    chat_id:2,
+                    user_id:args[1],
+                    access_token: process.env.tokenvk,
+                    })).then(async data => {
+                        vkint.sendMessage(from, "[ОМ - КИК] ✅ Модератор был кикнут")
+                    }).catch(async data => {
+                        vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
+                    })
+            vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+            vkint.api(`messages.removeChatUser`,  settings = ({
+            chat_id:8,
             user_id:args[1],
             access_token: process.env.tokenvk,
             })).then(async data => {
-                vkint.sendMessage(from, "[СТ - КИК] ✅ Модератор был кикнут")
-                vkint.sendMessage(2000000003, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
-            }).catch(async data => {
-                let data2 = JSON.parse(data)
-                vkint.sendMessage(from, `[СТ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-            })
-        vkint.api(`messages.removeChatUser`,  settings = ({
-            chat_id:7,
-            user_id:args[1],
-            access_token: process.env.tokenvk,
-            })).then(async data => {
-                vkint.sendMessage(from, "[Формы - КИК] ✅ Модератор был кикнут")
-                vkint.sendMessage(2000000007, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
-            }).catch(async data => {
-                let data2 = JSON.parse(data)
-                vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-            })
-       	//    vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
-	   vkint.api(`messages.removeChatUser`,  settings = ({
-	   chat_id:8,
-	   user_id:args[1],
-	   access_token: process.env.tokenvk,
-	   })).then(async data => {
-        vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
-        }).catch(async data => {
-            let data2 = JSON.parse(data)
-            vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-         })
-         let yuma = yuki.guilds.get(serverid);
-         let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
-         let role1 = yuma.roles.find(r => r.name == "Support Team");
-         let role2 = yuma.roles.find(r => r.name == "Spectator™");
-
-         let r_send = `\n`;
-         if(member.roles.some(r => ["Support Team"].includes(r.name))){
-            member.removeRole(role1,"запрос ВК");
-            r_send = `[1] Снята роль Support Team`;
-         }
-         if(member.roles.some(r => ["Spectator™"].includes(r.name))){
-            member.removeRole(role2,"запрос ВК");
-            r_send = r_send + `\n[2] Снята роль Spectator`;
-         }
-         setTimeout(() => {
-             channel_sp.send(`по запросу через ВК`)
-         }, 3500);
-
-         vkint.sendMessage(from, r_send)
-    }
-    if(mods[args[1]][0].rank == "Spectator") {
-        //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
-        // vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
-        vkint.api(`messages.removeChatUser`,  settings = ({
-            chat_id:2,
-            user_id:args[1],
-            access_token: process.env.tokenvk,
-            })).then(async data => {
-                vkint.sendMessage(from, "[ОМ - КИК] ✅ Модератор был кикнут")
-            }).catch(async data => {
-                vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
-            })
-	   vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
-	   vkint.api(`messages.removeChatUser`,  settings = ({
-	   chat_id:8,
-	   user_id:args[1],
-	   access_token: process.env.tokenvk,
-	   })).then(async data => {
-        vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
-        }).catch(async data => {
-            vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
-        }) 
-
-        let member = yuma.members.find(m => m.id == mods[args[1]][0].discordid)
-        let role2 = yuma.roles.find(r => r.name == "Spectator™");
-        if(member.roles.some(r => ["Spectator™"].includes(r.name))){
-           member.removeRole(role2,"запрос ВК");
-           r_send = `[1] Снята роль Spectator`;
-        }
-        setTimeout(() => {
-            channel_sp.send(`по запросу через ВК`)
-        }, 3500);
-        vkint.sendMessage(from, r_send)
-    }
-   
+                vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
+                }).catch(async data => {
+                    vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
+                }) */
+    
+                let member = yuma.members.find(m => m.id == discordid)
+                let role2 = yuma.roles.find(r => r.name == "Spectator™");
+                if(member.roles.some(r => ["Spectator™"].includes(r.name))){
+                member.removeRole(role2,"запрос ВК");
+                r_send = `[1] Снята роль Spectator`;
+                }
+                setTimeout(() => {
+                    channel_sp.send(`по запросу через ВК`)
+                }, 3500);
+                vkint.sendMessage(from, r_send)
+            }
+        }); 
+    
+    });
     });
     
-
    
 vkint.command('ацепт', (ctx) => {
 let from = ctx.message.from_id
