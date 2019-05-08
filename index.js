@@ -497,32 +497,34 @@ vkint.command('мснят', (ctx) => {
    
 vkint.command('ацепт', (ctx) => {
 let from = ctx.message.from_id
-if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор системы ацепта, если вы таким являетесь, попросите Юки внести вас в базу`);
-if(mods[from][0].rank != "Discord Master" && mods[from][0].rank != "Support Team") return ctx.reply(`Ошибка: ваши права слишком низки для выполнения данной команды`);
+get_profile(1,from).then(value => {
+if(!value || value[2] < 2 && value != 4) return ctx.reply(`Ошибка: вы не модератор system form accept`);
 let text = ctx.message.text;
 const args = text.slice(`ацепт`).split(/ +/);
 if(!args[1]) return ctx.reply(`используйте: ацепт номер формы`)
 if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
 form_send[args[1]] = false;
-form_channel[args[1]].send(`${form_forma[args[1]]} | accepter: ${mods[from][0].name}`);
-form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${mods[from][0].name}**`)
+form_channel[args[1]].send(`${form_forma[args[1]]} | accepter: ${value[1]}`);
+form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${value[1]}**`)
 ctx.reply(`Форма от ${form_sender[args[1]]} была принята`)
 return;
+})
 });
 
 vkint.command('отказ', (ctx) => {
     let from = ctx.message.from_id
-    if(!mods[from]) return ctx.reply(`Ошибка: вы не модератор системы ацепта, если вы таким являетесь, попросите Юки внести вас в базу`);
-    if(mods[from][0].rank != "Discord Master" && mods[from][0].rank != "Support Team") return ctx.reply(`Ошибка: ваши права слишком низки для выполнения данной команды`);
+    get_profile(1,from).then(value => {
+        if(!value || value[2] < 2 && value != 4) return ctx.reply(`Ошибка: вы не модератор system form accept`);
     let text = ctx.message.text;
     const args = text.slice(`отказ`).split(/ +/);
     let reason = args.slice(2).join(" ");
     if(!args[1] && !args[2]) return ctx.reply(`используйте: отказ номер формы & причина`)
     if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
     form_send[args[1]] = false;
-    form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была отказана модератором ${mods[from][0].name} по причине: ${args.slice(2).join(" ")} **`)
+    form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была отказана модератором ${value[1]} по причине: ${args.slice(2).join(" ")} **`)
     ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
     return;
+});
 });
 
 vkint.command('getapi', (ctx) => {
