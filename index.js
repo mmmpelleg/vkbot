@@ -124,7 +124,8 @@ async function get_profile(gameserver, author_id){
                 db_account.сообщения, // Вывод сообщений
                 db_account.роливдс, // Вывод уровня модератора
                 db_account.ролиботом, // Вывод уровня модератора
-                db_account.тикеты, // Вывод уровня модератора
+                db_account.тикеты, // Вывод уровня модератора,
+		db_account.discordid, 
             ];
             resolve(account_info);
         });
