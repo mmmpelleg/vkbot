@@ -27,7 +27,7 @@ function hook(channel, title, message, color, avatar) { // This function uses qu
     if (!title) return console.log('Title not specified.');
     if (!message) return console.log('Message not specified.');
     if (!color) color = 'ff0000'; // This is an optional variable. Therefore the default HEX color will be whatever you post there. Mine will be d9a744
-    if (!avatar) avatar = 'https://cdn.discordapp.com/avatars/408740341135704065/9602b7a696bba9672a03943268d3ae27.png?size=2048' // This is also an optional variable, you can change the default to any icon.
+    if (!avatar) avatar = 'https://avatanplus.com/files/resources/mid/592c78b944cc615c55b793c2.png' // This is also an optional variable, you can change the default to any icon.
 
     // We want to remove spaces from color & url, since they might have it on the sides.
     color = color.replace(/\s/g, '');
@@ -45,13 +45,9 @@ function hook(channel, title, message, color, avatar) { // This function uses qu
                 channel.createWebhook('☼ Модератор ☼', 'https://cdn4.iconfinder.com/data/icons/technology-devices-1/500/speech-bubble-128.png') // Make sure this is the same thing for when you search for the webhook. The png image will be the default image seen under the channel. Change it to whatever you want.
                     .then(webhook => {
                         // Finally send the webhook
-                        webhook.send('', {
+                        webhook.send(message, {
                             "username": title,
-                            "avatarURL": avatar,
-                            "embeds": [{
-                                "color": parseInt(`0x${color}`),
-                                "description":message
-                            }]
+                            "avatarURL": avatar,                    
                         })
                             .catch(error => { // We also want to make sure if an error is found, to report it in chat.
                                 console.log(error);
@@ -59,13 +55,9 @@ function hook(channel, title, message, color, avatar) { // This function uses qu
                             })
                     })
             } else { // That webhook was only for if it couldn't find the original webhook
-                foundHook.send('', { // This means you can just copy and paste the webhook & catch part.
+                foundHook.send(message, { // This means you can just copy and paste the webhook & catch part.
                     "username": title,
                     "avatarURL": avatar,
-                    "embeds": [{
-                        "color": parseInt(`0x${color}`),
-                        "description":message
-                    }]
                 })
                     .catch(error => { // We also want to make sure if an error is found, to report it in chat.
                         console.log(error);
