@@ -388,10 +388,10 @@ vkint.command('мснят', (ctx) => {
         get_profile(1, args[1]).then(value => {
             if(!value || value[2] == 0) return ctx.reply(`Ошибка: данный пользователь не модератор!`);
             if(value[2] == 2) {
-                vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
+                //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
                 let discordid = value[8];
-                //vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
-                /*vkint.api(`messages.removeChatUser`,  settings = ({
+                vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
+                vkint.api(`messages.removeChatUser`,  settings = ({
                     chat_id:2,
                     user_id:args[1],
                     access_token: process.env.tokenvk,
@@ -423,7 +423,7 @@ vkint.command('мснят', (ctx) => {
                         let data2 = JSON.parse(data)
                         vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
                     })
-                //    vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]}`);
+                  vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]}`);
             vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:8,
             user_id:args[1],
@@ -434,8 +434,6 @@ vkint.command('мснят', (ctx) => {
                     let data2 = JSON.parse(data)
                     vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
                 })
-                */
-                
                 let member = yuma.members.find(m => m.id == discordid)
                 let role1 = yuma.roles.find(r => r.name == "Support Team");
                 let role2 = yuma.roles.find(r => r.name == "Spectator™");
@@ -455,10 +453,10 @@ vkint.command('мснят', (ctx) => {
     
                 vkint.sendMessage(from, r_send)
             }
-            if(mods[args[1]][0].rank == "Spectator") {
-                vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0002 \nТекст ошикбки: технические работы на стороне бота`)
-                // vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
-                /*vkint.api(`messages.removeChatUser`,  settings = ({
+            if(value[2] == 1) {
+                //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0002 \nТекст ошикбки: технические работы на стороне бота`)
+                vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+                vkint.api(`messages.removeChatUser`,  settings = ({
                     chat_id:2,
                     user_id:args[1],
                     access_token: process.env.tokenvk,
@@ -476,7 +474,7 @@ vkint.command('мснят', (ctx) => {
                 vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
                 }).catch(async data => {
                     vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
-                }) */
+                })
     
                 let member = yuma.members.find(m => m.id == discordid)
                 let role2 = yuma.roles.find(r => r.name == "Spectator™");
@@ -489,8 +487,7 @@ vkint.command('мснят', (ctx) => {
                 }, 3500);
                 vkint.sendMessage(from, r_send)
             }
-        }); 
-    
+       });    
     });
     });
     
