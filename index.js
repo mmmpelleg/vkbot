@@ -455,7 +455,7 @@ vkint.command('мснят', (ctx) => {
             }
             if(value[2] == 1) {
                 //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0002 \nТекст ошикбки: технические работы на стороне бота`)
-                vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+                vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${value[1]}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
                 vkint.api(`messages.removeChatUser`,  settings = ({
                     chat_id:2,
                     user_id:args[1],
@@ -465,7 +465,7 @@ vkint.command('мснят', (ctx) => {
                     }).catch(async data => {
                         vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
                     })
-            vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${mods[args[1]][0].name}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${mods[from][0].name})`);
+            vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${value[1]}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
             vkint.api(`messages.removeChatUser`,  settings = ({
             chat_id:8,
             user_id:args[1],
@@ -475,7 +475,7 @@ vkint.command('мснят', (ctx) => {
                 }).catch(async data => {
                     vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
                 })
-    
+     		let discordid = value[8];
                 let member = yuma.members.find(m => m.id == discordid)
                 let role2 = yuma.roles.find(r => r.name == "Spectator™");
                 if(member.roles.some(r => ["Spectator™"].includes(r.name))){
