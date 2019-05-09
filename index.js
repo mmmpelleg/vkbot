@@ -248,6 +248,19 @@ vkint.command('/stream', (ctx) => {
     });
     });
 
+vkint.command('!жалоба', (ctx) => {
+    let from = ctx.message.from_id
+    let text = ctx.message.text;
+    get_checker(from).then(value => {
+        if(!value || value[2] == 0) return ctx.reply(`Вы не член команды Checker's Team`)
+        const args = text.slice(`!жалоба`).split(/ +/);
+        let text_jb = args.slice(1).join(" ");
+        if(!args[1]) return ctx.reply(`Укажите ссылку на жалобу или напишите текст самой жалобы с ссылкой на скрины (аттач пока не доступен)`)
+        vkint.sendMessage(2000000011,`Жалоба от: ${value[1]} [${ranktotext(value[2])}]\n\nТекст жалобы:${text_jb}`)
+    })
+});
+
+
 vkint.command('/stats', (ctx) => {
     let from = ctx.message.from_id
     get_profile(1, from).then(async value => {
