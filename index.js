@@ -257,6 +257,7 @@ vkint.command('!жалоба', (ctx) => {
         let text_jb = args.slice(1).join(" ");
         if(!args[1]) return ctx.reply(`Укажите ссылку на жалобу или напишите текст самой жалобы с ссылкой на скрины (аттач пока не доступен)`)
         vkint.sendMessage(2000000011,`Жалоба от: ${value[1]} [${ranktotext(value[2])}]\n\nТекст жалобы: ${text_jb}`)
+	console.log(ctx);
     })
 });
 
