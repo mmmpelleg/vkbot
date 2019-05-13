@@ -268,8 +268,25 @@ vkint.command('/stats', (ctx) => {
     get_profile(1, from).then(async value => {
         if(value == false) return;
         if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
-        if(value[2] >= 3) return ctx.reply(`Ваш ник: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}`)
-        else return ctx.reply(`Ваш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
+	let d_id = value[8];
+	let yuma = bot.guilds.get(serverid);
+	let member = yuma.members.find(m => m.id == d_id);
+        let userroles;
+	if(!member) userroles = 'Аккаунт не найден!';
+	else {
+        await member.roles.filter(role => {
+                if (userroles == undefined){
+                    if (!role.name.includes("everyone")) userroles = `${role.name}`
+                }else{
+                    if (!role.name.includes("everyone")) userroles = userroles + `, ${role.name}`
+                }
+            })
+	    if (userroles == undefined){
+                userroles = `не найдены`
+            }
+	}
+        if(value[2] >= 3) return ctx.reply(`Ваш ник: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\nВаши роли: ${userroles}`)
+        else return ctx.reply(`Ваш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nВаши роли: ${userroles}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
     })
 });
 
