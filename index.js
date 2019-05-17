@@ -1057,7 +1057,8 @@ bot.on('presenceUpdate', async (oldMember, newMember) => {
 	if(!newMember.hasPermission("ADMINISTRATOR")) return false;
 	let yuma = bot.guilds.get(serverid);
 	let channel = yuma.channels.find(c => c.name == "spectator-chat");
-	return console.log(newMember.presence);
+	console.log(`new:` + newMember.presence);
+	return console.log(`old:` + oldMember.presence);
 	if(newMember.presence.status == 'online') {
 	duty.add(newMember.id);
 	return channel.send(`<@${newMember.id}> **вышел на дежурство**`);
