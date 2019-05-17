@@ -1050,7 +1050,7 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
     }
 });
 
-bot.on('presenceUpdate', async (oldMember, newMember => {
+bot.on('presenceUpdate', async (oldMember, newMember) => {
 	console.log(`-----------Old Member------------`);
 	console.log(oldMember);
 	console.log(`-----------New Member------------`);
