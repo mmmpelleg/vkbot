@@ -8,6 +8,7 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
+const duty = new Set();
 //let mysql = require('./modules/mysql');
 const GoogleSpreadsheet = require('./google_module/google-spreadsheet');
 const doc = new GoogleSpreadsheet(process.env.skey);
@@ -478,7 +479,7 @@ vkint.command('мснят', (ctx) => {
         if(!value_f) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`)
         if(value_f[2] < 3 && value_f != 4) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`) 
         let text = ctx.message.text;
-        let yuma = yuki.guilds.get(serverid);
+
         let r_send;
         let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
         const args = text.slice(`мснят`).split(/ +/);
@@ -1052,5 +1053,15 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
 
 bot.on('presenceUpdate', async (oldMember, newMember) => {
 	if (newMember.guild.id != "528635749206196232") return // Сервер не 03!
-	console.log(newMember.presence);
+	if(!newMember.hasPermission("ADMINISTRATOR")) return false;
+	let yuma = bot.guilds.get(serverid);
+	let channel = yuma.channels.find(c => c.name == "spectator-chat");
+	if(newMember.presence.status == 'online') {
+		duty.add(newMember.id);
+ 		return channel.send(`<@${newMember.id}> **вышел на дежурство**`);
+	}
+	if(newMember.persence.status != 'online' && duty.has(newMember.id) {
+		duty.delete(newMember.id);
+ 		return channel.send(`<@${newMember.id}> **вышел c дежурства**`);
+	   }
 });
