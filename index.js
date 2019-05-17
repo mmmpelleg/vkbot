@@ -1051,17 +1051,19 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
     }
 });
 
+
 bot.on('presenceUpdate', async (oldMember, newMember) => {
 	if (newMember.guild.id != "528635749206196232") return // Сервер не 03!
 	if(!newMember.hasPermission("ADMINISTRATOR")) return false;
 	let yuma = bot.guilds.get(serverid);
 	let channel = yuma.channels.find(c => c.name == "spectator-chat");
 	if(newMember.presence.status == 'online') {
-		duty.add(newMember.id);
- 		return channel.send(`<@${newMember.id}> **вышел на дежурство**`);
+	duty.add(newMember.id);
+	return channel.send(`<@${newMember.id}> **вышел на дежурство**`);
 	}
-	if(newMember.persence.status != 'online' && duty.has(newMember.id) {
-		duty.delete(newMember.id);
- 		return channel.send(`<@${newMember.id}> **вышел c дежурства**`);
-	   }
+	if(newMember.persence.status != 'online' && duty.has(newMember.id)) {
+	duty.delete(newMember.id);
+	return channel.send(`<@${newMember.id}> **вышел c дежурства**`);
+        }
 });
+
