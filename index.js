@@ -1051,8 +1051,6 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
 });
 
 bot.on('presenceUpdate', async (oldMember, newMember) => {
-	console.log(`-----------Old Member------------`);
-	console.log(oldMember);
-	console.log(`-----------New Member------------`);
-	console.log(newMember);
+	if (newMember.guild.id != "528635749206196232") return // Сервер не 03!
+	console.log(newMember.presence);
 });
