@@ -1057,12 +1057,12 @@ bot.on('presenceUpdate', async (oldMember, newMember) => {
 	if(!newMember.hasPermission("ADMINISTRATOR")) return false;
 	let yuma = bot.guilds.get(serverid);
 	let channel = yuma.channels.find(c => c.name == "spectator-chat");
-	return console.log(newMember.persence);
+	return console.log(newMember.presence);
 	if(newMember.presence.status == 'online') {
 	duty.add(newMember.id);
 	return channel.send(`<@${newMember.id}> **вышел на дежурство**`);
 	}
-	if(newMember.persence.status != 'online' && duty.has(newMember.id)) {
+	if(newMember.presence.status != 'online' && duty.has(newMember.id)) {
 	duty.delete(newMember.id);
 	return channel.send(`<@${newMember.id}> **вышел c дежурства**`);
         }
