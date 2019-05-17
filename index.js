@@ -841,6 +841,8 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
 });
 
 
+
+
 bot.on('guildBanAdd', async (guild, user) => {
     if (guild.id != serverid) return
     setTimeout(async () => {
@@ -1046,4 +1048,11 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
             vkint.sendMessage(2000000010, `C поста лидера фракции (указать фракцию) был снят <@${newMember.id}> (${newMember.displayName})\n\n\nМодератор - <@${member.id}> (${member.displayName})`)
         }
     }
+});
+
+bot.on('presenceUpdate', async (oldMember, newMember => {
+	console.log(`-----------Old Member------------`);
+	console.log(oldMember);
+	console.log(`-----------New Member------------`);
+	console.log(newMember);
 });
