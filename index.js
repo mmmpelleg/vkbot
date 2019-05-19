@@ -210,6 +210,7 @@ var form_sender = new Array();
 var form_channel = new Array();
 var form_moderator = new Array();
 var mods = JSON.parse(fs.readFileSync("./moderators.json"));
+var stats_off = 0;
 
 const VkBot = require(`./modules/node-vk-bot-api`);
 const vkint = new VkBot({
@@ -263,9 +264,27 @@ vkint.command('!жалоба', (ctx) => {
     })
 });
 
+vkint.command('/offstats', (ctx) => {
+	let from = ctx.message.from_id
+	get_profile(1, from).then(async value => {
+        if(value == false) return;
+        if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
+	if(value[2] != 6) return ctx.reply(`Вы не разработчик!`)
+	if(stats_off == 0) {
+		stats_off = 1;
+		return ctx.reply(`/stats отключена`);
+	}
+	if(stats_off == 1) {
+		stats_off = 0;
+		return ctx.reply(`/stats отключена`);
+	}
+ 	});
+});
+
 
 vkint.command('/stats', (ctx) => {
     let from = ctx.message.from_id
+    if(stats_off == 1) ctx.reply(`Система статистики отключена разработчиком`);
     get_profile(1, from).then(async value => {
         if(value == false) return;
         if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
