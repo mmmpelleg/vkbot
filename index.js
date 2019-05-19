@@ -75,7 +75,7 @@ async function add_profile(gameserver, author_id, nick, moderlvl){
     return new Promise(async function(resolve, reject) {
         doc.addRow(gameserver, {
             вк: author_id, // Вывод ID пользователя.
-            ник: nick, // Вывод ник
+            ник: nick, // Вывод ника
             уровеньмодератора: moderlvl, // Вывод уровня модератора
         }, async function(err){
             if (err){
@@ -284,7 +284,7 @@ vkint.command('/offstats', (ctx) => {
 
 vkint.command('/stats', (ctx) => {
     let from = ctx.message.from_id
-    if(stats_off == 1) ctx.reply(`Система статистики отключена разработчиком`);
+    if(stats_off == 1) return ctx.reply(`Система статистики отключена разработчиком`);
     get_profile(1, from).then(async value => {
         if(value == false) return;
         if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
