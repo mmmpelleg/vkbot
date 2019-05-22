@@ -70,6 +70,16 @@ function hook(channel, title, message, color, avatar) { // This function uses qu
     }
 
 
+function now_date(){
+    let date = new Date(+new Date().valueOf() + 10800000);
+    return `${date.getDate().toString().padStart(2, '0')}.` +
+        `${(date.getMonth() + 1).toString().padStart(2, '0')}.` +
+        `${date.getFullYear()} ` +
+        `${date.getHours().toString().padStart(2, '0')}:` +
+        `${date.getMinutes().toString().padStart(2, '0')}:` +
+        `${date.getSeconds().toString().padStart(2, '0')}`;
+}
+
 
 async function add_profile(gameserver, author_id, nick, moderlvl){
     return new Promise(async function(resolve, reject) {
@@ -264,6 +274,16 @@ vkint.command('!жалоба', (ctx) => {
     })
 });
 
+
+vkint.command('!restart', (ctx) => {
+    let from = ctx.message.from_id
+    if(from != `398115725`) return;
+    ctx.reply(`Произодится рестарт систем Yuki Helper\`a`);
+    settimeout({
+	process.exit(143);
+    },1200);
+});
+
 vkint.command('/offstats', (ctx) => {
 	let from = ctx.message.from_id
 	get_profile(1, from).then(async value => {
@@ -274,9 +294,9 @@ vkint.command('/offstats', (ctx) => {
 		stats_off = 1;
 		return ctx.reply(`/stats отключена`);
 	}
-	if(stats_off == 1) {
+	else {
 		stats_off = 0;
-		return ctx.reply(`/stats отключена`);
+		return ctx.reply(`/stats включен`);
 	}
  	});
 });
@@ -657,6 +677,8 @@ vkint.command('getapi', (ctx) => {
 
   vkint.startPolling(() => {
     console.log('ВК интеграция успешно запущена!')
+	  let start = now_date();
+	  vkint.sendMessage(398115725, `Произведен запуск всех систем в ${start}`);
   })
 
 
