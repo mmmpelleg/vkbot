@@ -280,7 +280,7 @@ vkint.command('!restart', (ctx) => {
     if(from != 398115725) return;
     ctx.reply(`Произодится рестарт систем Yuki Helper\`a`);
 	setTimeout(() => {
-	    process.exit();
+	     eval(process.exit(143));
     }, 3500);
 });
 
