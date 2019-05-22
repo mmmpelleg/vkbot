@@ -279,7 +279,9 @@ vkint.command('!restart', (ctx) => {
     let from = ctx.message.from_id
     if(from != 398115725) return;
     ctx.reply(`Произодится рестарт систем Yuki Helper\`a`);
-    process.exit(143);
+	setTimeout(() => {
+	    process.exit(1);
+    }, 3500);
 });
 
 vkint.command('/offstats', (ctx) => {
