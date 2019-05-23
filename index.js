@@ -671,6 +671,11 @@ vkint.command('getapi', (ctx) => {
     else if(testnum == NaN) return ctx.reply(`Это упоминание`)
     });
 
+vkint.command(`test`, (ctx) => {
+	if(!ctx.message.attachment) return ctx.reply(`Картинки нет!`);
+	vkint.sendMessage(ctx.message.peer_id,`Изображение в сообщении test`,ctx.message.attachment); 
+});
+
 
 
 
