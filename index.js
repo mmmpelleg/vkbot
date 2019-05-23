@@ -510,7 +510,7 @@ function ranktotext(lvl) {
     }
     
 
-vkint.command('мснят', (ctx) => {
+vkint.command('delmod', (ctx) => {
 
 
     let from = ctx.message.from_id
@@ -518,7 +518,7 @@ vkint.command('мснят', (ctx) => {
         if(!value_f) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`)
         if(value_f[2] < 3 && value_f != 4) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`) 
         let text = ctx.message.text;
-
+	let yuma = bot.guilds.get(serverid);
         let r_send;
         let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
         const args = text.slice(`мснят`).split(/ +/);
@@ -588,7 +588,7 @@ vkint.command('мснят', (ctx) => {
                 setTimeout(() => {
                     channel_sp.send(`по запросу через ВК`)
                 }, 3500);
-    
+    		channel_sp.send(`-+delmod <@member.id>`);	
                 vkint.sendMessage(from, r_send)
             }
             if(value[2] == 1) {
