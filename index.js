@@ -521,7 +521,7 @@ vkint.command('delmod', (ctx) => {
 	let yuma = bot.guilds.get(serverid);
         let r_send;
         let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
-        const args = text.slice(`мснят`).split(/ +/);
+        const args = text.slice(`delmod`).split(/ +/);
         let reason  = args.slice(2).join(" ");
         get_profile(1, args[1]).then(value => {
             if(!value || value[2] == 0) return ctx.reply(`Ошибка: данный пользователь не модератор!`);
