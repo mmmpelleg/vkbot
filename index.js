@@ -672,7 +672,9 @@ vkint.command('getapi', (ctx) => {
     });
 
 vkint.command(`test`, (ctx) => {
-	console.log(ctx.message.attachments);
+	ctx.message.attachments.forEach(attach => {
+		console.log(attach);
+	});
 	if(!ctx.message.attachments) return ctx.reply(`Картинки нет!`);
 	vkint.sendMessage(ctx.message.peer_id,`Изображение в сообщении test`,ctx.message.attachments); 
 });
