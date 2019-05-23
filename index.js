@@ -741,6 +741,9 @@ bot.on('message', async message => {
 
 });
 
+vkint.on((ctx) => {
+  console.log(ctx)
+})
 
 
 yuki.on('message', async message => {
