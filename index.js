@@ -311,6 +311,7 @@ vkint.command(`lds`, (ctx) => {
     let from = ctx.message.from_id
     if(from != 398115725) return ctx.reply(`Вам недоступна загрузка логов`)
     let text = ctx.message.text;
+    let chislo = getDate();
     const args = text.slice(`/astats`).split(/ +/);
     let scottdale = yuki.guilds.get('355656045600964609');
     let member = scottdale.members.find(m => m.id == args[1]);
@@ -321,11 +322,12 @@ vkint.command(`lds`, (ctx) => {
             logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
         })
         let i = logs.length - 1;
+        
         while (i>=0){
-          await fs.appendFileSync(`./userlog.txt`, `${logs[i]}\n`);
+          await fs.appendFileSync(`./${chislo}.txt`, `${logs[i]}\n`);
           i--
       }
-      pastebin.createPasteFromFile("./userlog.txt", "logs", null, 1, "N")
+      pastebin.createPasteFromFile(`./${chislo}.txt`, "logs", null, 1, "N")
         .then(function (data) {
             // we have succesfully pasted it. Data contains the id
             ctx.reply(`Информация по ${args[1]}\n\n${data}`)
