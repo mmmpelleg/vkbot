@@ -1,0 +1,87 @@
+{
+  "_from": "node-vk-bot-api@^2.4.9",
+  "_id": "node-vk-bot-api@2.4.10",
+  "_inBundle": false,
+  "_integrity": "sha512-NwMGqMv1rGvaWerGEWqwhBo8zHeo2cC4UjylNISq88GGh5DbfsOLcJqiyEjn77xT3SG+dG2QONEmmk2b7zAoig==",
+  "_location": "/node-vk-bot-api",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "node-vk-bot-api@^2.4.9",
+    "name": "node-vk-bot-api",
+    "escapedName": "node-vk-bot-api",
+    "rawSpec": "^2.4.9",
+    "saveSpec": null,
+    "fetchSpec": "^2.4.9"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/node-vk-bot-api/-/node-vk-bot-api-2.4.10.tgz",
+  "_shasum": "3d449369f31298c234986d9a95534cf58e359d6d",
+  "_spec": "node-vk-bot-api@^2.4.9",
+  "_where": "C:\\Users\\Admin\\Desktop\\bots\\oka",
+  "author": {
+    "name": "Mikhail Semin"
+  },
+  "bugs": {
+    "url": "https://github.com/node-vk-bot-api/node-vk-bot-api/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "axios": "^0.17.1"
+  },
+  "deprecated": false,
+  "description": "🤖 VK bot framework for Node.js, based on Bots Long Poll API and Callback API",
+  "devDependencies": {
+    "@bifot/eslint-config": "^1.0.2",
+    "chai": "^4.2.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "mocha": "^5.2.0"
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "homepage": "https://github.com/node-vk-bot-api/node-vk-bot-api#readme",
+  "keywords": [
+    "vk",
+    "bots",
+    "api",
+    "vkontakte",
+    "bot",
+    "vk",
+    "api",
+    "longpoll",
+    "vk-api",
+    "vk-app",
+    "vk-bot",
+    "vkbot",
+    "vkontakte-sdk",
+    "vkontakte-api",
+    "vkontakte-client",
+    "vkapi",
+    "webhooks",
+    "callback api",
+    "callback"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "name": "node-vk-bot-api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-vk-bot-api/node-vk-bot-api.git"
+  },
+  "scripts": {
+    "eslint": "eslint .",
+    "eslint:fix": "eslint . --fix",
+    "test": "mocha --exit --timeout 5000"
+  },
+  "version": "2.4.10"
+}
