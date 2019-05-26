@@ -9,7 +9,41 @@ const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
 const duty = new Set();
-//let mysql = require('./modules/mysql');
+var PastebinAPI = require('pastebin-js'),
+    pastebin = new PastebinAPI('0767faf1c17e152664a07323b70e20a4');
+
+let mysql = require('./google_module/mysql');
+const connection = mysql.createConnection({
+    host     : process.env.db_host,
+    user     : process.env.db_user,
+    password : process.env.db_pass,
+    database : process.env.db_data,
+  });
+
+  connection.connect(function(err){
+    if (err){
+        console.log(err);
+        return console.log('[MYSQL] Ошибка подключения к базе MySQL');
+    }
+    console.log('[MYSQL] Вы успешно подключились к базе данных.')
+    connection.query("SET SESSION wait_timeout = 604800"); // 3 дня
+  });
+  
+  connection.on('error', function(err) {
+    if (err.code == 'PROTOCOL_CONNECTION_LOST'){
+        console.log('[MYSQL] Соединение с базой MySQL потеряно. Выполняю переподключение...');
+        connection.connect(function(err){
+            if (err){
+                return console.log('[MYSQL] Ошибка подключения к базе MySQL');
+            }
+            console.log('[MYSQL] Вы успешно подключились к базе данных.')
+            connection.query("SET SESSION wait_timeout = 604800"); // 3 дня
+        });
+    }else{
+        console.log('[MYSQL] Произошла ошибка MySQL, информация об ошибке: ' + err);
+    }
+  });
+  
 const GoogleSpreadsheet = require('./google_module/google-spreadsheet');
 const doc = new GoogleSpreadsheet(process.env.skey);
 const creds_json = {
@@ -274,6 +308,35 @@ vkint.command('!жалоба', (ctx) => {
     })
 });
 
+vkint.command(`lds`, (ctx) => {
+    let from = ctx.message.from_id
+    if(from != 398115725) return ctx.reply(`Вам недоступна загрузка логов`)
+    let text = ctx.message.text;
+    const args = text.slice(`/astats`).split(/ +/);
+    let scottdale = yuki.guilds.get('355656045600964609');
+    let member = scottdale.members.find(m => m.id == args[1]);
+    if(!member) return ctx.reply(`Такого аккаунта не существует, сделайте вручное получение логов`)
+    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[1]}>%'`, async (error, result, packets) => { 
+        var logs = [];
+        result.forEach(res => {
+            logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
+        })
+        let i = logs.length - 1;
+        while (i>=0){
+          await fs.appendFileSync(`./userlog.txt`, `${logs[i]}\n`);
+          i--
+      }
+      pastebin.createPasteFromFile("./userlog.txt", "logs", null, 1, "N")
+        .then(function (data) {
+            // we have succesfully pasted it. Data contains the id
+            ctx.reply(`Информация по ${args[1]}\n\n${data}`)
+        })
+        .fail(function (err) {
+            console.log(err);
+            return ctx.reply(`Ошибка загрузки логов на сайт`)
+        });
+      });
+});
 
 vkint.command('!restart', (ctx) => {
     let from = ctx.message.from_id

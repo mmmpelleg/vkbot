@@ -11,6 +11,7 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "mongoose-paginate": "git://github.com/zerok78/mongoose-paginate.git#version-5.0.4",
+    "pastebin-js": "^1.0.2",
     "query-string": "^6.4.2",
     "random-number": "0.0.9",
     "superagent": "^3.8.3",
