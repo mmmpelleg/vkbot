@@ -316,7 +316,7 @@ vkint.command(`lds`, (ctx) => {
     let scottdale = yuki.guilds.get('355656045600964609');
     let member = scottdale.members.find(m => m.id == args[1]);
     if(!member) return ctx.reply(`Такого аккаунта не существует, сделайте вручное получение логов`)
-    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[1]}> получил%'`, async (error, result, packets) => { 
+    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[1]}>%'`, async (error, result, packets) => { 
         var logs = [];
         result.forEach(res => {
             logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
