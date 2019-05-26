@@ -309,9 +309,9 @@ vkint.command('!жалоба', (ctx) => {
 
 vkint.command(`lds`, (ctx) => {
     let from = ctx.message.from_id
-    if(from != 398115725) return ctx.reply(`Вам недоступна загрузка логов`)
+    if(from != 398115725 && from != 442332049) return ctx.reply(`Вам недоступна загрузка логов`)
     let text = ctx.message.text;
-    let chislo = getDate();
+    let chislo = new Date();
     const args = text.slice(`/astats`).split(/ +/);
     let scottdale = yuki.guilds.get('355656045600964609');
     let member = scottdale.members.find(m => m.id == args[1]);
