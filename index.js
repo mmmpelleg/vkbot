@@ -330,7 +330,8 @@ vkint.command(`lds`, (ctx) => {
       pastebin.createPasteFromFile(`./${chislo}.txt`, "logs", null, 1, "N")
         .then(function (data) {
             // we have succesfully pasted it. Data contains the id
-            ctx.reply(`Информация по ${args[1]}\n\n${data}`)
+	    let text = data.slice(`https://pastebin.com`).split('/');
+            ctx.reply(`Информация по ${args[1]}\n\nhttps://pastebin.com/raw/${text[3]}`)
         })
         .fail(function (err) {
             console.log(err);
