@@ -312,17 +312,28 @@ vkint.command(`lds`, (ctx) => {
     if(from != 398115725 && from != 442332049) return ctx.reply(`Вам недоступна загрузка логов`)
     let text = ctx.message.text;
     let chislo = new Date();
-    const args = text.slice(`/astats`).split(/ +/);
-    let scottdale = yuki.guilds.get('355656045600964609');
-    let member = scottdale.members.find(m => m.id == args[1]);
-    if(!member) return ctx.reply(`Такого аккаунта не существует, сделайте вручное получение логов`)
-    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[1]}>%'`, async (error, result, packets) => { 
+    const args = text.slice(`lds`).split(/ +/);
+    let server;
+    let server_name; 
+    if(args[1] == 3) {
+	    server = '355656045600964609';
+	    server_name = 'Scottdale'
+    }
+    if(args[1] == 9) {
+	    server = '528635749206196232';
+	    server_name = 'Yuma'
+    }
+    if(!server) return ctx.reply(`Укажите номер сервера\nДоступные сервера:\n3 - Scottdale\n9 - Yuma`);
+    let server_obj = yuki.guilds.get(server);
+    let member = server_obj.members.find(m => m.id == args[2]);
+    if(!member) return ctx.reply(`На сервере ${server_name} аккаунт не найден (скорее всего вышел из дса, проверьте ИД и запросите офф-логи если вам нужны они!)`)
+    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[2]}>%' AND \`server\` = '${server}'`, async (error, result, packets) => { 
         var logs = [];
         result.forEach(res => {
             logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
         })
         let i = logs.length - 1;
-        
+        if(!logs) return ctx.reply(`Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
         while (i>=0){
           await fs.appendFileSync(`./${chislo}.txt`, `${logs[i]}\n`);
           i--
@@ -331,7 +342,7 @@ vkint.command(`lds`, (ctx) => {
         .then(function (data) {
             // we have succesfully pasted it. Data contains the id
 	    let text = data.slice(`https://pastebin.com`).split('/');
-            ctx.reply(`Информация по ${args[1]}\n\nhttps://pastebin.com/raw/${text[3]}`)
+            ctx.reply(`Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`)
         })
         .fail(function (err) {
             console.log(err);
