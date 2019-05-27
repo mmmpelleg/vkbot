@@ -334,7 +334,7 @@ vkint.command(`lds`, (ctx) => {
         })
         let i = logs.length - 1;
 	console.log(logs);
-        if(!logs) return ctx.reply(`Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
+        if(!logs[0]) return ctx.reply(`Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
         while (i>=0){
           await fs.appendFileSync(`./${chislo}.txt`, `${logs[i]}\n`);
           i--
