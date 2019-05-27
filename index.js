@@ -10,7 +10,7 @@ const spmod = new Set();
 const dm_mod = new Set();
 const duty = new Set();
 var PastebinAPI = require('pastebin-js'),
-    pastebin = new PastebinAPI('0767faf1c17e152664a07323b70e20a4');
+    pastebin = new PastebinAPI(process.env.devkey);
     const mysql = require('./google_module/mysql');
 const connection = mysql.createConnection({
     host     : process.env.db_host,
