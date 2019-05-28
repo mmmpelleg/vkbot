@@ -314,17 +314,8 @@ vkint.command(`lds`, (ctx) => {
     let chislo = new Date();
     const args = text.slice(`lds`).split(/ +/);
     let server;
-    let server_name; 
+    let server_name = serv_name(args[1]); 
     if(args[1] < 1 && args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
-    if(args[1] == 1) server_name == 'Phoenix'; 
-    if(args[1] == 2) server_name == 'Tucson'; 
-    if(args[1] == 3) server_name == 'Scottdale'; 
-    if(args[1] == 4) server_name == 'Chandler'; 
-    if(args[1] == 5) server_name == 'Brainburg'; 
-    if(args[1] == 6) server_name == 'Saint Rose'; 
-    if(args[1] == 7) server_name == 'Mesa'; 
-    if(args[1] == 8) server_name == 'Red-Rock'; 
-    if(args[1] == 9) server_name == 'Yuma'; 
     if(args[1] == 3) {
 	    server = '355656045600964609';
     }
@@ -582,6 +573,21 @@ if(lvl == 5) text = 'Главный администратор';
 if(lvl == 6) text = 'Разработчик';
 return text;
 }
+
+function serv_name(serv) {
+    let server_name;
+    if(serv == 1) server_name == 'Phoenix'; 
+    if(serv == 2) server_name == 'Tucson'; 
+    if(serv == 3) server_name == 'Scottdale'; 
+    if(serv == 4) server_name == 'Chandler'; 
+    if(serv == 5) server_name == 'Brainburg'; 
+    if(serv == 6) server_name == 'Saint Rose'; 
+    if(serv == 7) server_name == 'Mesa'; 
+    if(serv == 8) server_name == 'Red-Rock'; 
+    if(serv == 9) server_name == 'Yuma'; 
+    return server_name
+}
+
 
 function ranktotext(lvl) {
     let text;
