@@ -323,78 +323,7 @@ vkint.command(`lds`, (ctx) => {
 	    server = '528635749206196232';
 	    server_name = 'Yuma'
     }
-    if(args[1] == 'all') {
-	let action = 1;
-	let error_status = 0;
-        let reply; 
-	    if(action == 1) { 
-		    server = '355656045600964609';
-		    server_name = 'Scottdale'   
-		    let server_obj = yuki.guilds.get(server);
-		    let member = server_obj.members.find(m => m.id == args[2]);
-		    action = 2;
-		    if(!member) return error_status = 1;
-		    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[2]}>%' AND \`server\` = '${server}'`, async (error, result, packets) => { 
-			var logs = [];
-			result.forEach(res => {
-			    logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
-			})
-			let i = logs.length - 1;
-			console.log(logs);
-			if(!logs[0]) return reply = `Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`;
-			
-			 while (i>=0){
-			  await fs.appendFileSync(`./${chislo}.txt`, `${logs[i]}\n`);
-			  i--
-		      }
-		      pastebin.createPasteFromFile(`./${chislo}.txt`, "logs", null, 1, "N")
-			.then(async function (data) {
-			    // we have succesfully pasted it. Data contains the id
-			    let text = data.slice(`https://pastebin.com`).split('/');
-			    reply = `Сервер: Scottdale\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`;
-			      console.log(`1.${reply}`);
-			      if(action == 2) {
-			if(error_status == 1) reply = `Сервер: Scottdale\nПользователь не найден.`;
-		    server = '528635749206196232';
-		    server_name = 'Yuma'   
-		    let server_obj = yuki.guilds.get(server);
-		    let member = server_obj.members.find(m => m.id == args[2]);
-		    action = 2;
-		    if(!member) return ctx.reply(`${reply}\n\nСервер: Yuma\nПользователь не найден.`); 
-		    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[2]}>%' AND \`server\` = '${server}'`, async (error, result, packets) => { 
-			var logs = [];
-			result.forEach(res => {
-			    logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
-			})
-			let i = logs.length - 1;
-			console.log(logs);
-			if(!logs[0]) return await ctx.reply(`${reply}\n\nСервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
-			console.log(`2.${reply}`);
-			    while (i>=0){
-			  await fs.appendFileSync(`./${chislo+2}.txt`, `${logs[i]}\n`);
-			  i--
-		      }
-		      pastebin.createPasteFromFile(`./${chislo+2}.txt`, "logs", null, 1, "N")
-			.then(async function (data) {
-			    // we have succesfully pasted it. Data contains the id
-			    let text = data.slice(`https://pastebin.com`).split('/');
-			    //await ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
-			})
-			.fail(async function (err) {
-			    console.log(err);
-			    return await ctx.reply(`${reply}\n\nОшибка загрузки логов на сайт`)
-			});
-		      });    
-	    }
-			})
-			.fail(async function (err) {
-			    console.log(err);
-			    return ctx.reply(`Ошибка загрузки логов на сайт`)
-			});
-		      });
-	    }
-    }
-    if(!server) return ctx.reply(`Укажите номер сервера\nДоступные сервера:\nall - все сервера\n3 - Scottdale\n9 - Yuma`);
+    if(!server) return ctx.reply(`Укажите номер сервера\nДоступные сервера:\n3 - Scottdale\n9 - Yuma`);
     let server_obj = yuki.guilds.get(server);
     let member = server_obj.members.find(m => m.id == args[2]);
     if(!member) return ctx.reply(`На сервере ${server_name} аккаунт не найден (скорее всего вышел из дса, проверьте ИД и запросите офф-логи если вам нужны они!)`)
