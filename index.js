@@ -323,7 +323,7 @@ vkint.command(`offlds`, (ctx) => {
 	getallowserv[args[1]] = false; 
 	return ctx.reply(`Вы выключили получение логов с ${server_name}`);
     }
-
+});
 
 vkint.command(`lds`, (ctx) => {
     let from = ctx.message.from_id
