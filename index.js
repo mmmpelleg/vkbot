@@ -375,7 +375,7 @@ vkint.command(`lds`, (ctx) => {
 			.then(async function (data) {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
-			    await ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
+			    //await ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
 			})
 			.fail(async function (err) {
 			    console.log(err);
