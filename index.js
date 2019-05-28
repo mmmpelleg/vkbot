@@ -323,7 +323,7 @@ vkint.command(`offlds`, (ctx) => {
 	getallowserv[args[1]] = false; 
 	return ctx.reply(`Вы выключили получение логов с ${server_name}`);
     }
-    if(args[1] == 'offall`) {
+    if(args[1] == 'offall') {
 	  getallowserv[1] = false; 
 	  getallowserv[2] = false; 
 	  getallowserv[3] = false; 
