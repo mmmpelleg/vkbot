@@ -585,7 +585,7 @@ function serv_name(serv) {
     if(serv == 7) server_name = 'Mesa'; 
     if(serv == 8) server_name = 'Red-Rock'; 
     if(serv == 9) server_name = 'Yuma'; 
-    return server_name'
+    return server_name;
 }
 
 
