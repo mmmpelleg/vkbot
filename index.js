@@ -347,7 +347,7 @@ vkint.command(`lds`, (ctx) => {
 			  i--
 		      }
 		      pastebin.createPasteFromFile(`./${chislo}.txt`, "logs", null, 1, "N")
-			.then(function (data) {
+			.then(async function (data) {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
 			    reply = `Сервер: Scottdale\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`;
@@ -372,7 +372,7 @@ vkint.command(`lds`, (ctx) => {
 			  i--
 		      }
 		      pastebin.createPasteFromFile(`./${chislo+2}.txt`, "logs", null, 1, "N")
-			.then(function (data) {
+			.then(async function (data) {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
 			    await ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
