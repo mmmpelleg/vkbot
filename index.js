@@ -350,7 +350,7 @@ vkint.command(`lds`, (ctx) => {
 			.then(function (data) {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
-			    reply = `Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`;
+			    reply = `Сервер: Scottdale\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`;
 			      if(action == 2) {
 			if(error_status == 1) reply = `Сервер: Scottdale\nПользователь не найден.`;
 		    server = '528635749206196232';
@@ -366,7 +366,7 @@ vkint.command(`lds`, (ctx) => {
 			})
 			let i = logs.length - 1;
 			console.log(logs);
-			if(!logs[0]) return ctx.reply(`${reply}\n\nСервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
+			if(!logs[0]) return await ctx.reply(`${reply}\n\nСервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
 			while (i>=0){
 			  await fs.appendFileSync(`./${chislo+2}.txt`, `${logs[i]}\n`);
 			  i--
@@ -375,11 +375,11 @@ vkint.command(`lds`, (ctx) => {
 			.then(function (data) {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
-			    ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
+			    await ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
 			})
 			.fail(function (err) {
 			    console.log(err);
-			    return ctx.reply(`${reply}\n\nОшибка загрузки логов на сайт`)
+			    return await ctx.reply(`${reply}\n\nОшибка загрузки логов на сайт`)
 			});
 		      });    
 	    }
