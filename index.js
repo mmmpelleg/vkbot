@@ -314,7 +314,7 @@ vkint.command(`offlds`, (ctx) => {
     let text = ctx.message.text;
     const args = text.slice(`offlds`).split(/ +/);
     let server_name = serv_name(args[1]); 
-    if(args[1] < 1 || args[1] > 9) return ctx.reply(`Неверный id сервера - offlds id(1-9)`);
+    if(args[1] < 1 || args[1] > 9 && args[1] != 'offall') return ctx.reply(`Неверный id сервера - offlds id(1-9)`);
     if(getallowserv[args[1]] == false) {
 	getallowserv[args[1]] = true; 
 	return ctx.reply(`Вы включили получение логов с ${server_name}`);
@@ -322,6 +322,18 @@ vkint.command(`offlds`, (ctx) => {
     if(getallowserv[args[1]] == true) {
 	getallowserv[args[1]] = false; 
 	return ctx.reply(`Вы выключили получение логов с ${server_name}`);
+    }
+    if(args[1] == 'offall`) {
+	  getallowserv[1] = false; 
+	  getallowserv[2] = false; 
+	  getallowserv[3] = false; 
+	  getallowserv[4] = false; 
+	  getallowserv[5] = false; 
+	  getallowserv[6] = false; 
+	  getallowserv[7] = false; 
+	  getallowserv[8] = false; 
+	  getallowserv[9] = false; 
+	  return ctx.reply(`Вы выключили получение логов со всех серверов`);
     }
 });
 
