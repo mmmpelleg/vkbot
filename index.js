@@ -576,16 +576,16 @@ return text;
 
 function serv_name(serv) {
     let server_name;
-    if(serv == 1) server_name == 'Phoenix'; 
-    if(serv == 2) server_name == 'Tucson'; 
-    if(serv == 3) server_name == 'Scottdale'; 
-    if(serv == 4) server_name == 'Chandler'; 
-    if(serv == 5) server_name == 'Brainburg'; 
-    if(serv == 6) server_name == 'Saint Rose'; 
-    if(serv == 7) server_name == 'Mesa'; 
-    if(serv == 8) server_name == 'Red-Rock'; 
-    if(serv == 9) server_name == 'Yuma'; 
-    return server_name
+    if(serv == 1) server_name = 'Phoenix'; 
+    if(serv == 2) server_name = 'Tucson'; 
+    if(serv == 3) server_name = 'Scottdale'; 
+    if(serv == 4) server_name = 'Chandler'; 
+    if(serv == 5) server_name = 'Brainburg'; 
+    if(serv == 6) server_name = 'Saint Rose'; 
+    if(serv == 7) server_name = 'Mesa'; 
+    if(serv == 8) server_name = 'Red-Rock'; 
+    if(serv == 9) server_name = 'Yuma'; 
+    return server_name'
 }
 
 
