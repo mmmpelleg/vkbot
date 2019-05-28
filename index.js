@@ -315,15 +315,23 @@ vkint.command(`lds`, (ctx) => {
     const args = text.slice(`lds`).split(/ +/);
     let server;
     let server_name; 
+    if(args[1] < 1 && args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
+    if(args[1] == 1) server_name == 'Phoenix'; 
+    if(args[1] == 2) server_name == 'Tucson'; 
+    if(args[1] == 3) server_name == 'Scottdale'; 
+    if(args[1] == 4) server_name == 'Chandler'; 
+    if(args[1] == 5) server_name == 'Brainburg'; 
+    if(args[1] == 6) server_name == 'Saint Rose'; 
+    if(args[1] == 7) server_name == 'Mesa'; 
+    if(args[1] == 8) server_name == 'Red-Rock'; 
+    if(args[1] == 9) server_name == 'Yuma'; 
     if(args[1] == 3) {
 	    server = '355656045600964609';
-	    server_name = 'Scottdale'
     }
     if(args[1] == 9) {
 	    server = '528635749206196232';
-	    server_name = 'Yuma'
     }
-    if(!server) return ctx.reply(`Укажите номер сервера\nДоступные сервера:\n3 - Scottdale\n9 - Yuma`);
+    if(!server) return ctx.reply(`На сервере - ${server_name} отсуствует система dp, доступно только на Scottdale, Yuma`);
     let server_obj = yuki.guilds.get(server);
     let member = server_obj.members.find(m => m.id == args[2]);
     if(!member) return ctx.reply(`На сервере ${server_name} аккаунт не найден (скорее всего вышел из дса, проверьте ИД и запросите офф-логи если вам нужны они!)`)
