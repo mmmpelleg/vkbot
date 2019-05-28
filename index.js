@@ -351,15 +351,8 @@ vkint.command(`lds`, (ctx) => {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
 			    reply = `Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`;
-			})
-			.fail(function (err) {
-			    console.log(err);
-			    return ctx.reply(`Ошибка загрузки логов на сайт`)
-			});
-		      });
-	    }
-	    if(action == 2) {
-		if(error_status == 1) reply = `Сервер: Scottdale\nПользователь не найден.`;
+			      if(action == 2) {
+			if(error_status == 1) reply = `Сервер: Scottdale\nПользователь не найден.`;
 		    server = '528635749206196232';
 		    server_name = 'Yuma'   
 		    let server_obj = yuki.guilds.get(server);
@@ -389,6 +382,13 @@ vkint.command(`lds`, (ctx) => {
 			    return ctx.reply(`${reply}\n\nОшибка загрузки логов на сайт`)
 			});
 		      });    
+	    }
+			})
+			.fail(function (err) {
+			    console.log(err);
+			    return ctx.reply(`Ошибка загрузки логов на сайт`)
+			});
+		      });
 	    }
     }
     if(!server) return ctx.reply(`Укажите номер сервера\nДоступные сервера:\nall - все сервера\n3 - Scottdale\n9 - Yuma`);
