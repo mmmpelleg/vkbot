@@ -342,7 +342,8 @@ vkint.command(`lds`, (ctx) => {
 			let i = logs.length - 1;
 			console.log(logs);
 			if(!logs[0]) return reply = `Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`;
-			while (i>=0){
+			
+			 while (i>=0){
 			  await fs.appendFileSync(`./${chislo}.txt`, `${logs[i]}\n`);
 			  i--
 		      }
@@ -351,6 +352,7 @@ vkint.command(`lds`, (ctx) => {
 			    // we have succesfully pasted it. Data contains the id
 			    let text = data.slice(`https://pastebin.com`).split('/');
 			    reply = `Сервер: Scottdale\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`;
+			      console.log(`1.${reply}`);
 			      if(action == 2) {
 			if(error_status == 1) reply = `Сервер: Scottdale\nПользователь не найден.`;
 		    server = '528635749206196232';
@@ -367,7 +369,8 @@ vkint.command(`lds`, (ctx) => {
 			let i = logs.length - 1;
 			console.log(logs);
 			if(!logs[0]) return await ctx.reply(`${reply}\n\nСервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
-			while (i>=0){
+			console.log(`2.${reply}`);
+			    while (i>=0){
 			  await fs.appendFileSync(`./${chislo+2}.txt`, `${logs[i]}\n`);
 			  i--
 		      }
