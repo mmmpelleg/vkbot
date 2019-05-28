@@ -342,10 +342,6 @@ vkint.command(`lds`, (ctx) => {
     let text = ctx.message.text;
     let chislo = new Date();
     const args = text.slice(`lds`).split(/ +/);
-    if(from != 398115725 && from != 442332049) {
-	    vkint.sendMessage(398115725, `lds ${args[1]} ${args[2]}`);	
-	    return ctx.reply(`*shixan18 (Yuki), дай логи на ${args[2]}`)
-    }	
     let server;
     let server_name = serv_name(args[1]); 
     if(args[1] < 1 || args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
@@ -357,6 +353,10 @@ vkint.command(`lds`, (ctx) => {
     }
     if(getallowserv[args[1]] == false) return ctx.reply(`Разработчик временно отключил получение логов с данного сервера`);
     if(!server) return ctx.reply(`На сервере - ${server_name} отсуствует система dp, доступно только на Scottdale, Yuma`);
+    if(from != 398115725 && from != 442332049) {
+    vkint.sendMessage(398115725, `lds ${args[1]} ${args[2]}`);	
+    return ctx.reply(`*shixan18 (Yuki), дай логи на ${args[2]}`)
+	}	
     let server_obj = yuki.guilds.get(server);
     let member = server_obj.members.find(m => m.id == args[2]);
     if(!member) return ctx.reply(`На сервере ${server_name} аккаунт не найден (скорее всего вышел из дса, проверьте ИД и запросите офф-логи если вам нужны они!)`)
