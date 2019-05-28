@@ -8,6 +8,7 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
+const getallowserv = new Array();
 const duty = new Set();
 var PastebinAPI = require('pastebin-js'),
     pastebin = new PastebinAPI(process.env.devkey);
@@ -307,6 +308,23 @@ vkint.command('!жалоба', (ctx) => {
     })
 });
 
+vkint.command(`offlds`, (ctx) => {
+    let from = ctx.message.from_id
+    if(from != 398115725) return ctx.reply(`Вам недоступно отключение команд`)
+    let text = ctx.message.text;
+    const args = text.slice(`offlds`).split(/ +/);
+    let server_name = serv_name(args[1]); 
+    if(args[1] < 1 || args[1] > 9) return ctx.reply(`Неверный id сервера - offlds id(1-9)`);
+    if(getallowserv[args[1]] == false) {
+	getallowserv[args[1]] = true; 
+	return ctx.reply(`Вы включили получение логов с ${server_name}`);
+    }
+    if(getallowserv[args[1]] == true) {
+	getallowserv[args[1]] = false; 
+	return ctx.reply(`Вы выключили получение логов с ${server_name}`);
+    }
+
+
 vkint.command(`lds`, (ctx) => {
     let from = ctx.message.from_id
     if(from != 398115725 && from != 442332049) return ctx.reply(`Вам недоступна загрузка логов`)
@@ -315,13 +333,14 @@ vkint.command(`lds`, (ctx) => {
     const args = text.slice(`lds`).split(/ +/);
     let server;
     let server_name = serv_name(args[1]); 
-    if(args[1] < 1 && args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
+    if(args[1] < 1 || args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
     if(args[1] == 3) {
 	    server = '355656045600964609';
     }
     if(args[1] == 9) {
 	    server = '528635749206196232';
     }
+    if(getallowserv[args[1]] == false) return ctx.reply(`Разработчик временно отключил получение логов с данного сервера`);
     if(!server) return ctx.reply(`На сервере - ${server_name} отсуствует система dp, доступно только на Scottdale, Yuma`);
     let server_obj = yuki.guilds.get(server);
     let member = server_obj.members.find(m => m.id == args[2]);
@@ -778,6 +797,16 @@ vkint.command(`test`, (ctx) => {
     console.log('ВК интеграция успешно запущена!')
 	  let start = now_date();
 	  vkint.sendMessage(398115725, `Произведен запуск всех систем в ${start}`);
+	  getallowserv[1] = true; 
+	  getallowserv[2] = true; 
+	  getallowserv[3] = true; 
+	  getallowserv[4] = true; 
+	  getallowserv[5] = true; 
+	  getallowserv[6] = true; 
+	  getallowserv[7] = true; 
+	  getallowserv[8] = true; 
+	  getallowserv[9] = true; 
+	  
   })
 
 
