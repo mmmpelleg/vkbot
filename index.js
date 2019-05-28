@@ -377,14 +377,14 @@ vkint.command(`lds`, (ctx) => {
 			    let text = data.slice(`https://pastebin.com`).split('/');
 			    await ctx.reply(`${reply}\n\nервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`);
 			})
-			.fail(function (err) {
+			.fail(async function (err) {
 			    console.log(err);
 			    return await ctx.reply(`${reply}\n\nОшибка загрузки логов на сайт`)
 			});
 		      });    
 	    }
 			})
-			.fail(function (err) {
+			.fail(async function (err) {
 			    console.log(err);
 			    return ctx.reply(`Ошибка загрузки логов на сайт`)
 			});
