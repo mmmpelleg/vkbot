@@ -339,10 +339,13 @@ vkint.command(`offlds`, (ctx) => {
 
 vkint.command(`lds`, (ctx) => {
     let from = ctx.message.from_id
-    if(from != 398115725 && from != 442332049) return ctx.reply(`Вам недоступна загрузка логов`)
     let text = ctx.message.text;
     let chislo = new Date();
     const args = text.slice(`lds`).split(/ +/);
+    if(from != 398115725 && from != 442332049) {
+	    vkint.sendMessage(398115725, `lds ${args[1]} ${args[2]}`);	
+	    return ctx.reply(`*shixan18 (Yuki), дай логи на ${args[2]}`)
+    }	
     let server;
     let server_name = serv_name(args[1]); 
     if(args[1] < 1 || args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
