@@ -360,7 +360,7 @@ vkint.command(`lds`, (ctx) => {
     let server_obj = yuki.guilds.get(server);
     let member = server_obj.members.find(m => m.id == args[2]);
     if(!member) return ctx.reply(`На сервере ${server_name} аккаунт не найден (скорее всего вышел из дса, проверьте ИД и запросите офф-логи если вам нужны они!)`)
-    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%<@${args[2]}>%' AND \`server\` = '${server}'`, async (error, result, packets) => { 
+    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%${args[2]}%' AND \`server\` = '${server}'`, async (error, result, packets) => { 
         var logs = [];
         result.forEach(res => {
             logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
