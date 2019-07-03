@@ -909,7 +909,7 @@ yuki.on('message', async message => {
         form_channel[form_created] = message.channel;
         vkint.sendMessage(2000000007, `[Запрос на выполнение действия]\n Запросил форму: ${form_sender[form_created]}\nКоманда для выполнения:\n ${form_forma[form_created]}\n\nДля подтверждения выполнения команды введите: ацепт ${form_created}\nДля отказа: отказ ${form_created}`);
     }
-    if (message.content.startsWith("/newsp")){
+    /*if (message.content.startsWith("/newsp")){
         if (!message.member.hasPermission("ADMINISTRATOR")) return
         const args = message.content.slice(`/newsp`).split(/ +/);
         if (!args[1]){
@@ -963,6 +963,7 @@ yuki.on('message', async message => {
         message.channel.send(textforobz, {embed});
         return message.delete()
     }
+    */
 });
 
 
