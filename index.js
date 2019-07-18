@@ -10,8 +10,6 @@ const spmod = new Set();
 const dm_mod = new Set();
 const getallowserv = new Array();
 const duty = new Set();
-var PastebinAPI = require('pastebin-js'),
-    pastebin = new PastebinAPI(process.env.devkey);
     const mysql = require('./google_module/mysql');
 const connection = mysql.createConnection({
     host     : process.env.db_host,
@@ -294,99 +292,7 @@ vkint.command('/stream', (ctx) => {
     });
     });
 
-vkint.command('!жалоба', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    get_checker(from).then(value => {
-        if(!value || value[2] == 0) return ctx.reply(`Вы не член команды Checker's Team`)
-        const args = text.slice(`!жалоба`).split(/ +/);
-        let text_jb = args.slice(1).join(" ");
-        if(!args[1]) return ctx.reply(`Укажите ссылку на жалобу или напишите текст самой жалобы с ссылкой на скрины (аттач пока не доступен)`)
-        //vkint.sendMessage(2000000011,`Жалоба от: ${value[1]} [${ranktotext(value[2])}]\n\nТекст жалобы: ${text_jb}`)
-	ctx.reply(`ok`);
-	console.log(ctx.message.attachments);
-    })
-});
 
-vkint.command(`offlds`, (ctx) => {
-    let from = ctx.message.from_id
-    if(from != 398115725) return ctx.reply(`Вам недоступно отключение команд`)
-    let text = ctx.message.text;
-    const args = text.slice(`offlds`).split(/ +/);
-    let server_name = serv_name(args[1]); 
-    if(args[1] < 1 || args[1] > 9 && args[1] != 'offall') return ctx.reply(`Неверный id сервера - offlds id(1-9)`);
-    if(getallowserv[args[1]] == false) {
-	getallowserv[args[1]] = true; 
-	return ctx.reply(`Вы включили получение логов с ${server_name}`);
-    }
-    if(getallowserv[args[1]] == true) {
-	getallowserv[args[1]] = false; 
-	return ctx.reply(`Вы выключили получение логов с ${server_name}`);
-    }
-    if(args[1] == 'offall') {
-	  getallowserv[1] = false; 
-	  getallowserv[2] = false; 
-	  getallowserv[3] = false; 
-	  getallowserv[4] = false; 
-	  getallowserv[5] = false; 
-	  getallowserv[6] = false; 
-	  getallowserv[7] = false; 
-	  getallowserv[8] = false; 
-	  getallowserv[9] = false; 
-	  return ctx.reply(`Вы выключили получение логов со всех серверов`);
-    }
-});
-
-vkint.command(`lds`, (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    let chislo = new Date();
-    const args = text.slice(`lds`).split(/ +/);
-    let server;
-    let server_name = serv_name(args[1]); 
-    if(args[1] < 1 || args[1] > 9) return ctx.reply(`Неверный id сервера - lds id(1-9) idacc`);
-    if(args[1] == 3) {
-	    server = '355656045600964609';
-    }
-    if(args[1] == 9) {
-	    server = '528635749206196232';
-    }
-    if(args[1] == 2) {
-	    server = '438803520288981004';
-    }
-    if(getallowserv[args[1]] == false) return ctx.reply(`Разработчик временно отключил получение логов с данного сервера`);
-    if(!server) return ctx.reply(`На сервере - ${server_name} отсуствует система dp, доступно только на Scottdale, Yuma`);
-    if(from != 398115725 && from != 442332049) {
-    vkint.sendMessage(398115725, `lds ${args[1]} ${args[2]}`);	
-    return ctx.reply(`*shixan18 (Yuki), дай логи на ${args[2]}`)
-	}	
-    let server_obj = yuki.guilds.get(server);
-    let member = server_obj.members.find(m => m.id == args[2]);
-    if(!member) return ctx.reply(`На сервере ${server_name} аккаунт не найден (скорее всего вышел из дса, проверьте ИД и запросите офф-логи если вам нужны они!)`)
-    connection.query(`SELECT * FROM \`action_log\` WHERE \`action\` LIKE '%(${args[2]})%' AND \`server\` = '${server}'`, async (error, result, packets) => { 
-        var logs = [];
-        result.forEach(res => {
-            logs.push(`[${res.year}-${res.month}-${res.day} ${res.hour}:${res.min}:${res.sec}] ${res.action}`)
-        })
-        let i = logs.length - 1;
-	console.log(logs);
-        if(!logs[0]) return ctx.reply(`Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nЛогов не найдено!`);
-        while (i>=0){
-          await fs.appendFileSync(`./${chislo}.txt`, `${logs[i]}\n`);
-          i--
-      }
-      pastebin.createPasteFromFile(`./${chislo}.txt`, "logs", null, 1, "N")
-        .then(function (data) {
-            // we have succesfully pasted it. Data contains the id
-	    let text = data.slice(`https://pastebin.com`).split('/');
-            ctx.reply(`Сервер: ${server_name}\nИмя пользователя: ${member.displayName}\nID пользователя: ${args[2]}\n\nhttps://pastebin.com/raw/${text[3]}`)
-        })
-        .fail(function (err) {
-            console.log(err);
-            return ctx.reply(`Ошибка загрузки логов на сайт`)
-        });
-      });
-});
 
 vkint.command('!restart', (ctx) => {
     let from = ctx.message.from_id
@@ -397,366 +303,8 @@ vkint.command('!restart', (ctx) => {
     }, 3500);
 });
 
-vkint.command('/offstats', (ctx) => {
-	let from = ctx.message.from_id
-	get_profile(1, from).then(async value => {
-        if(value == false) return;
-        if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
-	if(value[2] != 6) return ctx.reply(`Вы не разработчик!`)
-	if(stats_off == 0) {
-		stats_off = 1;
-		return ctx.reply(`/stats отключена`);
-	}
-	else {
-		stats_off = 0;
-		return ctx.reply(`/stats включен`);
-	}
- 	});
-});
 
 
-vkint.command('/stats', (ctx) => {
-    let from = ctx.message.from_id
-    if(stats_off == 1) return ctx.reply(`Система статистики отключена разработчиком`);
-    get_profile(1, from).then(async value => {
-        if(value == false) return;
-        if(value[2] == 0) return ctx.reply(`Вы не модератор!`)
-	let d_id = value[8];
-	let yuma = bot.guilds.get(serverid);
-	let member = yuma.members.find(m => m.id == d_id);
-        let userroles;
-	if(!member) userroles = 'Аккаунт не найден!';
-	else {
-        await member.roles.filter(role => {
-                if (userroles == undefined){
-                    if (!role.name.includes("everyone")) userroles = `${role.name}`
-                }else{
-                    if (!role.name.includes("everyone")) userroles = userroles + `, ${role.name}`
-                }
-            })
-	    if (userroles == undefined){
-                userroles = `не найдены`
-            }
-	}
-        if(value[2] >= 3) return ctx.reply(`Ваш ник: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\nВаши роли: ${userroles}`)
-        else return ctx.reply(`Ваш ник: ${value[1]}\nВаш уровень модератора: ${lvltotext(value[2])}\n\nВаши роли: ${userroles}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
-    })
-});
-
-vkint.command('/cinfo', (ctx) => {
-    let from = ctx.message.from_id
-    get_checker(from).then(async value => {
-        if(value == false) return;
-        if(value[2] == 0) return ctx.reply(`Вы не проверяющий!`)
-        ctx.reply(`Ваш ник: ${value[1]}\nЗвание: ${ranktotext(value[2])}\nВ команде с: ${value[4]}`)
-        return;
-    })
-});
-
-vkint.command('/astats', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/astats`).split(/ +/);
-
-    get_profile(1, from).then(async value_f => {
-        if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
-        if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
-        if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
-        get_profile(1, args[1]).then(async value => {
-            if(value == false) return ctx.reply(`Аккаунт не найден в базе данных`)
-            if(value[2] == 0) return ctx.reply(`Пользователь не является модератором (возможно бывший модератор)`)
-	    	let d_id = value[8];
-		let yuma = bot.guilds.get(serverid);
-		let member = yuma.members.find(m => m.id == d_id);
-		let userroles;
-		if(!member) userroles = 'Аккаунт не найден!';
-		else {
-		await member.roles.filter(role => {
-			if (userroles == undefined){
-			    if (!role.name.includes("everyone")) userroles = `${role.name}`
-			}else{
-			    if (!role.name.includes("everyone")) userroles = userroles + `, ${role.name}`
-			}
-		    })
-		    if (userroles == undefined){
-			userroles = `не найдены`
-		    }
-		}
-            if(value[2] >= 3) return ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\nРоли модератора: ${userroles}`)
-            else return ctx.reply(`Ник модератора: ${value[1]}\nУуровень модератора: ${lvltotext(value[2])}\nРоли модератора: ${userroles}\n\nСтатистика за неделю: ${value[3]}\n\nСообщения: ${value[4]}\nРоли выданные через +: ${value[5]}\nРоли выданные ботом: ${value[6]}\nРабота с поддержкой дискорда: ${value[7]} действий`)
-        });
-        
-    })
-});
-
-vkint.command('/ainfo', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/ainfo`).split(/ +/);
-
-    get_checker(from).then(async value_f => {
-        if(value_f == false) return;
-        if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
-        if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
-        get_checker(args[1]).then(async value => {
-            if(value == false) return ctx.reply(`Аккаунт не найден в базе данных`)
-            if(value[2] == 0) return ctx.reply(`Пользователь не является проверяющим`)
-            ctx.reply(`Ник: ${value[1]}\nЗвание: ${ranktotext(value[2])}\nВ команде с: ${value[4]}`)
-        });
-        
-    })
-});
-
-vkint.command('/addmod', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/addmod`).split(/ +/);
-    let nick  = args.slice(3).join(" ");
-    get_profile(1, from).then(async value_f => {
-        if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
-        if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
-        if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
-        get_profile(1, args[1]).then(async value => {
-            if(value != false) return ctx.reply(`Аккаунт уже существует в базе модераторов (используйте /setmod)`)
-            add_profile(1, args[1], nick, args[2])
-            return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${lvltotext(args[2])}`)
-        });
-        
-    });
-});
-
-vkint.command('/setmod', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/setmod`).split(/ +/);
-    get_profile(1, from).then(async value_f => {
-        if(value_f == false) return ctx.reply(`ваш аккаунт в базе не найден`)
-        if(value_f[2] == 0) return ctx.reply(`Вы не модератор!`)
-        if(value_f[2] != 3 && value_f[2] != 6) return ctx.reply(`Доступно только дискорд-мастеру и разработчикам`)
-        get_profile(1, args[1]).then(async value => {
-            if(value == false) return ctx.reply(`Аккаунт не существует в базе модераторов (используйте /addmod)`)
-            change_profile(1, args[1], `уровеньмодератора`, args[2]);
-            return ctx.reply(`Вы успешно изменили доступ модератора с ${lvltotext(value[2])} на ${lvltotext(args[2])}`)
-        });
-    });
-});
-
-vkint.command('/cadd', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/cadd`).split(/ +/);
-    let nick  = args.slice(5).join(" ");
-    get_checker(from).then(async value_f => {
-        if(value_f == false) return;
-        if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
-        if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
-        get_checker(args[1]).then(async value => {
-            if(value != false) return ctx.reply(`Аккаунт уже существует в базе проверяющих (используйте /cset)`)
-            add_checker(args[1],nick,args[2],args[4], args[3])
-            return ctx.reply(`Вы успешно добавили модератора ${nick} с уровнем доступа: ${ranktotext(args[2])}`)
-        });
-
-    });
-});
-
-vkint.command('/cset', (ctx) => {
-    let from = ctx.message.from_id
-    let text = ctx.message.text;
-    const args = text.slice(`/cset`).split(/ +/);
-    get_checker(from).then(async value_f => {
-        if(value_f == false) return;
-        if(value_f[2] == 0) return ctx.reply(`Вы не проверяющий!`)
-        if(value_f[2] < 3) return ctx.reply(`Доступно только управляющему составу команды`)
-        let table;
-        if(args[2] != `dostup` && args[2] != `discordid`) return ctx.reply(`/cset idvk DOSTUP OR DISCORDID`)
-        if(args[2] == `dostup`) table = 'уровеньдоступа';
-        if(args[2] == `discordid`) table = 'discordid';
-        get_checker(args[1]).then(async value => {
-            if(value == false) return ctx.reply(`Аккаунт не существует в базе проверяющих (используйте /cadd)`)
-            change_checker(args[1], table, args[3]);
-            if(table == 'уровеньдоступа') return ctx.reply(`Вы успешно изменили доступ модератора с ${ranktotext(value[2])} на ${ranktotext(args[3])}`)
-            else return ctx.reply(`Вы успешно изменили discordid с ${value[2]} на ${args[3]}`)
-        });
-    });
-});
-
-vkint.command('/help', (ctx) => {
-    let from = ctx.message.from_id
-    get_profile(1, from).then(async value_f => {
-        if(value_f == false) return ctx.reply(`Для вас доступных команд нет!`)
-        if(value_f[2] == 0) return ctx.reply(`Для вас доступных команд нет!`)
-        let helpcmd = `\n`;
-        if(value_f[2] >= 1 && value_f[2] != 4) helpcmd = helpcmd + `Доступные команды младшего модератора:\n/stats - статистика модератора\n\n`;
-        if(value_f[2] >= 2 && value_f[2] != 4) helpcmd = helpcmd + `Доступные команды старшего модератора:\nацепт №формы - одобрить блокировку/разблокировку\nотказ №формы причина - отказать в действии\n\n`; 
-        if(value_f[2] >= 3 && value_f[2] != 4) helpcmd = helpcmd + `Доступные команды руководителя группы модераторов:\n/astats IDВК - посмотреть статистику модератора\n/setmod idvk (0-2) (только для существующих аккаунтов в базе)\n\n`; 
-        if(value_f[2] == 4) helpcmd = `Доступные команды стримера:\n/stream URL-Stream - отправить информацию о стриме в дискорд\n\n`;
-        if(value_f[2] >= 4 && value_f[2] != 4) helpcmd = helpcmd + `Доступные команды стримера:\n/stream URL-Stream - отправить информацию о стриме в дискорд\n\n`;
-        if(value_f[2] >= 6) helpcmd = helpcmd + `Доступные команды разработчика:\n/addmod IDVK LVLMOD NICK - добавить модератора\n\n`;
-        return ctx.reply(helpcmd);
-    });
-});
-
-
-
-
-function lvltotext(lvl) {
-let text;
-if(lvl == 0) text = 'Пользователь';
-if(lvl == 1) text = 'Spectator';
-if(lvl == 2) text = 'Support Team';
-if(lvl == 3) text = 'Discord Master';
-if(lvl == 4) text = 'Стример';
-if(lvl == 5) text = 'Главный администратор';    
-if(lvl == 6) text = 'Разработчик';
-return text;
-}
-
-function serv_name(serv) {
-    let server_name;
-    if(serv == 1) server_name = 'Phoenix'; 
-    if(serv == 2) server_name = 'Tucson'; 
-    if(serv == 3) server_name = 'Scottdale'; 
-    if(serv == 4) server_name = 'Chandler'; 
-    if(serv == 5) server_name = 'Brainburg'; 
-    if(serv == 6) server_name = 'Saint Rose'; 
-    if(serv == 7) server_name = 'Mesa'; 
-    if(serv == 8) server_name = 'Red-Rock'; 
-    if(serv == 9) server_name = 'Yuma'; 
-    return server_name;
-}
-
-
-function ranktotext(lvl) {
-    let text;
-    if(lvl == 0) text = 'Игрок';
-    if(lvl == 1) text = 'Новый член команды';
-    if(lvl == 2) text = 'Член команды';
-    if(lvl == 3) text = 'Заместитель главы команды проверяющих';
-    if(lvl == 4) text = 'Глава команды проверяющих';
-    if(lvl == 5) text = 'Спец.администратор';
-    return text;
-    }
-    
-
-vkint.command('delmod', (ctx) => {
-
-
-    let from = ctx.message.from_id
-    get_profile(1,from).then(value_f => {
-        if(!value_f) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`)
-        if(value_f[2] < 3 && value_f != 4) return ctx.reply(`О не-не-не, дружок тебе эта команда недоступна!`) 
-        let text = ctx.message.text;
-	let yuma = bot.guilds.get(serverid);
-        let r_send;
-        let channel_sp = yuma.channels.find(c => c.name == "spectator-chat");
-        const args = text.slice(`delmod`).split(/ +/);
-        let reason  = args.slice(2).join(" ");
-        get_profile(1, args[1]).then(value => {
-            if(!value || value[2] == 0) return ctx.reply(`Ошибка: данный пользователь не модератор!`);
-            if(value[2] == 2) {
-                //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0001 \nТекст ошикбки: технические работы на стороне бота`)
-                let discordid = value[8];
-                vkint.sendMessage(2000000002, `Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
-                vkint.api(`messages.removeChatUser`,  settings = ({
-                    chat_id:2,
-                    user_id:args[1],
-                    access_token: process.env.tokenvk,
-                    })).then(async data => {
-                        vkint.sendMessage(from, "[ОМ - КИК] ✅ Модератор был кикнут")
-                    }).catch(async data => {
-                        let data2 = JSON.parse(data)
-                        vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-                    })
-                vkint.api(`messages.removeChatUser`,  settings = ({
-                    chat_id:3,
-                    user_id:args[1],
-                    access_token: process.env.tokenvk,
-                    })).then(async data => {
-                        vkint.sendMessage(from, "[СТ - КИК] ✅ Модератор был кикнут")
-                        vkint.sendMessage(2000000003, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
-                    }).catch(async data => {
-                        let data2 = JSON.parse(data)
-                        vkint.sendMessage(from, `[СТ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-                    })
-                vkint.api(`messages.removeChatUser`,  settings = ({
-                    chat_id:7,
-                    user_id:args[1],
-                    access_token: process.env.tokenvk,
-                    })).then(async data => {
-                        vkint.sendMessage(from, "[Формы - КИК] ✅ Модератор был кикнут")
-                        vkint.sendMessage(2000000007, `Исключён по запросу - *id${from} (${mods[from][0].name})`);
-                    }).catch(async data => {
-                        let data2 = JSON.parse(data)
-                        vkint.sendMessage(from, `[Формы - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-                    })
-                  vkint.sendMessage(2000000008, `[YUMA] Support Team *id${args[1]} (${value[1]}}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]}`);
-            vkint.api(`messages.removeChatUser`,  settings = ({
-            chat_id:8,
-            user_id:args[1],
-            access_token: process.env.tokenvk,
-            })).then(async data => {
-                vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
-                }).catch(async data => {
-                    let data2 = JSON.parse(data)
-                    vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data2.error.error_code}\nТекст ошикбки: ${data2.error.error_msg}`)
-                })
-                let member = yuma.members.find(m => m.id == discordid)
-                let role1 = yuma.roles.find(r => r.name == "Support Team");
-                let role2 = yuma.roles.find(r => r.name == "Spectator™");
-    
-                let r_send = `\n`;
-                if(member.roles.some(r => ["Support Team"].includes(r.name))){
-                    member.removeRole(role1,"запрос ВК");
-                    r_send = `[1] Снята роль Support Team`;
-                }
-                if(member.roles.some(r => ["Spectator™"].includes(r.name))){
-                    member.removeRole(role2,"запрос ВК");
-                    r_send = r_send + `\n[2] Снята роль Spectator`;
-                }
-                setTimeout(() => {
-                    channel_sp.send(`по запросу через ВК`)
-                }, 3500);
-    		channel_sp.send(`-+delmod <@member.id>`);	
-                vkint.sendMessage(from, r_send)
-            }
-            if(value[2] == 1) {
-                //vkint.sendMessage(from, `[Система киков] ⛔ Возникла ошибка.\nОшибка: 0002 \nТекст ошикбки: технические работы на стороне бота`)
-                vkint.sendMessage(2000000002, `Spectator *id${args[1]} (${value[1]}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
-                vkint.api(`messages.removeChatUser`,  settings = ({
-                    chat_id:2,
-                    user_id:args[1],
-                    access_token: process.env.tokenvk,
-                    })).then(async data => {
-                        vkint.sendMessage(from, "[ОМ - КИК] ✅ Модератор был кикнут")
-                    }).catch(async data => {
-                        vkint.sendMessage(from, `[ОМ - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
-                    })
-            vkint.sendMessage(2000000008, `[YUMA] Spectator *id${args[1]} (${value[1]}) был снят со своего поста по причине: ${reason}\n\nИсточник: *id${from} (${value_f[1]})`);
-            vkint.api(`messages.removeChatUser`,  settings = ({
-            chat_id:8,
-            user_id:args[1],
-            access_token: process.env.tokenvk,
-            })).then(async data => {
-                vkint.sendMessage(from, "[Кур - КИК] ✅ Модератор был кикнут")
-                }).catch(async data => {
-                    vkint.sendMessage(from, `[Кур - КИК] ⛔ Возникла ошибка.\nОшибка: ${data.error.error_code}\nТекст ошикбки: ${data.error.error_msg}`)
-                })
-     		let discordid = value[8];
-                let member = yuma.members.find(m => m.id == discordid)
-                let role2 = yuma.roles.find(r => r.name == "Spectator™");
-                if(member.roles.some(r => ["Spectator™"].includes(r.name))){
-                member.removeRole(role2,"запрос ВК");
-                r_send = `[1] Снята роль Spectator`;
-                }
-                setTimeout(() => {
-                    channel_sp.send(`по запросу через ВК`)
-                }, 3500);
-                vkint.sendMessage(from, r_send)
-            }
-       });    
-    });
-    });
-    
    
 vkint.command('ацепт', (ctx) => {
 let from = ctx.message.from_id
@@ -788,23 +336,6 @@ vkint.command('отказ', (ctx) => {
     ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
     return;
 });
-});
-
-vkint.command('getapi', (ctx) => {
-    let text = ctx.message.text;
-    const args = text.slice(`getapi`).split(/ +/);
-    let testnum = parseInt(args[1])
-    ctx.reply(`1. ${testnum}`)
-    if(testnum > 0) return ctx.reply(`Это ID`)
-    else if(testnum == NaN) return ctx.reply(`Это упоминание`)
-    });
-
-vkint.command(`test`, (ctx) => {
-	ctx.message.attachments.forEach(attach => {
-		console.log(attach);
-	});
-	if(!ctx.message.attachments) return ctx.reply(`Картинки нет!`);
-	vkint.sendMessage(ctx.message.peer_id,`Изображение в сообщении test`,ctx.message.attachments); 
 });
 
 
@@ -1242,4 +773,374 @@ yuki.on('guildMemberUpdate', async (oldMember, newMember) => {
     }
 });
 
+
+
+// NEW UPDATED VK BOT 
+
+function addLog(nickmod,nickact,typeaction,actionlog) {
+  actionlog = `${now_date()} | ` + actionlog;
+  connection.query(`INSERT INTO \`logs\`(\`nickmod\`, \`nickact\`, \`typeaction\`, \`actionlog\`) VALUES ('${nickmod}','${nickact}','${typeaction}','${actionlog}')`);
+
+}
+
+function servertotext(server) {
+  let text;
+  if(server == -1)  text = 'Все сервера';
+  if(server == 1) text = 'Phoenix';
+  if(server == 2) text = 'Tucson'; 
+  if(server == 3) text = 'Scottdale';
+  if(server == 4) text = 'Chandler';
+  if(server == 5) text = 'Brainburg';
+  if(server == 6) text = 'Saint Rose';
+  if(server == 7) text = 'Mesa';
+  if(server == 8) text = 'Red-Rock';
+  if(server == 9) text = 'Yuma';
+  return text;
+}
+
+function mlvltotext(server) {
+  let text;
+  if(server == 0) text = 'Пользователь';
+  if(server == 1) text = 'Модератор';
+  if(server == 2) text = 'Старший модератор'; 
+  if(server == 3) text = 'Следящий за модераторами';
+  if(server == 4) text = 'Заместитель гл.модератора';
+  if(server == 5) text = 'Главный модератор';
+  if(server == 6) text = 'Разработчик';
+  if(server == 7) text = 'Стример';
+  return text;
+}
+
+function tasktotext(server) {
+  let text;
+  if(server == 0) text = 'Закрыта/выполнено';
+  if(server == 1) text = 'Новая задача';
+  if(server == 2) text = 'На рассмотрении'; 
+  if(server == 3) text = 'Отказано в исполнении';
+  return text;
+}
+
+vkint.command('/newstats', (ctx) => {
+  if(cd(`/newstats`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро, студент!`)
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    let sms = `Ваш ник: ${result[0].nick}\nВаш сервер: ${servertotext(result[0].server)}\nУровень модерации: ${mlvltotext(result[0].mlvl)}`
+    if(result[0].mlvl < 4) sms = sms + `\nВаши выговоры: ${result[0].mwarn} из 3`;
+    if(result[0].noactive == 1) sms = sms + `\n\nВы помечены главной модерации как неактивный модератор по заявлению`;
+    if(result[0].mlvl > 3) return ctx.reply(sms);
+    connection.query(`SELECT * FROM \`week_stats\` WHERE \`nick\` = '${result[0].nick}' AND \`active\` = '1'`, async (error, result2, packets) => {
+    if(!result2[0]) return ctx.reply(sms + `\n\nСтатистика не найдена!`);
+    if(result[0].mlvl < 2) sms = sms + `\n\nСтатистика за: ${result2[0].week}\n\n1. Общение в чате: ${result2[0].msg} сообщений\n2. Работа с ролями (Logger): ${result2[0].roles} действий\n3. Работа с ролями (Robohamster): ${result2[0].roles_2} действий\n4.Выдача наказаний (Dyno): ${result2[0].action1} действий\n5.Выдача наказаний (Mee6): ${result2[0].action2} действий`;
+    if(result[0].mlvl >= 2) sms = sms + `\n\nСтатистика за: ${result2[0].week}\n\n1. Общение в чате: ${result2[0].msg} сообщений\n2. Работа с ролями (Logger): ${result2[0].roles} действий\n3. Работа с ролями (Robohamster): ${result2[0].roles_2} действий\n4.Выдача наказаний (Dyno): ${result2[0].action1} действий\n5.Выдача наказаний (Mee6): ${result2[0].action2} действий\n6. Работа с тикетами: ${result2[0].tickets} действий`;
+    ctx.reply(sms);
+  });
+    
+});
+
+});
+
+vkint.command('/check', (ctx) => {
+  if(cd(`/check`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let args = text.slice(`/check`).split(/ +/);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(!args[1]) return ctx.reply(`использование команды: /check nick`);
+    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+    let serverm = result[0].server;
+    let fulldostup = result[0].fulldostup;
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` LIKE '%${args[1]}%' AND \`active\` = '1'`, async (error, result, packets) => {
+    if(!result[0]) return ctx.reply(`Модератор не найден, либо деактивирован`)
+    if(result[0].server != serverm && fulldostup == 0 && serverm != -1) return ctx.reply(`У вас недостаточно прав для просмотра статистики модератора другого сервера`)
+    let sms = `Ник модератора: ${result[0].nick}\nСервер: ${servertotext(result[0].server)}\nУровень модератора: ${mlvltotext(result[0].mlvl)}`
+    if(result[0].mlvl < 4) sms = sms + `\nВыговоры: ${result[0].mwarn} из 3`;
+    if(result[0].noactive == 1) sms = sms + `\n\nПомечен неактивным модератором по заявлению`;
+    if(result[0].mlvl > 3) return ctx.reply(sms);
+    connection.query(`SELECT * FROM \`week_stats\` WHERE \`nick\` = '${result[0].nick}' AND \`active\` = '1'`, async (error, result2, packets) => {
+    if(!result2[0]) return ctx.reply(sms + `\n\nСтатистика не найдена!`);
+    if(result[0].mlvl < 2) sms = sms + `\n\nСтатистика за: ${result2[0].week}\n\n1. Общение в чате: ${result2[0].msg} сообщений\n2. Работа с ролями (Logger): ${result2[0].roles} действий\n3. Работа с ролями (Robohamster): ${result2[0].roles_2} действий\n4.Выдача наказаний (Dyno): ${result2[0].action1} действий\n5.Выдача наказаний (Mee6): ${result2[0].action2} действий`;
+    if(result[0].mlvl >= 2) sms = sms + `\n\nСтатистика за: ${result2[0].week}\n\n1. Общение в чате: ${result2[0].msg} сообщений\n2. Работа с ролями (Logger): ${result2[0].roles} действий\n3. Работа с ролями (Robohamster): ${result2[0].roles_2} действий\n4.Выдача наказаний (Dyno): ${result2[0].action1} действий\n5.Выдача наказаний (Mee6): ${result2[0].action2} действий\n6. Работа с тикетами: ${result2[0].tickets} действий`;
+    ctx.reply(sms);
+  });
+    
+});
+});
+
+});
+
+
+vkint.command('/mwarn', (ctx) => {
+  if(cd('/mwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+    let text = ctx.message.text;  
+    let args = text.slice(`/mwarn`).split(/ +/);
+    let reason = args.slice(2).join(" ");
+    if(!args[1] || !args[2]) return ctx.reply(`использование команды: /mwarn nick reason`);
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Данного модератора не существует`)
+      if(result2[0].mwarn + 1 >= 3) {
+        if(result2[0].mlvl == 1)  ctx.reply(`Модератор *id${result2[0].vkid} (${args[1]}) получил 3 из 3 от модератора *id${result[0].vkid} (${result[0].nick}) и будет снят со своего поста. Причина третьего выговора: ${reason}`);
+        if(result2[0].mlvl >= 2)  ctx.reply(`Модератор *id${result2[0].vkid} (${args[1]}) получил 3 из 3 от модератора *id${result[0].vkid} (${result[0].nick}) и будет понижен в должности. Причина третьего выговора: ${reason}`);
+        addLog(result2[0].nick, result[0].nick, 'givewarn', `${result[0].nick} выдал выговор модератору ${result2[0].nick} по причине ${reason}. (3 из 3)`)
+        return connection.query(`UPDATE \`mods\` SET \`mwarn\` = '0' WHERE \`nick\` = '${args[1]}'`);
+      }
+      ctx.reply(`Модератор *id${result2[0].vkid} (${args[1]}) получил ${result2[0].mwarn + 1} из 3 от модератора *id${result[0].vkid} (${result[0].nick}). Причина выговора: ${reason}`);
+      addLog(result2[0].nick, result[0].nick, 'givewarn', `${result[0].nick} выдал выговор модератору ${result2[0].nick} по причине ${reason}. (${result2[0].mwarn + 1} из 3)`)
+      return connection.query(`UPDATE \`mods\` SET \`mwarn\` =  mwarn + 1 WHERE \`nick\` = '${args[1]}'`);
+  });
+});
+});
+
+vkint.command('/unmwarn', (ctx) => {
+  if(cd('/unmwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+    let text = ctx.message.text;  
+    let args = text.slice(`/mwarn`).split(/ +/);
+    if(!args[1]) return ctx.reply(`использование команды: /unmwarn nick`);
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Данного модератора не существует`)
+      if(result2[0].mwarn == 0) return ctx.reply(`Данный модератор не имеет никаких выговоров`)
+      ctx.reply(`Модератору *id${result2[0].vkid} (${args[1]}) снят 1 из выговоров на данный момент у него ${result2[0].mwarn - 1} из 3. Источник: *id${result[0].vkid} (${result[0].nick})`);
+      addLog(result2[0].nick, result[0].nick, 'unmwarn', `${result[0].nick} снял 1 выговор модератору ${result2[0].nick}`)
+      return connection.query(`UPDATE \`mods\` SET \`mwarn\` =  mwarn - 1 WHERE \`nick\` = '${args[1]}'`);
+  });
+});
+});
+vkint.command('/addmod', (ctx) => {
+connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+  if (error) return console.error(error);
+  if (!result[0]) return ctx.reply(`Вы не модератор!`)
+  if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+  let text = ctx.message.text;
+  let args = text.slice(`/addmod`).split(/ +/);
+  if(!args[1] || !args[2] || !args[3]) return ctx.reply(`использование команды: /addmod nick idvk mlvl`);
+  if(result[0].mlvl < args[3] && result[0].fulldostup == 0) return ctx.reply(`Ваш уровень: ${mlvltotext(result[0].mlvl)}!\n Вы не можете назначить [${mlvltotext(result[0].mlvl + 1)}] и выше\nПопытка назначить на [${mlvltotext(args[3])}]`);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${args[2]}'`, async (error, result2, packets) => {
+    if (result2[0]) return ctx.reply(`Модератор уже создан, или деактивирован`)
+    connection.query(`INSERT INTO \`mods\`(\`vkid\`, \`nick\`, \`mlvl\`, \`server\`) VALUES ('${args[2]}','${args[1]}','${args[3]}', '${result[0].server}')`)
+    ctx.reply(`Вы успешно добавили модератора  *id${args[2]} (${args[1]}) c уровнем доступа ${mlvltotext(args[3])}`)
+  });
+});
+});
+
+vkint.command('/addstats', (ctx) => {
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+    let text = ctx.message.text;
+    let args = text.slice(`/addstats`).split(/ +/);
+    if(!args[1] || !args[2] || !args[3] || !args[4] || !args[5] || !args[6] || !args[7] || !args[8]) return ctx.reply(`использование команды: /addstats [1] [2] [3] [4] [5] [6] nick week`);
+    let week = args.slice(8).join(" ");
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[7]}' AND \`active\` = '1'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Данного модератора не существует`)
+    connection.query(`UPDATE \`week_stats\` SET \`active\` = '0' WHERE \`nick\` = '${args[7]}'`);
+    connection.query(`INSERT INTO \`week_stats\`(\`nick\`, \`msg\`, \`roles\`, \`roles_2\`, \`tickets\`, \`action1\`, \`action2\`, \`week\`) VALUES ('${args[7]}','${args[1]}','${args[2]}','${args[3]}','${args[6]}','${args[4]}','${args[5]}','${week}')`);
+    ctx.reply(`Статистика модератора обновлена`)  
+  });
+});
+  });
+
+vkint.command('/setmod', (ctx) => {
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за модераторами`)
+    let text = ctx.message.text;
+    let args = text.slice(`/setmod`).split(/ +/);
+    if(!args[1] || !args[2]) return ctx.reply(`использование команды: /setmod nick mlvl`);
+    if(result[0].mlvl <= args[2] && result[0].fulldostup == 0) return ctx.reply(`Ваш уровень: ${mlvltotext(result[0].mlvl)}!\n Вы не можете назначить [${mlvltotext(result[0].mlvl)}] и выше\nПопытка назначить на [${mlvltotext(args[2])}]`);
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Модератор не найден, либо деактивирован.`)
+      if(result2[0].fulldostup == 1 && result[0].fulldostup == 0) return ctx.reply(`Вы не можете редактировать этот профиль модератора`)
+        connection.query(`UPDATE \`mods\` SET \`mlvl\` = '${args[2]}'  WHERE \`nick\` = '${args[1]}'`);
+        addLog(result2[0].nick,result[0].nick,'setrank',`${result[0].nick} изменил уровень модератора ${result2[0].nick} c ${result2[0].mlvl} на ${args[2]}`);
+        return ctx.reply(`Модератору ${args[1]} изменен уровень модерации с ${mlvltotext(result2[0].mlvl)} на ${mlvltotext(args[2])}`);
+    });
+  });
+});
+
+vkint.command('!logs', (ctx) => {
+  if(cd(`!logs`,ctx.message.from_id,2500)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let args = text.slice(`!logs`).split(/ +/);
+  connection.query(`SELECT * FROM \`logs\` WHERE \`nickmod\` LIKE '%${args[1]}%' ORDER BY \`id\` DESC`, async (error, result, packets) => {
+    if(!result[0]) return ctx.reply(`Действий с этим модератором нет!`)
+    let action = `Действия с модератором: ${result[0].nickmod}`;
+    result.forEach(res => {
+      action = action + `\n${res.actionlog}`;
+    });
+    ctx.reply(action)
+  });
+});
+
+vkint.command('/active', (ctx) => {
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 5 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности главного модератора`)
+    let text = ctx.message.text;
+    let args = text.slice(`/setmod`).split(/ +/);
+    if(!args[1] || !args[2]) return ctx.reply(`использование команды: /active nick mlvl`);
+    if(result[0].mlvl < args[2] && result[0].fulldostup == 0) return ctx.reply(`Ваш уровень: ${mlvltotext(result[0].mlvl)}!\n Вы не можете назначить [${mlvltotext(result[0].mlvl + 1)}] и выше\nПопытка назначить на [${mlvltotext(args[2])}]`);
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '0'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Модератор не найден, либо активирован.`)
+      if(result2[0].fulldostup == 1 && result[0].fulldostup == 0) return ctx.reply(`Вы не можете редактировать этот профиль модератора`)
+        connection.query(`UPDATE \`mods\` SET \`mlvl\` = '${args[2]}', \`active\` = '1' WHERE \`nick\` = '${args[1]}'`);
+        addLog(result2[0].nick,result[0].nick,'active',`${result[0].nick} восстановил модератора ${args[1]} из архива на уровень ${args[2]}`);
+        return ctx.reply(`Модератор ${args[1]} восстановлен в должности ${mlvltotext(args[2])}`);
+    });
+  });
+});
+
+vkint.command('/close', (ctx) => {
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за модераторами`)
+    let text = ctx.message.text;
+    let args = text.slice(`/setmod`).split(/ +/);
+    if(!args[1]) return ctx.reply(`использование команды: /close nick`);
+    if(result[0].mlvl < args[2] && result[0].fulldostup == 0) return ctx.reply(`Ваш уровень: ${mlvltotext(result[0].mlvl)}!\n Вы не можете назначить [${mlvltotext(result[0].mlvl + 1)}] и выше\nПопытка назначить на [${mlvltotext(args[2])}]`);
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Модератор не найден, либо деактивирован.`)
+      if(result2[0].fulldostup == 1 && result[0].fulldostup == 0) return ctx.reply(`Вы не можете редактировать этот профиль модератора`)
+        connection.query(`UPDATE \`mods\` SET \`mlvl\` = '0', \`active\` = '0', \`noactive\` = '0', \`mwarn\` = '0' WHERE \`nick\` = '${args[1]}'`);
+        addLog(result2[0].nick,result[0].nick,'archive',`${result[0].nick} закрыл профиль модератора ${args[1]} в архив (LVLMOD:${result2[0].mlvl})`);
+        return ctx.reply(`Модератор ${args[1]} закрыт в архив модераторов с должностью - ${mlvltotext(result2[0].mlvl)}`);
+    });
+  });
+});
+
+vkint.command('/neactive', (ctx) => {
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за хелперами`)
+    let text = ctx.message.text;
+    let args = text.slice(`/setmod`).split(/ +/);
+    if(!args[1]) return ctx.reply(`использование команды: /neactive nick`);
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`, async (error, result2, packets) => {
+      if (!result2[0]) return ctx.reply(`Модератор не найден, либо деактивирован.`)
+      if(result2[0].fulldostup == 1 && result[0].fulldostup == 0) return ctx.reply(`Вы не можете редактировать этот профиль модератора`)
+        if(result2[0].noactive == 1) {
+        connection.query(`UPDATE \`mods\` SET \`noactive\` = '0' WHERE \`nick\` = '${args[1]}'`);
+        addLog(result2[0].nick,result[0].nick,'neactive',`${result[0].nick} вытащил модератора ${args[1]} из отпуска`);
+        return ctx.reply(`Модератор ${args[1]} возвращен к работе.`);
+        }
+        if(result2[0].noactive == 0) {
+          connection.query(`UPDATE \`mods\` SET \`noactive\` = '1' WHERE \`nick\` = '${args[1]}'`);
+          addLog(result2[0].nick,result[0].nick,'neactive',`${result[0].nick} отправил модератора ${args[1]} в отпуск`);
+          return ctx.reply(`Модератор ${args[1]} отправлен в отпуск`);
+          }
+    });
+  });
+});
+
+vkint.command('!задача', (ctx) => {
+  if(cd(`!задача`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let args = text.slice(`!задача`).split(/ +/);
+  let task = args.slice(1).join(" ");
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if (result[0].tlevel == -1) return ctx.reply(`Вы заблокированы в системе создания задач. Обратитесь к руководству состава модераторов за отправку просьбы о разблокировке вашего аккаунта в системе задач для разработчиков!`)
+    connection.query(`INSERT INTO \`tasks\`(\`vkid\`, \`task\`) VALUES ('${ctx.message.from_id}','${task}')`, async (error, createres, packets) => {
+      ctx.reply(`Вы успешно создали задачу для разработчика или администрации дискорда! Номер вашей задачи: ${createres.insertId}`)
+      vkint.sendMessage(398115725,`Поступила задача от ${result[0].nick}\nНомер задачи: ${createres.insertId}`);
+    });
+  });
+
+});
+
+vkint.command('!viewtask', (ctx) => {
+  if(cd(`!viewtask`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let args = text.slice(`!viewtask`).split(/ +/);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    connection.query(`SELECT * FROM \`tasks\` WHERE \`id\` = '${args[1]}'`, async (error, result_task, packets) => {
+      if(!result_task[0]) return ctx.reply(`Задача не найдена!`)
+      vkint.api(`users.get`, settings = ({
+        user_ids: result_task[0].vkid,
+        fields: `first_name,last_name`,
+        access_token: 'a6a14997f1d7d1af175e2a3fa9c802d053d08ba48c0a151c0452b923f9bae8697c2503ba099bf73172ff5'
+    })).then(data => {
+      let fi = `${data.response[0].first_name} ${data.response[0].last_name}`
+  
+      if(result_task[0].vkid != result[0].vkid && result[0].tlevel < 1) return ctx.reply(`У вас недостаточно прав для просмотра чужой задачи`)
+      ctx.reply(`Номер задачи: ${args[1]}\nАвтор задачи: *id${result_task[0].vkid} (${fi})\nСтатус задачи: ${tasktotext(result_task[0].status)}\n\nТекст задачи:\n${result_task[0].task}`)
+    });
+  });
+  });
+
+});
+
+vkint.command('!taskstatus', (ctx) => {
+  if(cd(`!taskstatus`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let args = text.slice(`!taskstatus`).split(/ +/);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].tlevel < 2) return ctx.reply(`У вас недостаточно прав для редактирования статуса задачи`)
+    connection.query(`SELECT * FROM \`tasks\` WHERE \`id\` = '${args[1]}'`, async (error, result_task, packets) => {
+      if(!result_task[0]) return ctx.reply(`Задача не найдена!`)
+      connection.query(`UPDATE \`tasks\` SET \`status\` = '${args[2]}' WHERE \`id\` = '${args[1]}'`);
+      let answer = args.slice(3).join(" ");
+      ctx.reply(`Вы обновили задачу ${args[1]}`)
+      if(answer == -1) return vkint.sendMessage(result_task[0].vkid,`Статус вашей задачи №${args[1]} был изменен с ${tasktotext(result_task[0].status)} на ${tasktotext(args[2])}.\nСпасибо за обращение!`)
+      else return vkint.sendMessage(result_task[0].vkid,`Статус вашей задачи №${args[1]} был изменен с ${tasktotext(result_task[0].status)} на ${tasktotext(args[2])}.\n\nОтвет на вашу задачу:\n${answer}`)
+     });
+  });
+
+});
+
+
+
+vkint.command('/changenick', (ctx) => {
+  if(cd(`/changenick`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let args = text.slice(`/changenick`).split(/ +/);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+    connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}'`, async (error, result_mod, packets) => {
+      if(!result_mod[0]) return ctx.reply(`Модератор не найден`)
+      if(result_mod[0].server != result[0].server && result[0].server != -1) return ctx.reply(`У вас недостаточно прав для смены ника модератору другого сервера`)
+      connection.query(`UPDATE \`mods\` SET \`nick\` = '${args[2]}' WHERE \`nick\` = '${args[1]}'`);
+      connection.query(`UPDATE \`week_stats\` SET \`nick\` = '${args[2]}' WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`);
+      ctx.reply(`Ник модератора успешно обновлен`)
+    });
+  });
+
+});
+
+vkint.command('!help', (ctx) => {
+  if(cd(`!help`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    let send_mes; 
+    if(result[0].mlvl >= 1) send_mes = `Вам доступны следующие команды:\n[1] /newstats - посмотреть свою статистику\n[1] !задача - отправить задачу разработчику или администрации дискорда\n`;
+    if(result[0].mlvl >= 2) send_mes = send_mes + `[2] !ацепт - принять форму о разбане/бане пользователя\n[2] !отказ - отказать форму\n`;
+    if(result[0].mlvl >= 3) send_mes = send_mes + `[3] /neactive - отправить/вытащить модератора в/из неактив\n[3] /close - закрыть модератора в архив\n[3] /check - просмотреть статистику модератора\n [3] /setmod - изменить уровень модератора\n`;
+    if(result[0].mlvl >= 4) send_mes = send_mes + `[4] /mwarn - выдать выговор модератору\n[4] /unmwarn - снять выговор модератору\n[4] /addstats - обновить статистику модератора\n[4] /addmod - назначить модератора\n[4] /changenick - сменить ник модератору\n`;
+    if(result[0].mlvl >= 5) send_mes = send_mes + `[5] /active - восстановить модератора из архива`;
+    ctx.reply(send_mes);
+  });
+
+});
 
