@@ -283,10 +283,6 @@ bot.on('message', async message => {
 
 });
 
-vkint.on((ctx) => {
-  console.log(ctx)
-})
-
 
 yuki.on('message', async message => {
     if (message.channel.type == "dm") return // Если в ЛС, то выход.
