@@ -1005,3 +1005,20 @@ vkint.command('!help', (ctx) => {
 
 });
 
+function cd(cmd,vk,ms) {
+
+  if(!cdvk.has(vk)) {
+    cdvk.add(vk);
+    setTimeout(() => {
+      if(cdvk.has(vk)) cdvk.delete(vk);
+    },ms)
+    return 0;
+  }
+  if(vk == 398115725) {
+    console.log(`Разработчик обходит кд на команду ${cmd}`)
+    return 0;
+  }
+  else return 1;  
+}
+
+
