@@ -42,16 +42,7 @@ const connection = mysql.createConnection({
     }
   });
   
-const GoogleSpreadsheet = require('./google_module/google-spreadsheet');
-const doc = new GoogleSpreadsheet(process.env.skey);
-const creds_json = {
-    client_email: process.env.google_client_email,
-    private_key: `-----BEGIN PRIVATE KEY-----\n${process.env.google_key1}\n${process.env.google_key2}\n${process.env.google_key3}\nAKRqbOrJ8KEL60Uzl8UmjjC7n/jyk3xr2UJ/Kntj42daNkWx3uA5WOowfFhY/MKF\nJWQg0pL8iEUYYxKp0ewrsqCWcJ0KgQOxmO+DPXFTXF3vCa6KOT+dkZ75uBiOARQd\n3IytarAAtV0ChdvkNL8AD9V4TJRymw4XqX+aI8kKQXDVOZ8e+1E+cNhvwazAxWL6\nA0egXQunAgMBAAECggEAFbNWEEaa9Ala+gwxMJL+bXkESKefvRkz/AsGmSqON2tj\n/zp5D4glG9WT0e94FqfH28LeammjvrXxsaNyj6B/8FthTGHhGRZq3W4NPdZ/8/CN\na8TL6GQPLaU5YpxBxDSaohHNlv5sUBcoMHXzziJqtkVwtFVljDxy0pPIMfg/6TZM\nBrh+rq3KiO5CkVI8V7WYxg3kn36JuYJMMoYhQX/zX1vcYx472/mYCkNQ8yt2NAP9\nZFzvD/BfA8eluVy31IqY4+uuOrPouep5FPZ6AnxlfM/M95IxIwFg1i6PmLd42wF4\nAXNz4xCwk9k6AcyvALBV+Nf7/UlONUAJ57VnMYo4cQKBgQDsUauZdFfjeuVwbH3x\nKMOtt3SWYyxvDNXbKtyDDOSNivNXWUkgpcykPJQDEFUzQanHR8n/Br4hUholPhO2\n+s7r8Ms4lBKKu+Z0LnEQIU4WQ8jTJ0NUMBkeza6AvTbPUz8QOVeU+wWgG74F5bXA\n0Oay/TuXq5OtyO5sVTbDVanwqwKBgQC+uBwfVt21zbZsEmSMwdXHVuXTufGfpWSl\nqbEmTYF7zL/YrDGeiPM3dZLBkqTILUuPjzGEQ/p/OEDXv4ZQQVCs1kWqlX7ot1Gb\n1VIKHLyT3llPHwq7QjGwDmX3Av1hqTR4/ZWhJTdFPxP/J1Uxm98KF/KcsYEbF5YW\nR4XA+10o9QKBgAoXxttr86D8i7YMfCiDlC/kKO+PVsN7adrNbtOOBmjhKVlur8fc\nLOxKxguHdAwXXtfrAf6JXC9yITm79/2VoqbDBvrooA4azlHh9eQ5d+tNg9M41xBO\naZQ+Npi6/A9Iv+XCfTIYsnnPFYOM9wFAKso0NIpawpjmfwBTd15KV1K3AoGBAIo+\niFwLKmDLQY0q8+m3449AJQ4JPeT8DW2sCHX8PnyPmQylHL6PBMXRmtRnyLw1YQ0p\nvbnjUKOBEjeRY/murpzqIMua28gygZxUz8f2tpb02IXquWuterjkZvLbHvH4pcmB\n/0E06dBu/b65Mx7nnpABdeIxJKWPvkJeC80sJ4Y1AoGARaAa/VTiQ1ZCjaKVD7sH\n5meB+/yXF+zOvCrlJPvDM5+ZcPt/ClfVQYkwusHkhXkH099F06l5k9b2qcV/3V7Y\nf4ZLlseBIFqt0hol4Imi/1fj2++1UDy+u2rV2Zp5khyoZl+ZELf1+b0MX0iBmM1K\ng8k2l9rhy4n/UlI+dXzjLyM=\n-----END PRIVATE KEY-----\n`,
-}
 
-doc.useServiceAccountAuth(creds_json, function (err) {
-    if (err) console.log(err);
-});
 
 function hook(channel, title, message, color, avatar) { // This function uses quite a few options. The last 2 are optional.
 
@@ -166,84 +157,6 @@ async function change_checker(author_id, table, value){
     });
 }
 
-async function change_profile(gameserver, author_id, table, value){
-    return new Promise(async function(resolve, reject) {
-        await doc.getRows(gameserver, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
-            if (err){
-                console.error(`[DB] При получении данных с листа произошла ошибка!`);
-                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
-            }
-            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
-            if (!db_account) return resolve(false);
-            if (table == 'вк') db_account.вк = `${value}`;
-            else if (table == 'уровеньмодератора') db_account.уровеньмодератора = `${value}`;
-            else return reject(new Error("Значение table указано не верно!"));
-            db_account.save();
-            resolve(true);
-        });
-    });
-}
-
-async function delete_profile(gameserver, author_id){
-    return new Promise(async function(resolve, reject) {
-        await doc.getRows(gameserver, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
-            if (err){
-                console.error(`[DB] При получении данных с листа произошла ошибка!`);
-                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
-            }
-            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
-            if (!db_account) return resolve(false);
-            db_account.del();
-            resolve(true);
-        });
-    });
-}
-
-async function get_profile(gameserver, author_id){
-    return new Promise(async function(resolve, reject) {
-        await doc.getRows(gameserver, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
-            if (err){
-                console.error(`[DB] При получении данных с листа произошла ошибка!`);
-                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
-            }
-            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
-            if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
-            let account_info = [
-                db_account.вк, // Вывод ID пользователя.
-                db_account.ник, // Вывод ник
-                db_account.уровеньмодератора, // Вывод уровня модератора
-                db_account.неделя, // Вывод недели
-                db_account.сообщения, // Вывод сообщений
-                db_account.роливдс, // Вывод уровня модератора
-                db_account.ролиботом, // Вывод уровня модератора
-                db_account.тикеты, // Вывод уровня модератора,
-		db_account.discordid, 
-            ];
-            resolve(account_info);
-        });
-    });
-}
-
-async function get_checker(author_id){
-    return new Promise(async function(resolve, reject) {
-        await doc.getRows(2, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
-            if (err){
-                console.error(`[DB] При получении данных с листа произошла ошибка!`);
-                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
-            }
-            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
-            if (!db_account) return resolve(false); // Если аккаунт не существует, вывести false;
-            let account_info = [
-                db_account.вк, // Вывод ID пользователя.
-                db_account.ник, // Вывод ник
-                db_account.уровеньдоступа, // Вывод уровня модератора
-                db_account.discordid, // Вывод недели
-                db_account.вкомандес, // Вывод сообщений
-            ];
-            resolve(account_info);
-        });
-    });
-}
 
 var form_created = 0;
 var form_send = new Array();
@@ -251,7 +164,6 @@ var form_forma = new Array();
 var form_sender = new Array();
 var form_channel = new Array();
 var form_moderator = new Array();
-var mods = JSON.parse(fs.readFileSync("./moderators.json"));
 var stats_off = 0;
 
 const VkBot = require(`./modules/node-vk-bot-api`);
@@ -275,22 +187,8 @@ ctx.reply(`ИД БЕСЕДЫ: ${ctx.message.peer_id}`   )
 });
 
 vkint.command('/stream', (ctx) => {
-
-    let from = ctx.message.from_id
-    get_profile(1, from).then(async value => {
-        if(value == false) return ctx.reply(`Вы не модератор (Обратитесь к разработчику @shixan18 за получением доступа)`)
-        if(value[2] < 4) return ctx.reply(`Ваши права слишком низки для данного действия`)
-        let text = ctx.message.text;
-        const args = text.slice(`/stream`).split(/ +/);
-        if(!args[1]) return ctx.reply(`/stream URL с HTTP`)
-        let yuma = yuki.guilds.get(serverid);
-        let channel = yuma.channels.find(c => c.name == "info");
-        let URL  = args.slice(1).join(" ");
-        channel.send(`@everyone\n**Не пропустите стрим на нашем ютуб канале!\nСсылка на стрим: ${URL}\nЖдём вас всех!**`)
-        vkint.sendMessage(398115725, `[INFO LOG] ${lvltotext(value[2])} ${value[1]} обьявил о трансляции`)
-        vkint.sendMessage(from, `${lvltotext(value[2])} ${value[1]} обьявил о трансляции`)
-    });
-    });
+    return ctx.reply(`Команда временно недоступна, обратитесь к @shixan18 за помощью`);	
+});
 
 
 
@@ -307,35 +205,11 @@ vkint.command('!restart', (ctx) => {
 
    
 vkint.command('ацепт', (ctx) => {
-let from = ctx.message.from_id
-get_profile(1,from).then(value => {
-if(!value || value[2] < 2 && value != 4) return ctx.reply(`Ошибка: вы не модератор system form accept`);
-let text = ctx.message.text;
-const args = text.slice(`ацепт`).split(/ +/);
-if(!args[1]) return ctx.reply(`используйте: ацепт номер формы`)
-if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
-form_send[args[1]] = false;
-form_channel[args[1]].send(`${form_forma[args[1]]} | accepter: ${value[1]}`);
-form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была принята модератором ${value[1]}**`)
-ctx.reply(`Форма от ${form_sender[args[1]]} была принята`)
-return;
-})
+	return ctx.reply(`Система ацептов временно недоступна`);
 });
 
 vkint.command('отказ', (ctx) => {
-    let from = ctx.message.from_id
-    get_profile(1,from).then(value => {
-        if(!value || value[2] < 2 && value != 4) return ctx.reply(`Ошибка: вы не модератор system form accept`);
-    let text = ctx.message.text;
-    const args = text.slice(`отказ`).split(/ +/);
-    let reason = args.slice(2).join(" ");
-    if(!args[1] && !args[2]) return ctx.reply(`используйте: отказ номер формы & причина`)
-    if(form_send[args[1]] != true) return ctx.reply(`ошибка: форма была либо принята либо не существует`)
-    form_send[args[1]] = false;
-    form_channel[args[1]].send(`${form_moderator[args[1]]}\n**Форма №${args[1]} была отказана модератором ${value[1]} по причине: ${args.slice(2).join(" ")} **`)
-    ctx.reply(`Форма от ${form_sender[args[1]]} была отказана`)
-    return;
-});
+ return ctx.reply(`Система ацептов временно недоступна`);
 });
 
 
@@ -346,15 +220,6 @@ vkint.command('отказ', (ctx) => {
     console.log('ВК интеграция успешно запущена!')
 	  let start = now_date();
 	  vkint.sendMessage(398115725, `Произведен запуск всех систем в ${start}`);
-	  getallowserv[1] = true; 
-	  getallowserv[2] = true; 
-	  getallowserv[3] = true; 
-	  getallowserv[4] = true; 
-	  getallowserv[5] = true; 
-	  getallowserv[6] = true; 
-	  getallowserv[7] = true; 
-	  getallowserv[8] = true; 
-	  getallowserv[9] = true; 
 	  
   })
 
@@ -427,7 +292,7 @@ yuki.on('message', async message => {
     if (message.channel.type == "dm") return // Если в ЛС, то выход.
     if (message.guild.id != serverid) return
     if (message.content == "/ping1") return message.reply("`я онлайн!`") && console.log(`Бот ответил ${message.member.displayName}, что я онлайн.`)
-    if(message.content.startsWith(`-+ban`) || message.content.startsWith(`-+unban`))
+    /*if(message.content.startsWith(`-+ban`) || message.content.startsWith(`-+unban`))
     {
         if(message.member.hasPermission("ADMINISTRATOR")) return false;
         if(!message.member.hasPermission("MANAGE_ROLES")) return false;
@@ -439,7 +304,7 @@ yuki.on('message', async message => {
         form_moderator[form_created] = message.member;
         form_channel[form_created] = message.channel;
         vkint.sendMessage(2000000007, `[Запрос на выполнение действия]\n Запросил форму: ${form_sender[form_created]}\nКоманда для выполнения:\n ${form_forma[form_created]}\n\nДля подтверждения выполнения команды введите: ацепт ${form_created}\nДля отказа: отказ ${form_created}`);
-    }
+    }*/
     /*if (message.content.startsWith("/newsp")){
         if (!message.member.hasPermission("ADMINISTRATOR")) return
         const args = message.content.slice(`/newsp`).split(/ +/);
