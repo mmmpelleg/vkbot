@@ -8,6 +8,7 @@ const authed = new Set();
 const stmod = new Set();
 const spmod = new Set();
 const dm_mod = new Set();
+const cdvk = new Set();
 const getallowserv = new Array();
 const duty = new Set();
     const mysql = require('./google_module/mysql');
