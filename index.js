@@ -997,7 +997,7 @@ vkint.command('!help', (ctx) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
     let send_mes; 
-    if(result[0].mlvl >= 1 || result[0].fulldostup == 1) send_mes = `Вам доступны следующие команды:\n[1] /newstats - посмотреть свою статистику\n[1] !задача - отправить задачу разработчику или администрации дискорда\n`;
+    if(result[0].mlvl >= 1 || result[0].fulldostup == 1) send_mes = `Вам доступны следующие команды:\n[1] /newstats - посмотреть свою статистику\n[1] !задача - отправить задачу разработчику или администрации дискорда\n/moderators - просмотреть список модераторов (только В ЛС)`;
     if(result[0].mlvl >= 2 || result[0].fulldostup == 1) send_mes = send_mes + `[2] !ацепт - принять форму о разбане/бане пользователя\n[2] !отказ - отказать форму\n`;
     if(result[0].mlvl >= 3 || result[0].fulldostup == 1) send_mes = send_mes + `[3] /neactive - отправить/вытащить модератора в/из неактив\n[3] /close - закрыть модератора в архив\n[3] /check - просмотреть статистику модератора\n [3] /setmod - изменить уровень модератора\n`;
     if(result[0].mlvl >= 4 || result[0].fulldostup == 1) send_mes = send_mes + `[4] /mwarn - выдать выговор модератору\n[4] /unmwarn - снять выговор модератору\n[4] /addstats - обновить статистику модератора\n[4] /addmod - назначить модератора\n[4] /changenick - сменить ник модератору\n`;
@@ -1005,6 +1005,35 @@ vkint.command('!help', (ctx) => {
     ctx.reply(send_mes);
   });
 
+});
+
+vkint.command(`/moderators`, (ctx) => {
+  if(cd(`/moderators`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
+  let text = ctx.message.text;
+  let chat = ctx.message.peer_id;
+  if(chat > 2000000000) return ctx.reply(`Список модераторов можно просмотреть только в личных сообщениях (ограничение на упоминание в беседах)`)
+  let args = text.slice(`/moderators`).split(/ +/);
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if(!args[1]) args[1] = result[0].server;
+    let send = `Модераторы сервера ${servertotext(args[1])}\n`;
+    connection.query(`SELECT * FROM \`mods\` WHERE \`active\` = '1' AND \`server\` = '${args[1]}' ORDER BY \`mlvl\` DESC`, async (error, moder, packets) => {
+      if(!moder[0]) {
+        send = send + `\nМодераторов на этом сервере нет!`;
+        ctx.reply(send);
+      }
+      else{
+        moder.forEach(moder => {
+          if(moder.mlvl == 5 || moder.mlvl == 4) send = send + `*id${moder.vkid} (${moder.nick}) - [${moder.mlvl} lvl]\n`;
+          if(moder.mlvl <= 3) send = send + `*id${moder.vkid} (${moder.nick}) - [${moder.mlvl} lvl] - [${moder.mwarn}/3]\n`;
+        });
+        ctx.reply(send)
+      }
+
+
+})
+  });
 });
 
 function cd(cmd,vk,ms) {
