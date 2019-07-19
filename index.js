@@ -739,7 +739,8 @@ vkint.command('/mwarn', (ctx) => {
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
-    if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
+    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за модераторами`)
+    if(result[0].server == 9 && result[0] < 4 && result[0].fulldostup == 0) return ctx.reply(`Данная команда на сервере Yuma доступно с заместителя гл.модератора);
     let text = ctx.message.text;  
     let args = text.slice(`/mwarn`).split(/ +/);
     let reason = args.slice(2).join(" ");
