@@ -679,6 +679,7 @@ function tasktotext(server) {
   if(server == 1) text = 'Новая задача';
   if(server == 2) text = 'На рассмотрении'; 
   if(server == 3) text = 'Отказано в исполнении';
+  if(server == 4) text = 'Взята в работу';
   return text;
 }
 
@@ -936,7 +937,7 @@ vkint.command('!viewtask', (ctx) => {
       vkint.api(`users.get`, settings = ({
         user_ids: result_task[0].vkid,
         fields: `first_name,last_name`,
-        access_token: 'a6a14997f1d7d1af175e2a3fa9c802d053d08ba48c0a151c0452b923f9bae8697c2503ba099bf73172ff5'
+        access_token: process.env.tokenvk
     })).then(data => {
       let fi = `${data.response[0].first_name} ${data.response[0].last_name}`
   
@@ -961,8 +962,8 @@ vkint.command('!taskstatus', (ctx) => {
       connection.query(`UPDATE \`tasks\` SET \`status\` = '${args[2]}' WHERE \`id\` = '${args[1]}'`);
       let answer = args.slice(3).join(" ");
       ctx.reply(`Вы обновили задачу ${args[1]}`)
-      if(answer == -1) return vkint.sendMessage(result_task[0].vkid,`Статус вашей задачи №${args[1]} был изменен с ${tasktotext(result_task[0].status)} на ${tasktotext(args[2])}.\nСпасибо за обращение!`)
-      else return vkint.sendMessage(result_task[0].vkid,`Статус вашей задачи №${args[1]} был изменен с ${tasktotext(result_task[0].status)} на ${tasktotext(args[2])}.\n\nОтвет на вашу задачу:\n${answer}`)
+      if(answer == -1) return vkint.sendMessage(result_task[0].vkid,`Статус вашей задачи №${args[1]} был изменен с ${tasktotext(result_task[0].status)} на ${tasktotext(args[2])}\nСпасибо за обращение!`)
+      else return vkint.sendMessage(result_task[0].vkid,`Статус вашей задачи №${args[1]} был изменен с ${tasktotext(result_task[0].status)} на ${tasktotext(args[2])}\n\nОтвет на вашу задачу:\n${answer}`)
      });
   });
 
