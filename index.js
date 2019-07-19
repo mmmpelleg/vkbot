@@ -996,11 +996,11 @@ vkint.command('!help', (ctx) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
     let send_mes; 
-    if(result[0].mlvl >= 1) send_mes = `Вам доступны следующие команды:\n[1] /newstats - посмотреть свою статистику\n[1] !задача - отправить задачу разработчику или администрации дискорда\n`;
-    if(result[0].mlvl >= 2) send_mes = send_mes + `[2] !ацепт - принять форму о разбане/бане пользователя\n[2] !отказ - отказать форму\n`;
-    if(result[0].mlvl >= 3) send_mes = send_mes + `[3] /neactive - отправить/вытащить модератора в/из неактив\n[3] /close - закрыть модератора в архив\n[3] /check - просмотреть статистику модератора\n [3] /setmod - изменить уровень модератора\n`;
-    if(result[0].mlvl >= 4) send_mes = send_mes + `[4] /mwarn - выдать выговор модератору\n[4] /unmwarn - снять выговор модератору\n[4] /addstats - обновить статистику модератора\n[4] /addmod - назначить модератора\n[4] /changenick - сменить ник модератору\n`;
-    if(result[0].mlvl >= 5) send_mes = send_mes + `[5] /active - восстановить модератора из архива`;
+    if(result[0].mlvl >= 1 || result[0].fulldostup == 1) send_mes = `Вам доступны следующие команды:\n[1] /newstats - посмотреть свою статистику\n[1] !задача - отправить задачу разработчику или администрации дискорда\n`;
+    if(result[0].mlvl >= 2 || result[0].fulldostup == 1) send_mes = send_mes + `[2] !ацепт - принять форму о разбане/бане пользователя\n[2] !отказ - отказать форму\n`;
+    if(result[0].mlvl >= 3 || result[0].fulldostup == 1) send_mes = send_mes + `[3] /neactive - отправить/вытащить модератора в/из неактив\n[3] /close - закрыть модератора в архив\n[3] /check - просмотреть статистику модератора\n [3] /setmod - изменить уровень модератора\n`;
+    if(result[0].mlvl >= 4 || result[0].fulldostup == 1) send_mes = send_mes + `[4] /mwarn - выдать выговор модератору\n[4] /unmwarn - снять выговор модератору\n[4] /addstats - обновить статистику модератора\n[4] /addmod - назначить модератора\n[4] /changenick - сменить ник модератору\n`;
+    if(result[0].mlvl >= 5 || result[0].fulldostup == 1) send_mes = send_mes + `[5] /active - восстановить модератора из архива\n`;
     ctx.reply(send_mes);
   });
 
