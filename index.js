@@ -337,7 +337,6 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
             vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) подозревается во сливе, с него сняты все роли, проверьте попытку, если это не так, восстановите роли!`);
             vkint.sendMessage(398115725, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) подозревается во сливе, с него сняты все роли, проверьте попытку, если это не так, восстановите роли!`);
             member.removeRoles(member.roles, "Антислив система, выдано более 7-ми ролей за минуту - подозреваемый");
-
         }
         vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) выдал роль (${role.name}) пользователю ${newMember.displayName} (ID: ${newMember.id})`);
     }else{
@@ -367,14 +366,8 @@ bot.on('guildMemberUpdate', async (oldMember, newMember) => {
             member.removeRoles(member.roles, "Антислив система, выдано более 7-ми ролей за минуту - подозреваемый");
         }
         vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) cнял роль (${role.name}) пользователю ${newMember.displayName} (ID: ${newMember.id})`);
-
     }
-
 });
-
-
-
-
 bot.on('guildBanAdd', async (guild, user) => {
     if (guild.id != serverid) return
     setTimeout(async () => {
@@ -385,7 +378,6 @@ bot.on('guildBanAdd', async (guild, user) => {
         vkint.sendMessage(2000000002, `[LOG]  Модератор ${member.displayName} (ID: ${member.id}) заблокировал пользователя ${user.username} (ID: ${user.id}).\nПричина блокировки: ${reason}`);
     }, 2000);
 });
-
 bot.on('guildBanRemove', async (guild, user) => {
     if (guild.id != serverid) return
     setTimeout(async () => {
@@ -396,86 +388,52 @@ bot.on('guildBanRemove', async (guild, user) => {
         vkint.sendMessage(2000000002, `[LOG]  Модератор ${member.displayName} (ID: ${member.id}) разблокировал пользователя ${user.username} (ID: ${user.id}).\nПричина разблокировки: ${reason}`);
     }, 2000);
 });
-
-
-
 bot.on('channelCreate', async (channel) => {
-
     setTimeout(async () => {
         let guild = bot.guilds.get(serverid);
         const entry = await guild.fetchAuditLogs({type: 'CHANNEL_CREATE'}).then(audit => audit.entries.first());
         let member = await guild.members.get(entry.executor.id);
         vkint.sendMessage(2000000002, `[LOG]  Модератор ${member.displayName} (ID: ${member.id}) создал канал ${channel.name} (ID: ${channel.id}).`);
     }, 2000);
-
 });
-
-
 bot.on('channelDelete', async (channel) => {
-
     setTimeout(async () => {
         let guild = bot.guilds.get(serverid);
         const entry = await guild.fetchAuditLogs({type: 'CHANNEL_DELETE'}).then(audit => audit.entries.first());
         let member = await guild.members.get(entry.executor.id);
         vkint.sendMessage(2000000002, `[LOG]  Модератор ${member.displayName} (ID: ${member.id}) удалил канал ${channel.name} (ID: ${channel.id}).`);
     }, 2000);
-
 });
-
-
-
 function returnlvl(member) {
-
     let lvlmod;
     if(member.roles.some(r => ["Spectator™"].includes(r.name))) lvlmod = 1; 
     if(member.roles.some(r => ["Support Team"].includes(r.name))) lvlmod = 2;
     if(member.roles.some(r => ["Discord Master"].includes(r.name))) lvlmod = 3;  
     return lvlmod;
-
 }
-
-
 bot.on('roleCreate', async (role) => {
-
     setTimeout(async () => {
-
     let server = bot.guilds.get(serverid);
     const entry = await server.fetchAuditLogs({type: 'ROLE_CREATE'}).then(audit => audit.entries.first());
     let member = await server.members.get(entry.executor.id);
     vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) создал роль (${role.name})`);
-
     }, 2000);
-
 }); 
-
 bot.on('roleDelete', async (role) => {
-
     setTimeout(async () => {
-
     let server = bot.guilds.get(serverid);
     const entry = await server.fetchAuditLogs({type: 'ROLE_DELETE'}).then(audit => audit.entries.first());
     let member = await server.members.get(entry.executor.id);
     vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) удалил роль (${role.name})`);
-
     }, 2000);
-
 }); 
-
-
-
 bot.on('roleUpdate', async (oldRole, newRole) => {
-
 let server = bot.guilds.get(serverid);
 if(oldRole.name == "@everyone" || newRole.name == "@everyone") return;
 const entry = await server.fetchAuditLogs({type: 'ROLE_UPDATE'}).then(audit => audit.entries.first());
 let member = await server.members.get(entry.executor.id);
 vkint.sendMessage(2000000002, `[LOG] Модератор ${member.displayName} (ID: ${member.id}) обновил роль (${oldRole.name}\n\nНазвание роли до изменения: ${oldRole.name}\nПосле изменения: ${newRole.name})`);
-
-
 });
-
-
-
 function lvltotext(lvlmod) {
     let text;
     if(lvlmod == 1) text = "Модератор";
@@ -631,7 +589,6 @@ function tasktotext(server) {
 }
 
 vkint.command('/stats', (ctx) => {
-  checkallowcmd(ctx, 0)
   if(cd(`/stats`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро, студент!`)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
@@ -653,7 +610,6 @@ vkint.command('/stats', (ctx) => {
 });
 
 vkint.command('/check', (ctx) => {
-  checkallowcmd(ctx, 1)
   if(cd(`/check`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let args = text.slice(`/check`).split(/ +/);
@@ -685,7 +641,6 @@ vkint.command('/check', (ctx) => {
 
 
 vkint.command('/mwarn', (ctx) => {
-  checkallowcmd(ctx, 1)
   if(cd('/mwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
@@ -712,7 +667,6 @@ vkint.command('/mwarn', (ctx) => {
 });
 
 vkint.command('/unmwarn', (ctx) => {
-  checkallowcmd(ctx, 1)
   if(cd('/unmwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
@@ -731,7 +685,6 @@ vkint.command('/unmwarn', (ctx) => {
 });
 });
 vkint.command('/addmod', (ctx) => {
-checkallowcmd(ctx, 1)
 connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
   if (error) return console.error(error);
   if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -749,7 +702,6 @@ connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id
 });
 
 vkint.command('/addstats', (ctx) => {
-  checkallowcmd(ctx, 1)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -768,7 +720,6 @@ vkint.command('/addstats', (ctx) => {
   });
 
 vkint.command('/setmod', (ctx) => {
-  checkallowcmd(ctx, 1)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -788,7 +739,6 @@ vkint.command('/setmod', (ctx) => {
 });
 
 vkint.command('!logs', (ctx) => {
-  checkallowcmd(ctx, 2)
   if(cd(`!logs`,ctx.message.from_id,2500)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let args = text.slice(`!logs`).split(/ +/);
@@ -803,7 +753,6 @@ vkint.command('!logs', (ctx) => {
 });
 
 vkint.command('/active', (ctx) => {
-  checkallowcmd(ctx, 1)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -823,7 +772,6 @@ vkint.command('/active', (ctx) => {
 });
 
 vkint.command('/close', (ctx) => {
-  checkallowcmd(ctx, 1)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -843,7 +791,6 @@ vkint.command('/close', (ctx) => {
 });
 
 vkint.command('/neactive', (ctx) => {
-  checkallowcmd(ctx, 1)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -869,7 +816,6 @@ vkint.command('/neactive', (ctx) => {
 });
 
 vkint.command('!задача', (ctx) => {
-  checkallowcmd(ctx, 1)
   if(cd(`!задача`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let args = text.slice(`!задача`).split(/ +/);
@@ -887,7 +833,6 @@ vkint.command('!задача', (ctx) => {
 });
 
 vkint.command('!viewtask', (ctx) => {
-  checkallowcmd(ctx, 1)
   if(cd(`!viewtask`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let args = text.slice(`!viewtask`).split(/ +/);
@@ -912,7 +857,6 @@ vkint.command('!viewtask', (ctx) => {
 });
 
 vkint.command('!taskstatus', (ctx) => {
-  checkallowcmd(ctx, 2)
   if(cd(`!taskstatus`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let args = text.slice(`!taskstatus`).split(/ +/);
@@ -935,7 +879,6 @@ vkint.command('!taskstatus', (ctx) => {
 
 
 vkint.command('/changenick', (ctx) => {
-  checkallowcmd(ctx, 1)
   if(cd(`/changenick`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let args = text.slice(`/changenick`).split(/ +/);
@@ -955,7 +898,6 @@ vkint.command('/changenick', (ctx) => {
 });
 
 vkint.command('!help', (ctx) => {
-  checkallowcmd(ctx, 0)
   if(cd(`!help`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
@@ -973,7 +915,6 @@ vkint.command('!help', (ctx) => {
 });
 
 vkint.command(`/moderators`, (ctx) => {
-  checkallowcmd(ctx, 0)
   if(cd(`/moderators`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
   let text = ctx.message.text;
   let chat = ctx.message.peer_id;
@@ -1016,11 +957,4 @@ function cd(cmd,vk,ms) {
     return 0;
   }
   else return 1;  
-}
-
-var global_access_cmd = 1;
-
-function checkallowcmd(ctx, alvlcmd) {
-if(alvlcmd < global_access_cmd && global_access_cmd == 2) return ctx.reply(`Данная команда временно недоступна, сейчас работают команды только администратора бота (7 лвл модератора)`);
-if(alvlcmd < global_access_cmd && global_access_cmd == 1) return ctx.reply(`Данная команда временно недоступна, сейчас работают команды только управляющего состава модераторов`);
 }
