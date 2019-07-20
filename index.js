@@ -105,59 +105,6 @@ function now_date(){
 }
 
 
-async function add_profile(gameserver, author_id, nick, moderlvl){
-    return new Promise(async function(resolve, reject) {
-        doc.addRow(gameserver, {
-            вк: author_id, // Вывод ID пользователя.
-            ник: nick, // Вывод ника
-            уровеньмодератора: moderlvl, // Вывод уровня модератора
-        }, async function(err){
-            if (err){
-                console.error(`[DB] Ошибка добавления профиля на лист!`);
-                return reject(new Error(`При использовании 'addRow' произошла ошибка.`));
-            }
-            resolve(true);
-        });
-    });
-}
-
-async function add_checker(author_id,nick, moderlvl, data2, did){
-    return new Promise(async function(resolve, reject) {
-        doc.addRow(2, {
-            вк: author_id, // Вывод ID пользователя.
-            ник: nick, // Вывод ник
-            уровеньдоступа: moderlvl, // Вывод уровня модератора,
-            вкомандес: data2, // дата
-            discordid: did
-        }, async function(err){
-            if (err){
-                console.error(`[DB] Ошибка добавления профиля на лист!`);
-                return reject(new Error(`При использовании 'addRow' произошла ошибка.`));
-            }
-            resolve(true);
-        });
-    });
-}
-
-
-async function change_checker(author_id, table, value){
-    return new Promise(async function(resolve, reject) {
-        await doc.getRows(2, { offset: 1, limit: 5000000, orderby: 'col2' }, (err, rows) => {
-            if (err){
-                console.error(`[DB] При получении данных с листа произошла ошибка!`);
-                return reject(new Error(`При использовании 'getrows' произошла ошибка при получении данных.`));
-            }
-            let db_account = rows.find(row => row.вк == author_id); // Поиск аккаунта в базе данных.
-            if (!db_account) return resolve(false);
-            if (table == 'вк') db_account.вк = `${value}`;
-            else if (table == 'уровеньдоступа') db_account.уровеньдоступа = `${value}`;
-            else return reject(new Error("Значение table указано не верно!"));
-            db_account.save();
-            resolve(true);
-        });
-    });
-}
-
 
 var form_created = 0;
 var form_send = new Array();
