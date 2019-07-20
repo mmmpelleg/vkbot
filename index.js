@@ -637,7 +637,7 @@ vkint.command('/stats', (ctx) => {
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
     let sms = `Ваш ник: ${result[0].nick}\nВаш сервер: ${servertotext(result[0].server)}\nУровень модерации: ${mlvltotext(result[0].mlvl)}`
     if(result[0].mlvl < 4) sms = sms + `\nВаши выговоры: ${result[0].mwarn} из 3`;
-    if(result[0].server == 9) sms = sms + `\nВаш баланс ${result[0].mpoint} ModerPoint's`
+    if(result[0].server == 9) sms = sms + `\nВаш баланс: ${result[0].mpoint} ModerPoint's`
     if(result[0].noactive == 1) sms = sms + `\n\nВы помечены главной модерации как неактивный модератор по заявлению`;
     if(result[0].mlvl > 3) return ctx.reply(sms);
     connection.query(`SELECT * FROM \`week_stats\` WHERE \`nick\` = '${result[0].nick}' AND \`active\` = '1'`, async (error, result2, packets) => {
