@@ -626,7 +626,7 @@ vkint.command('/addchat', (ctx) => {
       if (error) return console.log(error);
       if (chats[0]) return ctx.reply(`Данная конференция уже привязана к ${servertotext(chats[0].server)}, уровень доступа - ${chats[0].mlvl}`);
     });
-    connection.query(`INSERT INTO \`chats\`(\`server\`,\`cid\`,\`name\`) VALUES ('${args[1]}', '${chat}', '${name}')`);
+    connection.query(`INSERT INTO \`chats\`(\`server\`,\`cid\`,\`name\`,\`mlvl\`) VALUES ('${args[1]}', '${chat}', '${name}', '${args[2]}')`);
     return ctx.reply(`Конференция успешно привязана к системе, параметры:\nCервер: ${servertotext(args[1])}\nУровень доступа: ${args[2]} lvl\nНазвание беседы в БД: ${name}`)
     
   });
