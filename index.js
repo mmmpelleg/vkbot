@@ -762,7 +762,7 @@ vkint.command('/setmod', (ctx) => {
         ctx.reply(`Модератору ${args[1]} изменен уровень модерации с ${mlvltotext(result2[0].mlvl)} на ${mlvltotext(args[2])}`);
         connection.query(`SELECT * FROM \`chats\` WHERE \`server\` = '${result2[0].server}'`, async (error, chats, packets) => {
           chats.forEach(kick => {
-            if(args[2] > kick.mlvl) return;
+            if(args[2] >= kick.mlvl) return;
             if(args[3] == 1) return;
            vkint.api(`messages.removeChatUser`, settings = ({ 
              chat_id: kick.cid, 
@@ -770,7 +770,7 @@ vkint.command('/setmod', (ctx) => {
              access_token: process.env.tokenvk
              })).then(async data => { 
                  let id = kick.cid + 2000000000;
-                 vkint.sendMessage(id, `У ${result2[0].mlvl} недостаточно прав чтобы находится в этой конференции`);
+                 vkint.sendMessage(id, `У ${result2[0].nick} недостаточно прав чтобы находится в этой конференции`);
              })  
           })
        });
