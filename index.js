@@ -609,6 +609,29 @@ vkint.command('/stats', (ctx) => {
 
 });
 
+vkint.command('/addchat', (ctx) => {
+
+  if(cd(`/addchat`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро!`)
+  let text = ctx.message.text;
+  let args = text.slice(`/addchat`).split(/ +/);
+  let name = args.slice(3).join(" ");
+  let chat = ctx.message.peer_id - 2000000000;
+  if (chat < 0) return ctx.reply(`Данная команда доступна только в конференциях`)
+  connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
+    if (error) return console.error(error);
+    if (!result[0]) return ctx.reply(`Вы не модератор!`)
+    if (result[0].fulldostup == 0) return ctx.reply(`Прав доступа недостаточно чтобы добавить конференцию в систему`)
+    if (!args[1] || !args[2] || !args[3]) return ctx.reply(`использование команды: /addchat server accesslvl name`);
+    connection.query(`SELECT * FROM \`chats\` WHERE \`cid\` = '${chat}'`, async (error, chats, packets) => {
+      if (error) return console.log(error);
+      if (chats[0]) return ctx.reply(`Данная конференция уже привязана к ${servertotext(chats[0].server)}, уровень доступа - ${chats[0].mlvl}`);
+    });
+    connection.query(`INSERT INTO \`chats\`(\`server\`,\`cid\`,\`name\`) VALUES ('${args[1]}', '${chat}', '${name}')`);
+    return ctx.reply(`Конференция успешно привязана к системе, параметры:\nCервер: ${servertotext(args[1])}\nУровень доступа: ${$args[2]} lvl\nНазвание беседы в БД: ${name}`)
+    
+  });
+});
+
 vkint.command('/check', (ctx) => {
   if(cd(`/check`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
