@@ -589,7 +589,7 @@ function tasktotext(server) {
 }
 
 vkint.command('/stats', (ctx) => {
-  if(cd(`/stats`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`/stats`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро!`)
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -610,7 +610,7 @@ vkint.command('/stats', (ctx) => {
 });
 
 vkint.command('/check', (ctx) => {
-  if(cd(`/check`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`/check`,ctx.message.from_id,4000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   let args = text.slice(`/check`).split(/ +/);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
@@ -641,7 +641,7 @@ vkint.command('/check', (ctx) => {
 
 
 vkint.command('/mwarn', (ctx) => {
-  if(cd('/mwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`);
+  if(cd('/mwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -667,7 +667,7 @@ vkint.command('/mwarn', (ctx) => {
 });
 
 vkint.command('/unmwarn', (ctx) => {
-  if(cd('/unmwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`);
+  if(cd('/unmwarn',ctx.message.from_id,5000)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -685,6 +685,7 @@ vkint.command('/unmwarn', (ctx) => {
 });
 });
 vkint.command('/addmod', (ctx) => {
+  if(cd('/addmod',ctx.message.from_id,3500)) return ctx.reply(`Не так быстро!`);
 connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
   if (error) return console.error(error);
   if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -702,6 +703,7 @@ connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id
 });
 
 vkint.command('/addstats', (ctx) => {
+  if(cd('/addstats',ctx.message.from_id,3500)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -720,6 +722,7 @@ vkint.command('/addstats', (ctx) => {
   });
 
 vkint.command('/setmod', (ctx) => {
+  if(cd('/setmod',ctx.message.from_id,3500)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -753,6 +756,7 @@ vkint.command('!logs', (ctx) => {
 });
 
 vkint.command('/active', (ctx) => {
+  if(cd('/active',ctx.message.from_id,3500)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -772,6 +776,7 @@ vkint.command('/active', (ctx) => {
 });
 
 vkint.command('/close', (ctx) => {
+  if(cd('/close',ctx.message.from_id,3500)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
@@ -791,10 +796,11 @@ vkint.command('/close', (ctx) => {
 });
 
 vkint.command('/neactive', (ctx) => {
+  if(cd('/neactive',ctx.message.from_id,3500)) return ctx.reply(`Не так быстро!`);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}'`, async (error, result, packets) => {
     if (error) return console.error(error);
     if (!result[0]) return ctx.reply(`Вы не модератор!`)
-    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за хелперами`)
+    if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за модераторами`)
     let text = ctx.message.text;
     let args = text.slice(`/setmod`).split(/ +/);
     if(!args[1]) return ctx.reply(`использование команды: /neactive nick`);
@@ -815,8 +821,11 @@ vkint.command('/neactive', (ctx) => {
   });
 });
 
+
+
+
 vkint.command('!задача', (ctx) => {
-  if(cd(`!задача`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`!задача`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   let args = text.slice(`!задача`).split(/ +/);
   let task = args.slice(1).join(" ");
@@ -833,7 +842,7 @@ vkint.command('!задача', (ctx) => {
 });
 
 vkint.command('!viewtask', (ctx) => {
-  if(cd(`!viewtask`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`!viewtask`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   let args = text.slice(`!viewtask`).split(/ +/);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
@@ -857,7 +866,7 @@ vkint.command('!viewtask', (ctx) => {
 });
 
 vkint.command('!taskstatus', (ctx) => {
-  if(cd(`!taskstatus`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`!taskstatus`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   let args = text.slice(`!taskstatus`).split(/ +/);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
@@ -879,7 +888,7 @@ vkint.command('!taskstatus', (ctx) => {
 
 
 vkint.command('/changenick', (ctx) => {
-  if(cd(`/changenick`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`/changenick`,ctx.message.from_id,30000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   let args = text.slice(`/changenick`).split(/ +/);
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
@@ -888,7 +897,7 @@ vkint.command('/changenick', (ctx) => {
     if(result[0].mlvl < 4 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности заместителя гл.модератора`)
     connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}'`, async (error, result_mod, packets) => {
       if(!result_mod[0]) return ctx.reply(`Модератор не найден`)
-      if(result_mod[0].server != result[0].server && result[0].server != -1) return ctx.reply(`У вас недостаточно прав для смены ника модератору другого сервера`)
+      if(result_mod[0].server != result[0].server && result[0].server != -1 && result[0].fulldostup == 0) return ctx.reply(`У вас недостаточно прав для смены ника модератору другого сервера`)
       connection.query(`UPDATE \`mods\` SET \`nick\` = '${args[2]}' WHERE \`nick\` = '${args[1]}'`);
       connection.query(`UPDATE \`week_stats\` SET \`nick\` = '${args[2]}' WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`);
       ctx.reply(`Ник модератора успешно обновлен`)
@@ -898,7 +907,7 @@ vkint.command('/changenick', (ctx) => {
 });
 
 vkint.command('!help', (ctx) => {
-  if(cd(`!help`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`!help`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   connection.query(`SELECT * FROM \`mods\` WHERE \`vkid\` = '${ctx.message.from_id}' AND \`active\` = '1'`, async (error, result, packets) => {
     if (error) return console.error(error);
@@ -915,7 +924,7 @@ vkint.command('!help', (ctx) => {
 });
 
 vkint.command(`/moderators`, (ctx) => {
-  if(cd(`/moderators`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро, студент!`)
+  if(cd(`/moderators`,ctx.message.from_id,5000)) return ctx.reply(`Не так быстро!`)
   let text = ctx.message.text;
   let chat = ctx.message.peer_id;
   if(chat > 2000000000) return ctx.reply(`Список модераторов можно просмотреть только в личных сообщениях (ограничение на упоминание в беседах)`)
