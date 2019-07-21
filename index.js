@@ -752,14 +752,28 @@ vkint.command('/setmod', (ctx) => {
     if(result[0].mlvl < 3 && result[0].fulldostup == 0) return ctx.reply(`Доступно с должности следящего за модераторами`)
     let text = ctx.message.text;
     let args = text.slice(`/setmod`).split(/ +/);
-    if(!args[1] || !args[2]) return ctx.reply(`использование команды: /setmod nick mlvl`);
+    if(!args[1] || !args[2]) return ctx.reply(`использование команды: /setmod nick mlvl nokick`);
     if(result[0].mlvl <= args[2] && result[0].fulldostup == 0) return ctx.reply(`Ваш уровень: ${mlvltotext(result[0].mlvl)}!\n Вы не можете назначить [${mlvltotext(result[0].mlvl)}] и выше\nПопытка назначить на [${mlvltotext(args[2])}]`);
     connection.query(`SELECT * FROM \`mods\` WHERE \`nick\` = '${args[1]}' AND \`active\` = '1'`, async (error, result2, packets) => {
       if (!result2[0]) return ctx.reply(`Модератор не найден, либо деактивирован.`)
       if(result2[0].fulldostup == 1 && result[0].fulldostup == 0) return ctx.reply(`Вы не можете редактировать этот профиль модератора`)
         connection.query(`UPDATE \`mods\` SET \`mlvl\` = '${args[2]}'  WHERE \`nick\` = '${args[1]}'`);
         addLog(result2[0].nick,result[0].nick,'setrank',`${result[0].nick} изменил уровень модератора ${result2[0].nick} c ${result2[0].mlvl} на ${args[2]}`);
-        return ctx.reply(`Модератору ${args[1]} изменен уровень модерации с ${mlvltotext(result2[0].mlvl)} на ${mlvltotext(args[2])}`);
+        ctx.reply(`Модератору ${args[1]} изменен уровень модерации с ${mlvltotext(result2[0].mlvl)} на ${mlvltotext(args[2])}`);
+        connection.query(`SELECT * FROM \`chats\` WHERE \`server\` = '${result2[0].server}'`, async (error, chats, packets) => {
+          chats.forEach(kick => {
+            if(args[2] > kick.mlvl) return;
+            if(args[3] == 1) return;
+           vkint.api(`messages.removeChatUser`, settings = ({ 
+             chat_id: kick.cid, 
+             user_id: result2[0].vkid, 
+             access_token: process.env.tokenvk
+             })).then(async data => { 
+                 let id = kick.cid + 2000000000;
+                 vkint.sendMessage(id, `У ${result2[0].mlvl} недостаточно прав чтобы находится в этой конференции`);
+             })  
+          })
+       });
     });
   });
 });
