@@ -813,7 +813,19 @@ vkint.command('/close', (ctx) => {
       if(result2[0].fulldostup == 1 && result[0].fulldostup == 0) return ctx.reply(`Вы не можете редактировать этот профиль модератора`)
         connection.query(`UPDATE \`mods\` SET \`mlvl\` = '0', \`active\` = '0', \`noactive\` = '0', \`mwarn\` = '0' WHERE \`nick\` = '${args[1]}'`);
         addLog(result2[0].nick,result[0].nick,'archive',`${result[0].nick} закрыл профиль модератора ${args[1]} в архив (LVLMOD:${result2[0].mlvl})`);
-        return ctx.reply(`Модератор ${args[1]} закрыт в архив модераторов с должностью - ${mlvltotext(result2[0].mlvl)}`);
+        ctx.reply(`Модератор ${args[1]} закрыт в архив модераторов с должностью - ${mlvltotext(result2[0].mlvl)}`);
+        connection.query(`SELECT * FROM \`chats\` WHERE \`server\` = '${result2[0].server}'`, async (error, chats, packets) => {
+           chats.forEach(kick => {
+            vkint.api(`messages.removeChatUser`, settings = ({ 
+              chat_id: kick.cid, 
+              user_id: result2[0].vkid, 
+              access_token: process.env.tokenvk
+              })).then(async data => { 
+                  let id = kick.cid + 2000000000;
+                  vkint.sendMessage(id, `Данный пользователь более не модератор`);
+              })  
+           })
+        });
     });
   });
 });
